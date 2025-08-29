@@ -20,7 +20,6 @@ export default defineConfigWithVueTs(
   {
     ...vueTsConfigs.recommended,
     rules: {
-      ...vueTsConfigs.recommended.rules,
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
