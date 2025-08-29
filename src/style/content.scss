@@ -1,0 +1,29 @@
+$heading-margins: (
+  h1: 3rem,
+  h2: 2rem,
+  h3: 1.5rem,
+);
+
+@mixin not-first($map) {
+  @each $elem, $margin in $map {
+    #{$elem} {
+      &:not(:first-child) {
+        margin-top: $margin;
+      }
+    }
+  }
+}
+
+@include not-first($heading-margins);
+
+figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+figcaption {
+  color: gray;
+  font-size: 0.75rem;
+  padding-top: 0.5rem;
+}

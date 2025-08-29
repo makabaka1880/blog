@@ -1,0 +1,6 @@
+[
+  {
+    "label": "Run Dev Server",
+    "command": "pnpm dev"
+  }
+]

@@ -1,0 +1,11 @@
+$bg-color: oklch(100% 0.01 200);
+$emphasis-color: oklch(60% 40% 200);
+$selection-color: oklch(90% 5% 200);
+
+::selection {
+  background-color: $selection-color;
+}
+
+.icon-fill {
+  fill: black;
+}

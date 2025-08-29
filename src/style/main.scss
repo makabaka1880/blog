@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css1?family=Cabin:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans+SC:wght@100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('./layout.scss');
+@import 'palette.scss';
+
+html {
+  background-color: $bg-color;
+}
+
+* {
+  font-family: 'JetBrains Mono';
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+p {
+  font-size: 0.85rem;
+}
+
+a {
+  text-decoration: none;
+  color: $emphasis-color;
+  &:hover {
+    color: black;
+    text-decoration: underline;
+  }
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.sidebar-contacts {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+}
