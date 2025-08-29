@@ -33,7 +33,7 @@ const errorMessage = ref('')
 
 onMounted(async () => {
   try {
-    const uri = import.meta.env.VITE_API_BASE + '/posts/post'
+    const uri = import.meta.env.VITE_API_BASE + '/posts/home'
     console.log('Requesting URL:', uri)
 
     const response = await axios.get(uri)
