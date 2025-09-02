@@ -10,7 +10,6 @@ div.app {
   flex-direction: row;
   gap: 5rem;
   max-width: 80em;
-  width: 100%;
   padding: 1em;
   margin-top: 5rem;
 }
@@ -19,6 +18,7 @@ div.sidebar {
   position: sticky;
   height: auto;
   align-self: flex-start;
+  width: 15rem;
 }
 
 div.sidebar-title {
@@ -41,6 +41,7 @@ div.meta {
 
 .content {
   max-width: 100%;
+  width: 45rem;
 }
 
 .sidebar-content {
@@ -78,10 +79,10 @@ div.content img {
 }
 
 hr {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 footer {
-    margin: 3rem 0;
+  margin: 3rem 0;
 }
