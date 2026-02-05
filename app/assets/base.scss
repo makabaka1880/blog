@@ -1,0 +1,76 @@
+@use './theme' as *;
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "JetBrains Mono", monospace;
+}
+
+::selection {
+  color: var(--color-highlight);
+  background-color: var(--color-highlight-bg);
+}
+
+/* 页面 */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  transition: all 0.2s ease-in-out;
+}
+
+/* 页面标题 */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-heading);
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1rem;
+}
+h5 {
+  font-size: .8rem;
+}
+h6 {
+  font-size: .6rem;
+}
+
+/* 链接 */
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-link);
+}
