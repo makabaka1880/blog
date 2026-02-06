@@ -6,7 +6,7 @@ import ayuTheme from './configs/theme-light.json'
 const blogConfig = {
     title: 'Teal Blog',
     subtitle:'',
-    description: 'Based On Flory Blog',
+    description: 'Makabaka1880\'s Personal Blog',
     author: {
         name: 'Makabaka1880',
         avatar: '',
