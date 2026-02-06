@@ -21,6 +21,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run buildgraph
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python buildgraph.py
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -28,9 +40,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install; pnpm install better-sqlite3
-
-      - name: Set base URL
-        run: echo "NUXT_APP_BASE_URL=/${{ github.event.repository.name }}/" >> $GITHUB_ENV
 
       - name: Generate site
         run: pnpm run generate
