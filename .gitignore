@@ -25,6 +25,5 @@ logs
 
 pnpm-lock.yaml
 
-.venv
 features.faiss
 features.meta.json
