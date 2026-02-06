@@ -27,7 +27,7 @@ jobs:
           version: 9
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install; pnpm install better-sqlite3
 
       - name: Set base URL
         run: echo "NUXT_APP_BASE_URL=/${{ github.event.repository.name }}/" >> $GITHUB_ENV
