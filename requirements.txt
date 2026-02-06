@@ -1,0 +1,5 @@
+fiass-cpu
+tomllib
+huggingface_hub
+blake3
+numpy
