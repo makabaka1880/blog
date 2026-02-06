@@ -1,4 +1,4 @@
-fiass-cpu
+faiss-cpu
 tomllib
 huggingface_hub
 blake3
