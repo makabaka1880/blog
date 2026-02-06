@@ -1,0 +1,24 @@
+{
+  "/article/260206-new-blog": {
+    "neighbors": [
+      {
+        "file": "/article/260206-semantics-and-notation",
+        "weight": 0.190111269844892,
+        "cosine_similarity": 0.6337042328163066,
+        "link_score": 0.0
+      }
+    ],
+    "links_to_me": 0
+  },
+  "/article/260206-semantics-and-notation": {
+    "neighbors": [
+      {
+        "file": "/article/260206-new-blog",
+        "weight": 0.190111269844892,
+        "cosine_similarity": 0.6337042328163066,
+        "link_score": 0.0
+      }
+    ],
+    "links_to_me": 0
+  }
+}

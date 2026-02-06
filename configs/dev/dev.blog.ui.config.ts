@@ -1,16 +1,16 @@
-// !Delete for production
-// ?Used to control some UI display
+// !正式版删除
+// ?用于控制一些UI的显示
 
 const navItems = [
+    // {
+    //     name: "合集",
+    //     route: "/collection",
+    //     icon: "material-symbols:library-books"
+    // },
     {
-      name: "Collections",
-      route: "/collection",
-      icon: "material-symbols:library-books"
-    },
-    {
-      name: "Links",
-      route: "/link",
-      icon: "material-symbols:link-rounded",
+        name: "友链",
+        route: "/link",
+        icon: "material-symbols:link-rounded",
     },
 ];
 

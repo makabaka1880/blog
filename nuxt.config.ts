@@ -1,4 +1,7 @@
 import blogConfig from "./blog.config";
+import type { LanguageRegistration } from '@shikijs/core'
+import { execFile } from 'node:child_process'
+import { existsSync } from 'node:fs'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -15,15 +18,29 @@ export default defineNuxtConfig({
         { path: "~/components/uikit", prefix: "UIKit" },
         "~/components",
     ],
-    css: ["~/assets/main.scss"],
+    css: ["~/assets/main.scss", "katex/dist/katex.min.css"],
     content: {
         build: {
             markdown: {
+                highlight: {
+                    theme: blogConfig.highlight.theme,
+                    langs: blogConfig.highlight.languages as (LanguageRegistration)[],
+                },
+                remarkPlugins: {
+                    "remark-math": {},
+                },
+                rehypePlugins: {
+                    "rehype-katex": {}
+                },
             }
         }
     },
-    modules: ['@nuxt/content', "@nuxt/icon"],
+    modules: ['@nuxt/content', "@nuxtjs/mdc", '@nuxt/image'],
+    plugins: [
+        '~/plugins/configVueLibs',
+    ],
     app: {
+        baseURL: process.env.NUXT_APP_BASE_URL || '/',
         head: {
             htmlAttrs: {
                 lang: blogConfig.language,
@@ -38,7 +55,38 @@ export default defineNuxtConfig({
             ],
             link: [
                 { rel: "icon", type: "image/x-icon", href: blogConfig.favicon },
+                {
+                    rel: 'stylesheet',
+                    href: 'https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css'
+                }
             ],
         },
     },
+    hooks: {
+        'build:before': () => {
+            console.log('🔧 Running Python prebuild in .venv…')
+
+            const pythonPath = '.venv/bin/python'  // standard venv on macOS
+            if (!existsSync(pythonPath)) {
+                console.log('⚠️ Skipping Python prebuild (missing .venv/bin/python).')
+                return
+            }
+
+            try {
+                const { stdout, stderr } = execFile(
+                    pythonPath,
+                    ['buildgraph.py'], // your script
+                    {
+                        env: { ...process.env } // inherit environment
+                    }
+                )
+
+                if (stdout) console.log(stdout)
+                if (stderr) console.error(stderr)
+            } catch (err) {
+                console.error('Python prebuild failed', err)
+                process.exit(1) // fail the build
+            }
+        }
+    }
 })

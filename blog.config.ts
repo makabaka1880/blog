@@ -1,6 +1,6 @@
-import blogCollections from './configs/blog.collections.config'
+// import blogCollections from './configs/blog.collections.config'
 import blogLinks from './configs/blog.links.config'
-import blogFooter from './configs/blog.footer.config'
+import ayuTheme from './configs/theme-light.json'
 
 //? Blog configuration
 const blogConfig = {
@@ -26,16 +26,15 @@ const blogConfig = {
         languages: ['json', 'js', 'ts', 'html', 'css', 'vue', 'shell', 'mdc', 'md', 'yaml', 'sql', 'swift'],
         theme: {
             // Default theme (same as single string)
-            default: 'github-light',
+            default: ayuTheme,
             // Theme used if `html.dark`
-            dark: 'github-dark',
+            // dark: 'ayu-dark',
             // Theme used if `html.sepia`
-            sepia: 'monokai'
+            // sepia: 'monokai'
           },
     },
-    collections: blogCollections, //! Do not modify
+    // collections: blogCollections, //! Do not modify
     links: blogLinks, //! Do not modify
-    footer: blogFooter, //! Do not modify
 }
 
 export default blogConfig

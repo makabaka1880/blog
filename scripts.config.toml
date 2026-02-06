@@ -1,0 +1,9 @@
+[digest]
+content_dir = "content"
+article_dir = "article"
+manifest_name = ".digest-manifest.json"
+feature_store = "features.json"
+adjacency_store = "app/static/adjacency.json"
+top_k = 5
+alpha = 0.3
+threshold = 0.2

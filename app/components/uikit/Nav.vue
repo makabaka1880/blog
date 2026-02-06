@@ -2,13 +2,16 @@
     <nav class="nav-bar">
         <div class="nav-left">
             <NuxtLink to="/">
-                <span class="nav-title" v-if="props.title">{{ props.title }}</span>
+                <span class="nav-title" v-if="props.title">Home</span>
+            </NuxtLink>
+            <NuxtLink to="/about">
+                <span class="nav-title">About</span>
             </NuxtLink>
         </div>
         <div class="nav-right">
-            <NuxtLink v-for="item in navItems" :key="item.route" :to="item.route" class="nav-item">
+            <!-- <NuxtLink v-for="item in navItems" :key="item.route" :to="item.route" class="nav-item">
                 <span class="nav-name">{{ item.name }}</span>
-            </NuxtLink>
+            </NuxtLink> -->
         </div>
     </nav>
 </template>
@@ -35,9 +38,10 @@ const props = defineProps<{ title?: string }>()
 a {
     text-decoration: none;
     color: var(--color-navbar-link);
-    padding: 0 .4rem;
+    padding: 0 1.5rem;
     /* border: 2px solid transparent; */
     transition: all 0.2s ease-in-out;
+    font-size: 1.2rem;
 }
 
 a:hover {

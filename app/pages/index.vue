@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <div class="hero">
             <h1>{{ config.title }}</h1>
             <p>{{ config.description }}</p>
@@ -8,7 +8,14 @@
             <UIKitSearchField v-model="searchValue" @search="onSearch" />
         </div>
         <h2>Articles</h2>
-        <!-- list -->
+        <div class="article-list-wrapper">
+            <div class="article-list">
+                <UIKitArticleList :page="currentPage" :per-page="perPage" @update:total-count="onTotalCountChange" />
+            </div>
+            <div class="pagination-wrapper">
+                <UIKitPaginator :current-page="currentPage" :total-pages="totalPages" @page-change="onPageChange" />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -16,15 +23,18 @@
 import config from '@@/blog.config';
 import { ref } from 'vue';
 
-const currentPage = ref(1); // Page numbering starts from 1, if you need to start from 0, set Pagination component's startPage=0
-const perPage = 10;
+const currentPage = ref(1);
+const perPage = 2;
 const searchValue = ref('');
 const searchResult = ref('');
+const totalPages = ref(1);
 
-const totalPages = ref(1); // Initialize to 1, ensure pagination component is correctly hidden on single pages
+function onPageChange(page: number) {
+    currentPage.value = page;
+}
 
-function onUpdateTotalPages(value: number) {
-    totalPages.value = value;
+function onTotalCountChange(count: number) {
+    totalPages.value = Math.ceil(count / perPage);
 }
 
 function onSearch() {
@@ -33,10 +43,18 @@ function onSearch() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .hero {
     margin: var(--section-margin);
 }
+
 .search-field-container {
     width: 20vw;
     min-width: 20rem;
@@ -45,4 +63,25 @@ function onSearch() {
     margin-bottom: 5vh;
 }
 
+.article-list-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.article-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.pagination-wrapper {
+    flex-shrink: 0;
+    padding-top: 1rem;
+}
+
+hr {
+    width: 50%;
+    opacity: 0.2;
+}
 </style>

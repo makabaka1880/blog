@@ -2,75 +2,117 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "JetBrains Mono", monospace;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "JetBrains Mono", monospace;
 }
 
 ::selection {
-  color: var(--color-highlight);
-  background-color: var(--color-highlight-bg);
+    color: var(--color-highlight);
+    background-color: var(--color-highlight-bg);
 }
 
 /* 页面 */
 body {
-  background-color: var(--color-background);
-  color: var(--color-text);
-  transition: all 0.2s ease-in-out;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    transition: all 0.2s ease-in-out;
 }
 
 /* 页面标题 */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--color-heading);
-  font-weight: normal;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--color-heading);
+    font-weight: normal;
+    margin: 0.5em 0;
 }
 
 h1 {
-  font-size: 3rem;
+    font-size: 3rem;
 }
+
 h2 {
-  font-size: 2rem;
+    font-size: 2rem;
 }
+
 h3 {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
+
 h4 {
-  font-size: 1rem;
+    font-size: 1rem;
 }
+
 h5 {
-  font-size: .8rem;
+    font-size: .8rem;
 }
+
 h6 {
-  font-size: .6rem;
+    font-size: .6rem;
 }
 
 /* 链接 */
 a {
-  color: var(--color-link);
-  text-decoration: none;
+    color: var(--color-link);
+    text-decoration: none;
 }
 
 a:hover {
-  color: var(--color-link-hover);
-  text-decoration: underline;
+    color: var(--color-link-hover);
+    text-decoration: underline;
+}
+
+/* MARK: Table */
+thead {
+    border-top: 2px solid var(--color-card-border);
+    border-bottom: 1.5px solid var(--color-card-border);
+}
+
+tbody {
+    border-bottom: 2px solid var(--color-card-border);
+}
+
+th,
+td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+th {
+    font-weight: 600;
+}
+
+tr {
+    border: none;
+}
+
+div.footer {
+    padding-bottom: 0;
+    padding: 2rem 10rem;
+    width: 100%;
+    background-color: var(--color-footer-bg);
 }
 
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+    background: var(--color-background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-text);
-  border-radius: 4px;
+    background: var(--color-text);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-link);
+    background: var(--color-link);
 }

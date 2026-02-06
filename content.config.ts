@@ -11,11 +11,11 @@ export default defineContentConfig({
             },
             // Custom fields
             schema: z.object({
-                createTime: z.string().time().optional(),
-                updateTime: z.string().time().optional(),
-                collection: z.string(),
+                createTime: z.string().date().optional(),
+                updateTime: z.string().date().optional(),
+                // collection: z.string(),
                 // theme: z.object({}).optional(),
-                rawbody: z.string()
+                rawbody: z.string().optional()
             })
         })
     }
