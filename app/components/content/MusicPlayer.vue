@@ -271,7 +271,6 @@ input[type='range'] {
 }
 
 .time {
-  font-family: monospace;
   font-size: 0.8em;
   opacity: 0.7;
   white-space: nowrap;
