@@ -1,6 +1,6 @@
 <template>
     <em @mouseenter="show = true" @mouseleave="show = false">
-        <RoughNotation :is-show="show" type="underline" color="var(--color-highlight-marker)" multiline=true>
+        <RoughNotation :is-show="show" type="underline" color="var(--color-highlight-marker)" :multiline="true">
             <slot />
         </RoughNotation>
     </em>

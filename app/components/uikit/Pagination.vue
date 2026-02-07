@@ -74,7 +74,6 @@ function changePage(page: number) {
 
     emit('page-change', page)
 }
-}
 </script>
 
 <style scoped>
