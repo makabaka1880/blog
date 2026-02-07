@@ -1,6 +1,24 @@
 {
   "/article/260206-new-blog": {
-    "neighbors": [],
+    "neighbors": [
+      {
+        "file": "/article/260207-london-traps-for-chess-noobs",
+        "weight": 0.18326525962135404,
+        "cosine_similarity": 0.6108841987378468,
+        "link_score": 0.0
+      }
+    ],
+    "links_to_me": 0
+  },
+  "/article/260207-london-traps-for-chess-noobs": {
+    "neighbors": [
+      {
+        "file": "/article/260206-new-blog",
+        "weight": 0.18326525962135404,
+        "cosine_similarity": 0.6108841987378468,
+        "link_score": 0.0
+      }
+    ],
     "links_to_me": 0
   }
 }

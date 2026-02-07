@@ -5,7 +5,6 @@
     "engines": {
         "node": ">=20"
     },
-    "packageManager": "pnpm@10.28.2",
     "scripts": {
         "build": "nuxt build",
         "dev": "nuxt dev",
@@ -15,7 +14,6 @@
         "new:article": "node scripts/create-article.mjs"
     },
     "dependencies": {
-        "pnpm": "^10.28.2",
         "@nuxt/content": "^3.11.0",
         "@nuxt/icon": "^2.2.1",
         "@nuxt/image": "2.0.0",
@@ -23,10 +21,12 @@
         "@shikijs/core": "^3.22.0",
         "@vueuse/core": "^14.2.0",
         "@vueuse/nuxt": "^14.2.0",
+        "chess-fen": "^1.0.2",
         "katex": "^0.16.28",
         "lodash": "^4.17.23",
         "marked": "^17.0.1",
         "nuxt": "^4.3.0",
+        "pnpm": "^10.28.2",
         "vue-freeze-gif": "^0.1.7",
         "vue-powerglitch": "^1.1.0",
         "vue-rough-notation": "^1.0.4",
