@@ -28,18 +28,20 @@
       <span class="time"> {{ format(currentTime) }} / {{ format(duration) }} </span>
 
       <div class="volume-wrapper">
-        <button class="volume-button" type="button" aria-label="Volume">
-          <UIKitSvgIcon class="volume-icon" name="volume" />
+        <button class="volume-button" type="button" :aria-label="isMuted ? 'Unmute' : 'Mute'" @click="toggleMute">
+          <UIKitSvgIcon class="volume-icon" name="volume" :class="{ 'text-muted': isMuted }" />
         </button>
         <div class="volume-popover">
           <input
+            ref="volumeRange"
             class="volume-range"
             type="range"
             min="0"
             max="1"
             step="0.01"
-            v-model="volume"
-            @input="setVolume"
+            v-model.number="volume"
+            @mouseup="releaseFocus"
+            @touchend="releaseFocus"
           />
         </div>
       </div>
@@ -86,7 +88,11 @@ const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
 const volume = ref(1)
+const lastVolume = ref(1)
 const songInfo = ref<MusicSong | null>(null)
+const volumeRange = ref<HTMLInputElement | null>(null)
+
+const isMuted = computed(() => volume.value === 0)
 
 const audioSrc = computed(() => {
   if (props.mode === 'server' && songInfo.value?.url) return songInfo.value.url
@@ -167,23 +173,55 @@ const seek = () => {
   audio.value.currentTime = currentTime.value
 }
 
-const setVolume = () => {
+const toggleMute = () => {
+  if (volume.value > 0) {
+    lastVolume.value = volume.value
+    volume.value = 0
+  } else {
+    volume.value = lastVolume.value || 1
+  }
+}
+
+const updateVolume = () => {
   if (!audio.value) return
   audio.value.volume = volume.value
+  try {
+    localStorage.setItem('player-volume', volume.value.toString())
+  } catch (e) {
+    // ignore
+  }
+}
+
+const releaseFocus = () => {
+  volumeRange.value?.blur()
 }
 
 onMounted(() => {
   fetchSong()
+  
+  // Restore volume
+  try {
+    const saved = localStorage.getItem('player-volume')
+    if (saved !== null) {
+      const v = parseFloat(saved)
+      if (!isNaN(v) && v >= 0 && v <= 1) {
+        volume.value = v
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+
   if (!audio.value) return
   if (isFinite(audio.value.duration)) {
     duration.value = audio.value.duration
   }
-  audio.value.volume = volume.value
+  updateVolume()
 })
 
 watch(() => [props.mode, props.server, props.id], fetchSong)
 
-watch(volume, () => setVolume())
+watch(volume, updateVolume)
 
 const format = (t: number) => {
   if (isNaN(t) || !isFinite(t)) return '0:00'
@@ -300,7 +338,8 @@ input[type='range'] {
 .volume-popover {
   position: absolute;
   right: 0;
-  bottom: 120%;
+  bottom: 100%;
+  margin-bottom: 0.5rem;
   padding: 0.4rem 0.6rem;
   background: var(--color-bg);
   border: 1pt var(--color-border) solid;
@@ -313,11 +352,24 @@ input[type='range'] {
     transform 120ms ease;
 }
 
-/*.volume-wrapper:hover .volume-popover, */
+.volume-popover::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 1rem;
+}
+
+.volume-wrapper:hover .volume-popover,
 .volume-wrapper:focus-within .volume-popover {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+.text-muted {
+  opacity: 0.4;
 }
 
 .volume-range {
