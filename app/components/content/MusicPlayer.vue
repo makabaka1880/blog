@@ -1,7 +1,9 @@
 <template>
   <div class="audio-player-container box-container">
     <div class="top-section">
-      <img v-if="displayPic" :src="displayPic" class="cover-art" alt="Cover" draggable="false" />
+      <div v-if="displayPic" class="cover-wrapper" :class="{ monochrome }">
+        <img :src="displayPic" class="cover-art" alt="Cover" draggable="false" />
+      </div>
       <div class="info-wrapper">
         <em>{{ displayTitle }}</em>
         <div v-if="hasMeta" class="meta">
@@ -75,9 +77,11 @@ const props = withDefaults(
     server?: MusicServer
     id?: string | number
     autoplay?: boolean
+    monochrome?: boolean
   }>(),
   {
     mode: 'local',
+    monochrome: true,
   },
 )
 
@@ -245,12 +249,38 @@ const format = (t: number) => {
     align-items: center;
   }
 
-  .cover-art {
+  .cover-wrapper {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 0.25rem;
-    object-fit: cover;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-sizing: border-box;
+
+    &.monochrome {
+      .cover-art {
+        filter: grayscale(100%) contrast(200%);
+        mix-blend-mode: multiply;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: var(--color-primary);
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .cover-art {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .info-wrapper {
