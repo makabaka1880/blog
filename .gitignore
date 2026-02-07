@@ -27,3 +27,8 @@ pnpm-lock.yaml
 
 features.faiss
 features.meta.json
+
+*.blend
+*.blend1
+
+.venv
