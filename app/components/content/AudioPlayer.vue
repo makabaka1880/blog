@@ -96,7 +96,9 @@ const format = (t: number) => {
 <style lang="scss" scoped>
 .audio-player-container {
     padding: 1.5em 1em;
-    border: 1pt var(--color-border) solid;
+    border: 1.2pt var(--color-border) solid;
+    box-shadow: 1px 1px 2px;
+    border-radius: 0.5rem;
     margin-bottom: 2rem;
 
     .audio-player {

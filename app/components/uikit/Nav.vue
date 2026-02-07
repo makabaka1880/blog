@@ -7,6 +7,9 @@
             <NuxtLink to="/about">
                 <span class="nav-title">About</span>
             </NuxtLink>
+            <NuxtLink to="https://github.com/makabaka1880/blog">
+                <span class="nav-title">GitHub</span>
+            </NuxtLink>
         </div>
         <div class="nav-right">
             <!-- <NuxtLink v-for="item in navItems" :key="item.route" :to="item.route" class="nav-item">

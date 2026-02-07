@@ -10,7 +10,7 @@ $color-section-bg: #dde8e8;
 $color-footer-bg: #d5e5e5;
 $color-card-bg: #ffffff;
 $color-card-hover-bg: #e8f2f2;
-$color-card-border: #3a9a9a;
+$color-card-border: #43baba;
 $color-card-hover-border: #4a8888;
 $color-card-title: #3a7070;
 $color-card-metadata: #4a8888;
@@ -29,7 +29,7 @@ $color-button-text: #ffffff;
 $color-input-border: #3a9a9a;
 $color-input-text: #3a7070;
 $color-input-focus-border: #5aaaaa;
-$color-border: #9bafaf;
+$color-border: #80acac7b;
 $color-shadow: rgba(58, 154, 154, 0.15);
 $color-navbar-bg: rgba(245, 249, 249, 0.95);
 $color-navbar-link: #3a7070;
@@ -55,6 +55,7 @@ $color-success-text: #009933;
 $color-error-bg: #ffe0e0;
 $color-error-text: #cc3333;
 $section-margin: 5vh 0 10vh 0;
+$critical-width: 860px;
 
 :root {
     --color-primary: #{$color-primary};
@@ -117,4 +118,6 @@ $section-margin: 5vh 0 10vh 0;
 
     // Boxes
     --color-defbox-bg: #{$color-card-bg};
+
+    --critical-width: #{$critical-width};
 }

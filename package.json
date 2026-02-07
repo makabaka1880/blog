@@ -23,6 +23,7 @@
     "marked": "^17.0.1",
     "nuxt": "^4.3.0",
     "vue-freeze-gif": "^0.1.7",
+    "vue-powerglitch": "^1.1.0",
     "vue-rough-notation": "^1.0.4",
     "vue3-chessboard": "^1.3.3"
   },

@@ -1,19 +1,27 @@
 <template>
-    <div class="mask-container">
-        <div class="tv">
-            <video v-if="!videoEnded" ref="videoElement" src="/static/drink-1.mp4" @ended="onVideoEnded" autoplay muted
-                playsinline class="mask-video tv" style="mix-blend-mode: multiply" draggable="false" />
-
-            <img v-else ref="videoElementLoop" src="/static/drink-loop.gif" class="mask-video tv"
-                style="mix-blend-mode: multiply" draggable="false" />
+    <section class="hero">
+        <!-- ART LAYER -->
+        <div class="art">
+            <video v-if="!videoEnded" ref="videoElement" src="/static/drink-1.mp4" autoplay muted playsinline
+                draggable="false" @ended="onVideoEnded" />
+            <img v-else ref="videoElementLoop" src="/static/drink-loop.gif" draggable="false" />
         </div>
-        <div class="title">
-            <h1>Hi There 👋</h1>
+
+        <!-- CONTENT LAYER -->
+        <div class="content">
+            <GlitchedElement ref="glitched">
+                <h1>Hi There 👋</h1>
+            </GlitchedElement>
+
             <p>Welcome To the Teal Blog.</p>
+
             <h2>The Author</h2>
-            <p>Im Sean, currently a Shanghainese highschooler. I like software engineering, computer science, and formal
-                mathematics. I also enjoy music, chess, and 3d art.</p>
-            <br />
+            <p>
+                Im Sean, currently a Shanghainese highschooler. I like software
+                engineering, computer science, and formal mathematics. I also enjoy
+                music, chess, and 3d art.
+            </p>
+
             <h2>Tech Stack</h2>
             <div class="two-cols">
                 <div class="two-rows">
@@ -23,9 +31,10 @@
                     </div>
                     <div class="grid">
                         <h3>Backend</h3>
-                        <p>Vapor / Express / PostgresSQL </p>
+                        <p>Vapor / Express / PostgreSQL</p>
                     </div>
                 </div>
+
                 <div class="two-rows">
                     <div class="grid">
                         <h3>Research</h3>
@@ -37,38 +46,137 @@
                     </div>
                 </div>
             </div>
+
             <h2>Friends</h2>
         </div>
-    </div>
+    </section>
 </template>
 
+
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 
 const videoEnded = ref(false);  // Track whether the first video has ended
+const glitched = ref<{ startGlitch: () => void; stopGlitch: () => void } | null>(null);
+
+let glitchTimer: number | undefined;
+let glitchOn = false;
+
+const stopGlitching = () => {
+    if (glitchTimer) {
+        clearTimeout(glitchTimer);
+        glitchTimer = undefined;
+    }
+    if (glitchOn) {
+        glitched.value?.stopGlitch();
+        glitchOn = false;
+    }
+};
+
+const scheduleGlitch = () => {
+    if (videoEnded.value) return;
+
+    const idleMs = 250 + Math.random() * 700;
+    glitchTimer = window.setTimeout(() => {
+        if (videoEnded.value) return;
+        glitchOn = true;
+        glitched.value?.startGlitch();
+
+        const glitchMs = 450 + Math.random() * 900;
+        glitchTimer = window.setTimeout(() => {
+            if (videoEnded.value) return;
+            glitched.value?.stopGlitch();
+            glitchOn = false;
+            scheduleGlitch();
+        }, glitchMs);
+    }, idleMs);
+};
 
 // Function to handle video ending and switch to the next video
 const onVideoEnded = () => {
     videoEnded.value = true;  // Mark the video as ended, so the second video will render
+    stopGlitching();
 };
+
+onMounted(() => {
+    scheduleGlitch();
+});
+
+onBeforeUnmount(() => {
+    stopGlitching();
+});
+
+watch(videoEnded, (ended) => {
+    if (ended) {
+        stopGlitching();
+    }
+});
 </script>
 
-<style scoped>
-.mask-container {
-    display: flex;
+<style lang="scss" scoped>
+@use '~/assets/theme' as *;
+
+/* ROOT */
+.hero {
+    position: relative;
+    min-height: 100vh;
 }
 
-.two-cols {
-    display: flex;
+/* ---------------- ART ---------------- */
+/* 🚫 NOT in layout, 🚫 NOT flex child */
+.art {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    width: 45vw;
 
-    :deep(.grid) {
-        margin-right: 5rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mix-blend-mode: darken;
+
+    video,
+    img {
+        width: 100%;
+        height: auto;
     }
 }
 
-:deep(.tv) {
-    filter: brightness(1.01);
-    mix-blend-mode: multiply;
-    max-width: 45vw;
+/* ---------------- CONTENT ---------------- */
+.content {
+    position: relative;
+    z-index: 1;
+
+    max-width: 65ch;
+    min-width: 55ch;
+    margin-left: calc(75vw - 40em);
+    padding: 4rem 4rem 8rem;
+}
+
+/* ---------------- GRID ---------------- */
+.two-cols {
+    display: flex;
+    gap: 5rem;
+}
+
+/* ---------------- MOBILE ---------------- */
+@media (max-width: $critical-width) {
+    .art {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        transform: translateY(10vh) scale(1.4);
+        opacity: 0.6;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 2rem;
+    }
 }
 </style>

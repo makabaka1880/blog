@@ -17,22 +17,27 @@ def main() -> None:
     changed, deleted = changed_files(articles_root, content_root())
 
     if len(changed) == 0 and len(deleted) == 0:
+        print("🔍 buildgraph: no changes detected, skipping.")
         return
 
+    print(f"🧹 buildgraph: removed files: {len(deleted)}")
     for rel_file in deleted:
         remove(rel_file)
 
+    print(f"🧠 buildgraph: embedding updated files: {len(changed)}")
     for rel_file in changed:
         full_path = articles_root / rel_file
         embedding = embed_file(full_path)
         digest = hash_file(full_path)
         update(rel_file, embedding, digest)
 
+    print("🔗 buildgraph: rebuilding adjacency")
     features = load_features()
     all_files = list(features.keys())
     link_counts = count_markdown_links(articles_root, all_files)
 
     params = digest_params()  # read top_k, alpha, threshold from config
+    print(f"⚙️ buildgraph: params top_k={params['top_k']} alpha={params['alpha']}")
 
     adjacency = build_adjacency_with_links(
         features,
@@ -66,3 +71,4 @@ def main() -> None:
         adjacency = prefixed
 
     Path(adjacency_store()).write_text(json.dumps(adjacency, indent=2))
+    print(f"✅ buildgraph: wrote adjacency to {adjacency_store()}")

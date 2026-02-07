@@ -17,10 +17,31 @@
 body {
     background-color: var(--color-background);
     color: var(--color-text);
+    font-size: 0.8em;
     transition: all 0.2s ease-in-out;
 }
 
+/* 链接 */
+a {
+    color: var(--color-link);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--color-link-hover);
+        text-decoration: underline;
+    }
+}
+
 /* 页面标题 */
+$heading-sizes: (
+    h1: 2.5rem,
+    h2: 1.5rem,
+    h3: 1.2rem,
+    h4: 1.1rem,
+    h5: 1rem,
+    h6: 1rem
+);
+
 h1,
 h2,
 h3,
@@ -32,40 +53,30 @@ h6 {
     margin: 0.5em 0;
 }
 
-h1 {
-    font-size: 3rem;
+@each $tag, $size in $heading-sizes {
+    #{$tag} {
+        font-size: $size;
+    }
 }
 
-h2 {
-    font-size: 2rem;
-}
-
-h3 {
-    font-size: 1.5rem;
-}
-
-h4 {
-    font-size: 1rem;
-}
-
-h5 {
-    font-size: .8rem;
-}
-
+h1,
+h2,
+h3,
+h4,
+h5,
 h6 {
-    font-size: .6rem;
+    >a {
+        color: inherit;
+        font-weight: inherit;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
-/* 链接 */
-a {
-    color: var(--color-link);
-    text-decoration: none;
-}
 
-a:hover {
-    color: var(--color-link-hover);
-    text-decoration: underline;
-}
 
 /* MARK: Table */
 thead {
@@ -93,10 +104,11 @@ tr {
 
 div.footer {
     padding-bottom: 0;
-    padding: 2rem 10rem;
+    padding: 2rem 10vw;
     width: 100%;
     background-color: var(--color-footer-bg);
 }
+
 
 /* 自定义滚动条 */
 ::-webkit-scrollbar {

@@ -32,7 +32,7 @@ const yymmdd = `${yy}${mm}${dd}`;
 const isoDate = `${now.getFullYear()}-${mm}-${dd}`;
 
 const filename = `${yymmdd}-${slug}.md`;
-const targetDir = path.join(process.cwd(), "content", "article");
+const targetDir = path.join(process.cwd(), "content", "draft");
 const targetPath = path.join(targetDir, filename);
 
 if (fs.existsSync(targetPath)) {

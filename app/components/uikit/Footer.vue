@@ -9,9 +9,18 @@
 </script>
 
 <style lang="scss" scoped>
+@use '~/assets/theme' as *;
+
 .footer-container {
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+@media (max-width: $critical-width) {
+    .footer-container * {
+        margin: 0 0;
+        width: 100%;
+    }
 }
 </style>

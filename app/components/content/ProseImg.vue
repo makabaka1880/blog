@@ -20,7 +20,6 @@ const resolvedSrc = computed(() => {
     const pathSegments = route.path.split('/').filter(Boolean);
     const slug = pathSegments.slice(1).join('/');
     const tail = props.src.replace(/^\/+/, "");
-    console.log(tail)
     return `/assets/${slug}/${tail}`;
 });
 </script>

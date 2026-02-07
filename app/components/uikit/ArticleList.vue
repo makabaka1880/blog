@@ -15,7 +15,7 @@ const props = defineProps<{
     pending?: boolean
     error?: any
     perPage?: number
-    sortOrder?: 'ASC' | 'DES'
+    sortOrder?: 'ASC' | 'DESC'
 }>()
 
 const emit = defineEmits<{
@@ -48,6 +48,7 @@ async function fetchArticles() {
                 .skip((props.page - 1) * (props.perPage || 10))
                 .limit(props.perPage || 10)
                 .all()
+
             console.log(articles)
         }
     } catch (err) {

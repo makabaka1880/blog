@@ -23,7 +23,6 @@ const { data: page } = await useAsyncData(route.path, () => {
 })
 import adjacentPosts from '~/static/adjacency.json'
 const posts = computed(() => (adjacentPosts as Record<string, any>)[page.value?.path ?? ''] ?? [])
-console.log(posts.value.neighbors)
 </script>
 
 <style lang="scss" scoped>
@@ -63,7 +62,4 @@ console.log(posts.value.neighbors)
     margin-bottom: 0.5rem;
 }
 
-:deep(.box-container) {
-    width: 50vw;
-}
 </style>
