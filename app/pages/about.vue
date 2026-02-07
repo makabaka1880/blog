@@ -17,7 +17,7 @@
 
             <h2>The Author</h2>
             <p>
-                Im Sean, currently a Shanghainese highschooler. I like software
+                Im Sean, currently a highschooler. I like software
                 engineering, computer science, and formal mathematics. I also enjoy
                 music, chess, and 3d art.
             </p>
