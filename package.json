@@ -14,6 +14,7 @@
         "new:article": "node scripts/create-article.mjs"
     },
     "dependencies": {
+        "pnpm": "^10.28.2",
         "@nuxt/content": "^3.11.0",
         "@nuxt/icon": "^2.2.1",
         "@nuxt/image": "2.0.0",
