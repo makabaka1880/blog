@@ -14,16 +14,31 @@ export const buildCoordsToACN = (gridSize: number = GRID_SIZE) =>
     );
 
 export type Grid = `${'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h'}${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8}`;
+export type Piece = "r" | "n" | "b" | "k" | "q" | "p" | "R" | "N" | "B" | "K" | "Q" | "P";
 
 export type Annotation =
     | { kind: "mark"; at: Grid }
     | { kind: "feedback"; at: Grid; value: string }
+    | { kind: "wasfigure"; at: Grid; piece: Piece }
     | { kind: "arrow"; from: Grid; to: Grid };
 
-const feedbackSymbols = ["!!", "?!", "!?", "??", "!", "?"];
+const feedbackSymbols = [...glyphToSvgMap.keys()]
+    .sort((a, b) => b.length - a.length);
+
+console.log(feedbackSymbols)
 
 export function parseAnnotationLine(line: string): Annotation {
     const trimmed = line.trim();
+
+    const wasFigureMatch = trimmed.match(/^\(([rnbkqpRNBKQP])([a-h][1-8])\)$/);
+    console.log(wasFigureMatch)
+    if (wasFigureMatch) {
+        return {
+            kind: "wasfigure",
+            piece: wasFigureMatch[1] as Piece,
+            at: wasFigureMatch[2] as Grid,
+        };
+    }
 
     if (trimmed.includes("->")) {
         const [from, to] = trimmed.split("->").map((s) => s.trim()) as [Grid, Grid];
@@ -32,7 +47,7 @@ export function parseAnnotationLine(line: string): Annotation {
 
     const matched = feedbackSymbols.find((symbol) => trimmed.endsWith(symbol));
     if (matched) {
-        const coord = trimmed.slice(0, -matched.length) as Grid;
+        const coord = trimmed.slice(0, -matched.length - 1) as Grid;
         if (/^[a-h][1-8]$/.test(coord)) {
             return { kind: "feedback", at: coord, value: matched };
         }
@@ -85,7 +100,8 @@ export const drawFigure = async (
     rank: number,
     name: string,
     white: boolean,
-    cellSize: number
+    cellSize: number,
+    opacity: number = 1
 ) => {
     if (!(0 <= file && file <= 7 && 0 <= rank && rank <= 7)) return;
     const code = codePiece(name, white);
@@ -93,7 +109,23 @@ export const drawFigure = async (
 
     const x = (file + 0.5) * cellSize - cellSize / 2;
     const y = (rank + 0.5) * cellSize - cellSize / 2;
+    const temp = ctx.globalAlpha;
+    ctx.globalAlpha = opacity;
     ctx.drawImage(img, x, y, cellSize, cellSize);
+    ctx.globalAlpha = temp;
+};
+
+export const drawWasFigure = async (
+    ctx: CanvasRenderingContext2D,
+    cellSize: number,
+    acn: Grid,
+    piece: Piece
+) => {
+    const file = acn.charCodeAt(0) - "a".charCodeAt(0);
+    const rank = GRID_SIZE - parseInt(acn[1]!, 10);
+    const white = piece === piece.toUpperCase();
+    const name = piece.toLowerCase();
+    await drawFigure(ctx, file, rank, name, white, cellSize, 0.55);
 };
 
 export const drawBoard = (el: HTMLCanvasElement, gridSize: number = GRID_SIZE) => {

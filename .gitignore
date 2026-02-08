@@ -22,8 +22,11 @@ logs
 .env
 .env.*
 !.env.example
+.venv
+.venv/**
 
 pnpm-lock.yaml
 
 features.faiss
 features.meta.json
+__pycache__
