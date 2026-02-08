@@ -36,6 +36,7 @@ import {
     drawArrow,
     drawMark,
     drawGlyph,
+    drawWasFigure,
 } from "~/utils/chessboard";
 
 const canvas = ref<HTMLCanvasElement | null>(null);
@@ -93,6 +94,9 @@ onMounted(async () => {
                 break;
             case 'feedback':
                 await drawGlyph(ctx, cellSize, a.at, a.value);
+                break;
+            case 'wasfigure':
+                await drawWasFigure(ctx, cellSize, a.at, a.piece);
                 break;
             case 'mark':
                 drawMark(ctx, cellSize, a.at);
