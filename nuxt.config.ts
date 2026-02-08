@@ -35,7 +35,7 @@ export default defineNuxtConfig({
             }
         }
     },
-    modules: ['@nuxt/content', "@nuxtjs/mdc", '@nuxt/image'],
+    modules: ['@nuxt/content', "@nuxtjs/mdc", '@nuxt/image', '@nuxt/icon'],
     plugins: [
         '~/plugins/configVueLibs',
     ],
@@ -61,6 +61,15 @@ export default defineNuxtConfig({
                 }
             ],
         },
+    },
+    icon: {
+        customCollections: [
+            {
+                prefix: "icons-chess",
+                dir: "./app/assets/icons/chess",
+                normalizeIconName: false
+            }
+        ]
     },
     hooks: {
         'build:before': () => {
