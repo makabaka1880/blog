@@ -1,8 +1,5 @@
 import blogConfig from "./blog.config";
 import type { LanguageRegistration } from '@shikijs/core'
-import { execFile } from 'node:child_process'
-import { existsSync } from 'node:fs'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: '1999-01-01',
@@ -62,31 +59,4 @@ export default defineNuxtConfig({
             ],
         },
     },
-    hooks: {
-        'build:before': () => {
-            console.log('🔧 Running Python prebuild in .venv…')
-
-            const pythonPath = '.venv/bin/python'  // standard venv on macOS
-            if (!existsSync(pythonPath)) {
-                console.log('⚠️ Skipping Python prebuild (missing .venv/bin/python).')
-                return
-            }
-
-            try {
-                const { stdout, stderr } = execFile(
-                    pythonPath,
-                    ['buildgraph.py'], // your script
-                    {
-                        env: { ...process.env } // inherit environment
-                    }
-                )
-
-                if (stdout) console.log(stdout)
-                if (stderr) console.error(stderr)
-            } catch (err) {
-                console.error('Python prebuild failed', err)
-                process.exit(1) // fail the build
-            }
-        }
-    }
 })

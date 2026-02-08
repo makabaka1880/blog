@@ -48,8 +48,6 @@ async function fetchArticles() {
                 .skip((props.page - 1) * (props.perPage || 10))
                 .limit(props.perPage || 10)
                 .all()
-
-            console.log(articles)
         }
     } catch (err) {
         console.error('Failed to fetch articles:', err)
