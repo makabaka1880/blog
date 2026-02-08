@@ -23,7 +23,6 @@ logs
 .env.*
 !.env.example
 .venv
-.venv/**
 
 pnpm-lock.yaml
 
