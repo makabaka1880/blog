@@ -7,5 +7,11 @@ updateTime: 2026-02-07
 
 Testing Testin
 
-::Chessboard{fen="r1bq1rk1/1p3ppp/2nbpn2/p1pp4/3P4/2PBPNB1/PP1NQPPP/R3K2R b KQ - 1 9"}
+::Chessboard{fen="r1bq1rk1/1p3ppp/2nbpn2/p1pp4/3P4/2PBPNB1/PP1NQPPP/R3K2R b KQ - 1 9" coords="true"}
+d6->g3
+h2->g3
+g3
+
+d6?
+g3-correct
 ::

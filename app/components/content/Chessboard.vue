@@ -24,102 +24,80 @@
 </style>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import Fen, { BOARD_CONTENT, EMPTY_SQUARE } from "chess-fen";
-import { GRID_SIZE, buildCoordsToACN } from "~/utils/chess";
+import { ref, onMounted, useSlots } from "vue";
+import Fen, { EMPTY_SQUARE } from "chess-fen";
+import {
+    GRID_SIZE,
+    buildCoordsToACN,
+    parseAnnotationLine,
+    drawBoard,
+    drawCoordinates,
+    drawFigure,
+    drawArrow,
+    drawMark,
+    drawGlyph,
+} from "~/utils/chessboard";
 
 const canvas = ref<HTMLCanvasElement | null>(null);
 const GRID = GRID_SIZE;
-
-const getCanvasColors = (el: HTMLCanvasElement) => {
-    const styles = getComputedStyle(el);
-    return {
-        light: styles.getPropertyValue("--light-square").trim() || "#eee",
-        dark: styles.getPropertyValue("--dark-square").trim() || "#333",
-    };
-};
-
-const figureImages = new Map<string, HTMLImageElement>();
-
-const codePiece = (name: string, white: boolean) => {
-    return (white ? "w" : "b") + name.toUpperCase();
-}
-
-const loadFigureImage = async (code: string) => {
-    if (figureImages.has(code)) return figureImages.get(code)!;
-    const url = new URL(`/static/chessboard/${code}.svg`, import.meta.url).toString();
-    console.log("url", url)
-    const img = new Image();
-    img.src = url;
-    await new Promise<void>((resolve, reject) => {
-        img.onload = () => resolve();
-        img.onerror = () => reject(new Error(`Failed to load ${code}`));
-    });
-    figureImages.set(code, img);
-    return img;
-};
-
-const drawFigure = async (
-    ctx: CanvasRenderingContext2D,
-    file: number,
-    rank: number,
-    name: string,
-    white: boolean,
-    cellsize: number
-) => {
-    console.log(file, rank)
-    if (!(0 <= file && file <= 7 && 0 <= rank && rank <= 7)) return;
-    const code = codePiece(name, white);
-    const img = await loadFigureImage(code);
-
-    const x = (file + 0.5) * cellsize - cellsize / 2;
-    const y = (rank + 0.5) * cellsize - cellsize / 2;
-    ctx.drawImage(img, x, y, cellsize, cellsize);
-};
-
-const drawBoard = async () => {
-    const el = canvas.value;
-    if (!el) return;
-
-    const dpr = window.devicePixelRatio || 1;
-    const rect = el.getBoundingClientRect();
-
-    // Set display size
-    el.width = rect.width * dpr;
-    el.height = rect.height * dpr;
-
-    const ctx = el.getContext("2d");
-    if (!ctx) return;
-
-    ctx.scale(dpr, dpr);
-
-    const { light, dark } = getCanvasColors(el);
-    const cellSize = rect.width / GRID;
-
-    // A functional approach to the grid
-    Array.from({ length: GRID }).forEach((_, y) => {
-        Array.from({ length: GRID }).forEach((_, x) => {
-            ctx.fillStyle = (x + y) % 2 === 0 ? light : dark;
-            ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-        });
-    });
-    return ctx;
-};
-
-// MARK: Entry
-const props = defineProps<{ fen: string }>()
 const coordsToACN = buildCoordsToACN(GRID);
+const slots = useSlots();
 
+
+// --------------------
+// Zhilu-style slot extraction (minimal, UB trick)
+// --------------------
+const getAnnotationLines = (): string[] => {
+    return (slots.default?.() ?? []).flatMap(node => {
+        const text = (node.children as any)?.default?.()[0].children as string;
+        return text ? text.split("\n").map((line) => line.trim()).filter(Boolean) : [];
+    });
+};
+
+// --------------------
+// Entry
+// --------------------
+const props = defineProps<{ fen: string, coords: boolean }>();
 
 onMounted(async () => {
-    const ctx = await drawBoard();
-    if (!ctx) return;
+    const el = canvas.value;
+    if (!el) return;
+    const board = drawBoard(el, GRID);
+    if (!board) return;
+
     const position = new Fen(props.fen);
+    const { ctx, cellSize, colors } = board;
+    if (props.coords) drawCoordinates(ctx, cellSize, GRID, colors);
+
+    // draw pieces
     for (const [acn, grid] of coordsToACN) {
         const fig = position.get(acn);
-        if (fig != EMPTY_SQUARE) {
-            await drawFigure(ctx, grid.file, grid.rank, fig, fig == fig.toUpperCase(), ctx.canvas.width / (window.devicePixelRatio || 1) / GRID);
+        if (fig != EMPTY_SQUARE && fig != null) {
+            await drawFigure(
+                ctx,
+                grid.file,
+                grid.rank,
+                fig,
+                fig === fig.toUpperCase(),
+                cellSize
+            );
         }
-    };
+    }
+
+    const annotationLines = getAnnotationLines();
+    const annotations = annotationLines.map(parseAnnotationLine);
+    for (const a of annotations) {
+        switch (a.kind) {
+            case 'arrow':
+                drawArrow(ctx, cellSize, a.from, a.to);
+                break;
+            case 'feedback':
+                await drawGlyph(ctx, cellSize, a.at, a.value);
+                break;
+            case 'mark':
+                drawMark(ctx, cellSize, a.at);
+                break;
+        }
+    }
 });
 </script>
