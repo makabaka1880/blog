@@ -204,6 +204,16 @@ const glyphToSvg = {
 };
 
 export const glyphToSvgMap = new Map<string, (stackedNumber: number) => string>([
+    // Symbol keys
+    ["??", glyphToSvg["??"]],
+    ["?", glyphToSvg["?"]],
+    ["?!", glyphToSvg["?!"]],
+    ["!?", glyphToSvg["!?"]],
+    ["!", glyphToSvg["!"]],
+    ["!!", glyphToSvg["!!"]],
+    ["✓", glyphToSvg["✓"]],
+    ["✗", glyphToSvg["✗"]],
+
     // Annotation / Evaluation
     ["inaccuracy", glyphToSvg["?!"]],
     ["mistake", glyphToSvg["?"]],

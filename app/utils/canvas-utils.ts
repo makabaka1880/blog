@@ -9,11 +9,14 @@ export const drawSvgOnCanvas = async (
     const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
 
-    const img = new Image();
-    console.log(img)
-    img.onload = () => {
-        ctx.drawImage(img, x, y, w, h);
-        URL.revokeObjectURL(url);
-    };
-    img.src = url;
+    await new Promise<void>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            ctx.drawImage(img, x, y, w, h);
+            URL.revokeObjectURL(url);
+            resolve();
+        };
+        img.onerror = () => reject(new Error('Failed to load SVG'));
+        img.src = url;
+    });
 };
