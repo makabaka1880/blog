@@ -2,9 +2,10 @@
     <section class="hero">
         <!-- ART LAYER -->
         <div class="art">
+            <link rel="preload" href="/static/drink-loop.gif" as="image">
             <video v-if="!videoEnded" ref="videoElement" src="/static/drink-1.mp4" autoplay muted playsinline
                 draggable="false" @ended="onVideoEnded" />
-            <NuxtImg v-else ref="videoElementLoop" format="gif" src="/assets/drink-loop.gif" draggable="false" preload />
+            <img v-else ref="videoElementLoop" src="/static/drink-loop.gif" draggable="false" />
         </div>
 
         <!-- CONTENT LAYER -->

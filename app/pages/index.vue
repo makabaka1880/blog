@@ -13,7 +13,7 @@
                 <UIKitArticleList :page="currentPage" :per-page="perPage" @update:total-count="onTotalCountChange" />
             </div>
             <div class="pagination-wrapper">
-                <UIKitPagination :current-page="currentPage" :total-pages="totalPages" @page-change="onPageChange" />
+                <UIKitPaginator :current-page="currentPage" :total-pages="totalPages" @page-change="onPageChange" />
             </div>
         </div>
     </div>

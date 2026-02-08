@@ -5,9 +5,7 @@ createTime: 2026-02-06
 updateTime: 2026-02-07
 ---
 
-<MusicPlayer mode="server" server="netease" :id="1913745954"> </MusicPlayer>
-
-
+<AudioPlayer title="Long Drives | BoyWithUke" src="/assets/music/long-drives.m4a"> </AudioPlayer>
 
 Welcome to this awesome new nuxt site! 
 
