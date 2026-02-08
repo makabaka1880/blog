@@ -25,13 +25,11 @@ export type Annotation =
 const feedbackSymbols = [...glyphToSvgMap.keys()]
     .sort((a, b) => b.length - a.length);
 
-console.log(feedbackSymbols)
 
 export function parseAnnotationLine(line: string): Annotation {
     const trimmed = line.trim();
 
     const wasFigureMatch = trimmed.match(/^\(([rnbkqpRNBKQP])([a-h][1-8])\)$/);
-    console.log(wasFigureMatch)
     if (wasFigureMatch) {
         return {
             kind: "wasfigure",

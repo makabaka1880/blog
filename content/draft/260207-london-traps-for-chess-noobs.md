@@ -5,13 +5,11 @@ createTime: 2026-02-07
 updateTime: 2026-02-07
 ---
 
-Testing Testin
-
-::Chessboard{fen="r1bq1rk1/1p3ppp/2nbpn2/p1pp4/3P4/2PBPNB1/PP1NQPPP/R3K2R b KQ - 1 9" coords="true"}
-d6->g3
-h2->g3
+::ChessboardLine{fen="rnbq1rk1/pp3ppp/3bpn2/2pp4/3P4/2P1PNB1/PP3PPP/RN1QKB1R w KQ - 4 7" line="1. d4 d5 2. Bf4 Nf6 3. e3 c5 4. c3 e6 5. Nf3 Bd6 6. Bg3 O-O" coords="true"}
 g3
-
-d6?
-g3-correct
 ::
+
+::Chessboard{fen="rnbq1rk1/pp3ppp/3bpn2/2pp4/3P4/2P1PNB1/PP3PPP/RN1QKB1R w KQ - 4 7"}
+g3
+::
+<Icon name="icons-chess:wN" />

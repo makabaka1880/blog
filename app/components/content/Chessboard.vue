@@ -45,14 +45,25 @@ const coordsToACN = buildCoordsToACN(GRID);
 const slots = useSlots();
 
 
-// --------------------
-// Zhilu-style slot extraction (minimal, UB trick)
-// --------------------
+const extractText = (node: any): string[] => {
+    if (!node) return [];
+    if (typeof node === 'string') return [node];
+    if (typeof node.children === 'string') return [node.children];
+    if (Array.isArray(node.children)) {
+        return node.children.flatMap(extractText);
+    }
+    if (node.children && typeof node.children.default === 'function') {
+        return node.children.default().flatMap(extractText);
+    }
+    return [];
+};
+
 const getAnnotationLines = (): string[] => {
-    return (slots.default?.() ?? []).flatMap(node => {
-        const text = (node.children as any)?.default?.()[0].children as string;
-        return text ? text.split("\n").map((line) => line.trim()).filter(Boolean) : [];
-    });
+    const raw = (slots.default?.() ?? []).flatMap(extractText).join("\n");
+    return raw
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
 };
 
 // --------------------
@@ -86,6 +97,7 @@ onMounted(async () => {
     }
 
     const annotationLines = getAnnotationLines();
+    console.log(annotationLines)
     const annotations = annotationLines.map(parseAnnotationLine);
     for (const a of annotations) {
         switch (a.kind) {

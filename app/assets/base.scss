@@ -109,6 +109,12 @@ div.footer {
     background-color: var(--color-footer-bg);
 }
 
+:where(.iconify) {
+    display: inline-block;
+    flex-shrink: 0;
+    font-size: 1.2em;
+    vertical-align: sub;
+}
 
 /* 自定义滚动条 */
 ::-webkit-scrollbar {

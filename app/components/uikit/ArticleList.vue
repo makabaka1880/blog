@@ -49,7 +49,6 @@ async function fetchArticles() {
                 .limit(props.perPage || 10)
                 .all()
 
-            console.log(articles)
         }
     } catch (err) {
         console.error('Failed to fetch articles:', err)
