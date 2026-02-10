@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import blogConfig from '@@/blog.config'
+import DrinkAnimation from '~/components/uikit/DrinkAnimation.vue';
 const links = blogConfig.links
 </script>
 

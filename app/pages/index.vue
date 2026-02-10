@@ -1,87 +1,178 @@
 <template>
-    <div class="container">
-        <div class="hero">
-            <h1>{{ config.title }}</h1>
-            <p>{{ config.description }}</p>
+    <section class="hero">
+        <!-- ART LAYER -->
+        <div class="art">
+            <DrinkAnimation />
         </div>
-        <div class="search-field-container">
-            <UIKitSearchField v-model="searchValue" @search="onSearch" />
-        </div>
-        <h2>Articles</h2>
-        <div class="article-list-wrapper">
-            <div class="article-list">
-                <UIKitArticleList :page="currentPage" :per-page="perPage" @update:total-count="onTotalCountChange" />
+
+        <!-- CONTENT LAYER -->
+        <div class="content">
+            <GlitchedElement ref="glitched">
+                <h1>Hi There 👋</h1>
+            </GlitchedElement>
+
+            <p>Welcome To the Teal Blog.</p>
+
+            <h2>The Author</h2>
+            <p>
+                Im Sean, currently a highschooler. I like software
+                engineering, computer science, and formal mathematics. I also enjoy
+                music, chess, and 3d art.
+            </p>
+
+            <br/>
+            <h2>Tech Stack</h2>
+            <div class="two-cols">
+                <div class="two-rows">
+                    <div class="grid">
+                        <h3>Frontend</h3>
+                        <p>SwiftUI / UIKit / Vue / Nuxt</p>
+                    </div>
+                    <div class="grid">
+                        <h3>Backend</h3>
+                        <p>Vapor / Express / PostgreSQL</p>
+                    </div>
+                </div>
+
+                <div class="two-rows">
+                    <div class="grid">
+                        <h3>Research</h3>
+                        <p>Haskell / Lean / Python / R</p>
+                    </div>
+                    <div class="grid">
+                        <h3>Miscellaneous</h3>
+                        <p>Rust / C++ / Elixir</p>
+                    </div>
+                </div>
             </div>
-            <div class="pagination-wrapper">
-                <UIKitPaginator :current-page="currentPage" :total-pages="totalPages" @page-change="onPageChange" />
-            </div>
+            
+            <br/>
+            <h2>Content</h2>
+            Go look at <a href="/posts">posts -></a>
         </div>
-    </div>
+    </section>
 </template>
 
-<script setup lang="ts">
-import config from '@@/blog.config';
-import { ref } from 'vue';
 
-const currentPage = ref(1);
-const perPage = 2;
-const searchValue = ref('');
-const searchResult = ref('');
-const totalPages = ref(1);
+<script lang="ts" setup>
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import DrinkAnimation from '~/components/uikit/DrinkAnimation.vue';
 
-function onPageChange(page: number) {
-    currentPage.value = page;
-}
+const videoEnded = ref(false);  // Track whether the first video has ended
+const glitched = ref<{ startGlitch: () => void; stopGlitch: () => void } | null>(null);
 
-function onTotalCountChange(count: number) {
-    totalPages.value = Math.ceil(count / perPage);
-}
+let glitchTimer: number | undefined;
+let glitchOn = false;
 
-function onSearch() {
-    currentPage.value = 1;
-    searchResult.value = searchValue.value;
-}
+const stopGlitching = () => {
+    if (glitchTimer) {
+        clearTimeout(glitchTimer);
+        glitchTimer = undefined;
+    }
+    if (glitchOn) {
+        glitched.value?.stopGlitch();
+        glitchOn = false;
+    }
+};
+
+const scheduleGlitch = () => {
+    if (videoEnded.value) return;
+
+    const idleMs = 250 + Math.random() * 700;
+    glitchTimer = window.setTimeout(() => {
+        if (videoEnded.value) return;
+        glitchOn = true;
+        glitched.value?.startGlitch();
+
+        const glitchMs = 450 + Math.random() * 900;
+        glitchTimer = window.setTimeout(() => {
+            if (videoEnded.value) return;
+            glitched.value?.stopGlitch();
+            glitchOn = false;
+            scheduleGlitch();
+        }, glitchMs);
+    }, idleMs);
+};
+
+// Function to handle video ending and switch to the next video
+const onVideoEnded = () => {
+    videoEnded.value = true;  // Mark the video as ended, so the second video will render
+    stopGlitching();
+};
+
+onMounted(() => {
+    scheduleGlitch();
+});
+
+onBeforeUnmount(() => {
+    stopGlitching();
+});
+
+watch(videoEnded, (ended) => {
+    if (ended) {
+        stopGlitching();
+    }
+});
 </script>
 
 <style lang="scss" scoped>
-.container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
+@use '~/assets/theme' as *;
 
+/* ROOT */
 .hero {
-    margin: var(--section-margin);
+    position: relative;
+    min-height: 100vh;
 }
 
-.search-field-container {
-    width: 20vw;
-    min-width: 20rem;
-    max-width: 60rem;
-    height: fit-content;
-    margin-bottom: 5vh;
-}
+/* ---------------- ART ---------------- */
+/* 🚫 NOT in layout, 🚫 NOT flex child */
+.art {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    width: 45vw;
 
-.article-list-wrapper {
-    flex: 1;
+    transform: translateY(-50%);
+    z-index: 0;
+
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    mix-blend-mode: darken;
 
 }
 
-.article-list {
-    flex: 1;
-    overflow-y: auto;
+/* ---------------- CONTENT ---------------- */
+.content {
+    position: relative;
+    z-index: 1;
+
+    max-width: 65ch;
+    min-width: 55ch;
+    margin-left: calc(75vw - 40em);
+    padding: 4rem 4rem 8rem;
 }
 
-.pagination-wrapper {
-    flex-shrink: 0;
-    padding-top: 1rem;
+/* ---------------- GRID ---------------- */
+.two-cols {
+    display: flex;
+    gap: 5rem;
 }
 
-hr {
-    width: 50%;
-    opacity: 0.2;
+/* ---------------- MOBILE ---------------- */
+@media (max-width: $critical-width) {
+    .art {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        transform: translateY(10vh) scale(1.4);
+        opacity: 0.6;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 2rem;
+    }
 }
 </style>

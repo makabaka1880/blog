@@ -14,6 +14,7 @@
         "new:article": "node scripts/create-article.mjs"
     },
     "dependencies": {
+        "@babylonjs/core": "^8.50.2",
         "@mliebelt/pgn-parser": "^1.4.19",
         "@nuxt/content": "^3.11.0",
         "@nuxt/icon": "^2.2.1",
@@ -32,6 +33,7 @@
         "nuxt-icon": "1.0.0-beta.7",
         "nuxt-icons": "4.0.0",
         "pnpm": "^10.28.2",
+        "three": "^0.182.0",
         "vue-freeze-gif": "^0.1.7",
         "vue-powerglitch": "^1.1.0",
         "vue-rough-notation": "^1.0.4",
