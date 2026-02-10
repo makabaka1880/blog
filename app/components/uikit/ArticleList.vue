@@ -1,6 +1,6 @@
 <template>
     <div class="thumbnail-card" v-for="(article, i) in articles" :key="article.path">
-        <UIKitThumbnailCard :title="article.title" :subtitle="`Updated: ${article.updateTime}`"
+        <UIKitThumbnailCard :title="article.title" :updateddate="formatDate(article.updateTime)"
             :desc="article.description" :to="article.path" />
     </div>
 </template>
@@ -8,6 +8,16 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+
+const formatDate = (dateString: string) => {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    if (isNaN(date.getTime())) return dateString
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        day: 'numeric'
+    }).format(date)
+}
 
 const props = defineProps<{
     page: number

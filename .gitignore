@@ -17,6 +17,8 @@ logs
 .DS_Store
 .fleet
 .idea
+.trae
+.history
 
 # Local env files
 .env

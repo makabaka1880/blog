@@ -23,6 +23,7 @@
         "@vesp/nuxt-fontawesome": "2.0.0",
         "@vueuse/core": "^14.2.0",
         "@vueuse/nuxt": "^14.2.0",
+        "better-sqlite3": "^12.6.2",
         "chess-fen": "^1.0.2",
         "chess.js": "^1.4.0",
         "katex": "^0.16.28",
