@@ -17,6 +17,14 @@ const FRAME_COUNT_LOOP = 40;
 const FRAME_PATH_MAIN = '/assets/drink-baked/blog';
 const FRAME_PATH_LOOP = '/assets/drink-baked/blog';
 
+let lastShownFrame = -1;
+let playbackStarted = false;
+let loadStartTime = performance.now();
+
+const MIN_READY_FRAMES = 4;
+const FORCE_START_MS = 1200;
+
+
 // Separate OBJs for stationary objects
 const CUP_OBJ = '/assets/cup.obj';
 const LEMON_OBJ = '/assets/lemon.obj';
@@ -28,6 +36,8 @@ let mainFrames: THREE.Group[] = [];
 let loopFrames: THREE.Group[] = [];
 let cupMesh: THREE.Group | null = null;
 let lemonMesh: THREE.Group | null = null;
+let animationStartTime: number = 0;
+let isAnimationRunning = false;
 
 const loader = new OBJLoader();
 // Load a single OBJ
@@ -35,6 +45,10 @@ function loadOBJ(url: string): Promise<THREE.Group> {
     return new Promise((resolve, reject) => {
         loader.load(url, resolve, undefined, reject);
     });
+}
+
+function loadedCount(): number {
+    return [...mainFrames, ...loopFrames].filter(f => f).length;
 }
 
 // Apply material recursively to all meshes in a group
@@ -46,35 +60,75 @@ function applyMaterialToGroup(group: THREE.Group, material: THREE.Material) {
     });
 }
 
-// Preload animated frames with a given material
-async function preloadFrames(
+// Progressive frame loading - loads frames in parallel but notifies as each completes
+async function preloadFramesProgressive(
     start: number,
     count: number,
     pathPrefix: string,
-    material: THREE.Material
-): Promise<THREE.Group[]> {
-    const frames: THREE.Group[] = [];
+    material: THREE.Material,
+    onFrameLoaded: (index: number, frame: THREE.Group) => void
+): Promise<void> {
+    const loadPromises: Promise<void>[] = [];
+
     for (let i = 0; i < count; i++) {
         const index = (start + i).toString().padStart(4, '0');
-        const obj = await loadOBJ(`${pathPrefix}${index}.obj`);
-        applyMaterialToGroup(obj, material);
-        obj.visible = false;
-        frames.push(obj);
-        scene.add(obj);
+        const absoluteIndex = start + i;
+
+        const loadPromise = loadOBJ(`${pathPrefix}${index}.obj`).then(obj => {
+            applyMaterialToGroup(obj, material);
+            obj.visible = false;
+            scene.add(obj);
+            onFrameLoaded(absoluteIndex, obj);
+        });
+
+        loadPromises.push(loadPromise);
     }
-    return frames;
+
+    await Promise.all(loadPromises);
 }
 
-// Frame update
+// Frame update based on elapsed time
 function updateFrame() {
     const allFrames = [...mainFrames, ...loopFrames];
-    allFrames.forEach((f, idx) => (f.visible = idx === currentFrame));
+    const totalFrames = allFrames.length;
 
-    currentFrame++;
-    if (currentFrame >= mainFrames.length + loopFrames.length) {
-        currentFrame = mainFrames.length; // loop
+    const elapsed = performance.now() - loadStartTime;
+
+    // Start playback early if possible
+    if (!playbackStarted) {
+        if (loadedCount() >= MIN_READY_FRAMES || elapsed > FORCE_START_MS) {
+            playbackStarted = true;
+            lastShownFrame = allFrames.findIndex(f => f);
+            if (lastShownFrame < 0) return;
+        } else {
+            return;
+        }
     }
+
+    // Hide everything
+    allFrames.forEach(f => {
+        if (f) f.visible = false;
+    });
+
+    // Try to advance to next available frame
+    let next = lastShownFrame + 1;
+
+    // Loop logic
+    if (next >= FRAME_COUNT_MAIN + FRAME_COUNT_LOOP) {
+        next = FRAME_COUNT_MAIN;
+    }
+
+    // If next frame isn't loaded yet → HOLD
+    if (!allFrames[next]) {
+        allFrames[lastShownFrame]!.visible = true;
+        return;
+    }
+
+    // Advance
+    allFrames[next]!.visible = true;
+    lastShownFrame = next;
 }
+
 
 // Animation loop
 
@@ -151,7 +205,7 @@ onMounted(async () => {
     scene.add(light);
 
 
-    // Preload animation frames (optional, using glassMaterial for now)
+    // Preload animation frames progressively
     const frameMaterial = new THREE.MeshPhysicalMaterial({
         color: 0xffffff,
         metalness: 0,
@@ -164,8 +218,24 @@ onMounted(async () => {
         clearcoat: 1.0,
         clearcoatRoughness: 0.1
     });
-    mainFrames = await preloadFrames(1, FRAME_COUNT_MAIN, FRAME_PATH_MAIN, frameMaterial);
-    loopFrames = await preloadFrames(101, FRAME_COUNT_LOOP, FRAME_PATH_LOOP, frameMaterial);
+
+    // Initialize arrays with placeholders
+    mainFrames = new Array(FRAME_COUNT_MAIN);
+    loopFrames = new Array(FRAME_COUNT_LOOP);
+
+    // Start progressive loading - don't await, let it load in background
+    animationStartTime = performance.now();
+    isAnimationRunning = true;
+
+    // Load main frames progressively
+    preloadFramesProgressive(1, FRAME_COUNT_MAIN, FRAME_PATH_MAIN, frameMaterial, (index, frame) => {
+        mainFrames[index - 1] = frame;
+    });
+
+    // Load loop frames progressively
+    preloadFramesProgressive(101, FRAME_COUNT_LOOP, FRAME_PATH_LOOP, frameMaterial, (index, frame) => {
+        loopFrames[index - 101] = frame;
+    });
 
     const colorRampFrag = await (await fetch('/assets/shaders/color-ramp.glsl')).text();
     const rampTexture = new TextureLoader().load('/assets/ramp.png');
@@ -196,26 +266,25 @@ onMounted(async () => {
     composer.addPass(colorRampPass);
 
     // Start animation
-    let lastFrameTime = 0;
-    const targetFPS = 24; // your fixed framerate
-    const frameInterval = 1000 / targetFPS; // milliseconds per frame
+    const targetFPS = 24;
+    const frameInterval = 1000 / targetFPS;
+    let lastRenderTime = 0;
 
     function animate(time: number) {
         requestAnimationFrame(animate);
 
-        // time is passed by requestAnimationFrame in ms
-        if (time - lastFrameTime >= frameInterval) {
-            lastFrameTime = time;
+        if (!isAnimationRunning) return;
+
+        const elapsedTime = time - animationStartTime;
+
+        // Render at target FPS
+        if (time - lastRenderTime >= frameInterval) {
+            lastRenderTime = time;
 
             updateFrame();
 
             controls.update();
-
-            // Use composer if you have post-processing
             composer.render();
-
-            // Or plain renderer if not
-            // renderer.render(scene, camera);
         }
     }
 
