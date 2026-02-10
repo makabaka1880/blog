@@ -31,7 +31,7 @@ details {
             color: currentcolor;
 
             &::before {
-                content: "收起";
+                content: "Fold";
             }
         }
     }
@@ -48,7 +48,7 @@ details {
         }
 
         &::before {
-            content: "展开";
+            content: "Expand";
             float: right;
             float: inline-end;
             opacity: 0.5;
