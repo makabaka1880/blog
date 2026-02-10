@@ -5,7 +5,7 @@ import ayuTheme from './configs/theme-light.json'
 //? Blog configuration
 const blogConfig = {
     title: 'Teal Blog',
-    subtitle:'',
+    subtitle: '',
     description: 'Makabaka1880\'s Personal Blog',
     author: {
         name: 'Makabaka1880',
@@ -31,10 +31,13 @@ const blogConfig = {
             // dark: 'ayu-dark',
             // Theme used if `html.sepia`
             // sepia: 'monokai'
-          },
+        },
     },
     // collections: blogCollections, //! Do not modify
     links: blogLinks, //! Do not modify
+    twikooConfig: {
+        envID: "https://blog-twikoo-one-dun.vercel.app/"
+    }
 }
 
 export default blogConfig

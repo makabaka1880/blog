@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         { path: "~/components/uikit", prefix: "UIKit" },
         "~/components",
     ],
-    css: ["~/assets/main.scss", "katex/dist/katex.min.css"],
+    css: ["~/assets/main.scss", "katex/dist/katex.min.css", "~/assets/twikoo.scss"],
     content: {
         build: {
             markdown: {
@@ -60,6 +60,9 @@ export default defineNuxtConfig({
                     href: 'https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css'
                 }
             ],
+            script: [
+                { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" }
+            ]
         },
     },
     icon: {

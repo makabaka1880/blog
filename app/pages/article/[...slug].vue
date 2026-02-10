@@ -12,6 +12,8 @@
         <div class="article-container">
             <ContentRenderer v-if="page" :value="page" />
         </div>
+        <hr class="sep" />
+        <Comment />
     </div>
 </template>
 
@@ -21,6 +23,7 @@ definePageMeta({
 })
 
 import { useHead, inject, computed } from '#imports'
+import Comment from '~/components/uikit/Comment.vue'
 
 const route = useRoute()
 
