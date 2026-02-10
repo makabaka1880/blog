@@ -227,10 +227,10 @@ onMounted(async () => {
         roughness: 0,
         transmission: 1.0,
         transparent: true,
-        opacity: 0.6, // more transparent cup
+        opacity: 0.9, // more transparent cup
         side: THREE.DoubleSide,
         reflectivity: 0.5,
-        clearcoat: .9,
+        clearcoat: .2,
         clearcoatRoughness: 0.1,
         depthWrite: false
     });
