@@ -1,19 +1,17 @@
 <template>
-    <component :is="linkComponent" v-bind="linkProps" class="card-wrapper">
+    <NuxtLink v-if="to" :to="to"
+        :rel="isExternal ? 'noopener noreferrer' : undefined" :prefetch="prefetch"
+        class="card-wrapper">
         <div class="thumbnail-card">
-            <div>
-                <h3 class="card-title">{{ title }}</h3>
-                <p v-if="subtitle" class="card-subtitle">{{ subtitle }}</p>
-            </div>
+            <h3 class="card-title">{{ title }}</h3>
             <p v-if="desc" class="card-desc">{{ desc }}</p>
-            <div class="card-content">
-                <slot />
-            </div>
-            <div v-if="$slots.footer" class="card-footer">
+            <div v-if="subtitle || updateddate || $slots.footer" class="card-footer">
+                <span v-if="subtitle" class="card-subtitle">{{ subtitle }}</span>
+                <span v-if="updateddate" class="card-subtitle"><strong>Updated</strong> {{ updateddate }}</span>
                 <slot name="footer" />
             </div>
         </div>
-    </component>
+    </NuxtLink>
 </template>
 
 <script setup lang="ts">
@@ -22,76 +20,26 @@ import { computed } from 'vue'
 const props = defineProps<{
     title: string,
     subtitle?: string,
+    updateddate?: string,
     desc?: string,
     to?: string,
     type?: string,
     // 新增：允许控制预加载行为
     prefetch?: boolean,
-    noPrefetch?: boolean,
 }>()
-
-// 改进的 Nuxt 检测
-const isNuxt = computed(() => {
-    // 服务端渲染时的检测
-    if (process.env.NODE_ENV === 'server') {
-        return true
-    }
-    // 客户端检测 - 更可靠的方法
-    return typeof window !== 'undefined' && (
-        '__NUXT__' in window ||
-        document.querySelector('#__nuxt') !== null
-    )
-})
-
-const isExternalLink = computed(() =>
-    !!props.to && /^(https?:)?\/\//.test(props.to)
-)
-
-// 动态组件选择
-const linkComponent = computed(() => {
-    if (!props.to) return 'div'
-    if (isExternalLink.value) return 'a'
-    return isNuxt.value ? resolveComponent('NuxtLink') : resolveComponent('RouterLink')
-})
-
-// 动态属性绑定
-const linkProps = computed(() => {
-    if (!props.to) return {}
-
-    const baseProps: Record<string, any> = {}
-
-    if (isExternalLink.value) {
-        // 外部链接属性
-        baseProps.href = props.to
-        baseProps.target = '_blank'
-        baseProps.rel = 'noopener noreferrer'
-    } else {
-        // 内部链接属性
-        baseProps.to = props.to
-
-        // 预加载控制 - 显式传递给 NuxtLink
-        if (props.noPrefetch) {
-            baseProps.noPrefetch = true
-        } else if (props.prefetch !== undefined) {
-            baseProps.prefetch = props.prefetch
-        }
-        // 如果没有指定，让 NuxtLink 使用默认行为
-    }
-
-    return baseProps
-})
 </script>
 
 <style lang="scss" scoped>
 .thumbnail-card {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    border-radius: 4px;
+    gap: .75rem;
+    border-radius: 1rem;
     padding: 1.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
     user-select: none;
+    border: .25px solid var(--color-card-border);
 
     &:hover {
         background-color: var(--color-card-hover-bg);
@@ -142,9 +90,8 @@ div.card-wrapper {
 }
 
 .card-footer {
-    margin-top: 1rem;
     padding-top: 0.75rem;
-    border-top: 1px solid var(--color-border);
+    // border-top: 1px solid var(--color-border);
     font-size: 0.75rem;
     color: var(--color-text-muted);
     display: flex;

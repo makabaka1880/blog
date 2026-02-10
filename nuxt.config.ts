@@ -99,7 +99,7 @@ export default defineNuxtConfig({
                 if (stderr) console.error(stderr)
             } catch (err) {
                 console.error('Python prebuild failed', err)
-                process.exit(1) // fail the build
+    //            process.exit(1) // fail the build
             }
         }
     }

@@ -49,39 +49,42 @@ function onSearch() {
     height: 100%;
     display: flex;
     flex-direction: column;
-}
 
-.hero {
-    margin: var(--section-margin);
-}
+    .hero {
+        margin: var(--section-margin);
+    }
 
-.search-field-container {
-    width: 20vw;
-    min-width: 20rem;
-    max-width: 60rem;
-    height: fit-content;
-    margin-bottom: 5vh;
-}
+    .search-field-container {
+        width: 20vw;
+        min-width: 20rem;
+        max-width: 60rem;
+        height: fit-content;
+        margin-bottom: 5vh;
+    }
 
-.article-list-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    .article-list-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
 
-}
+        .article-list {
+            flex: 1;
+            overflow-y: auto;
+        }
 
-.article-list {
-    flex: 1;
-    overflow-y: auto;
-}
+        .pagination-wrapper {
+            flex-shrink: 0;
+            padding-top: 1rem;
+        }
+    }
 
-.pagination-wrapper {
-    flex-shrink: 0;
-    padding-top: 1rem;
-}
+    hr {
+        width: 50%;
+        opacity: 0.2;
+    }
 
-hr {
-    width: 50%;
-    opacity: 0.2;
+    h2 {
+        margin-bottom: 1rem;
+    }
 }
 </style>
