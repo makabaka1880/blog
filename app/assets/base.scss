@@ -113,7 +113,9 @@ div.footer {
     display: inline-block;
     flex-shrink: 0;
     font-size: 1.2em;
-    vertical-align: sub;
+    line-height: 1.2;
+    overflow: visible;
+    vertical-align: -0.1em;
 }
 
 /* 自定义滚动条 */

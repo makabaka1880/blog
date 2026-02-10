@@ -67,7 +67,9 @@ export default defineNuxtConfig({
             {
                 prefix: "icons-chess",
                 dir: "./app/assets/icons/chess",
-                normalizeIconName: false
+                normalizeIconName: false,
+                width: 512,
+                height: 512,
             }
         ]
     },
