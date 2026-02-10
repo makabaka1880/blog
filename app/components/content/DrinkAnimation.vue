@@ -38,6 +38,8 @@ let cupMesh: THREE.Group | null = null;
 let lemonMesh: THREE.Group | null = null;
 let animationStartTime: number = 0;
 let isAnimationRunning = false;
+let inLoop = false;
+
 
 const loader = new OBJLoader();
 // Load a single OBJ
@@ -66,68 +68,82 @@ async function preloadFramesProgressive(
     count: number,
     pathPrefix: string,
     material: THREE.Material,
-    onFrameLoaded: (index: number, frame: THREE.Group) => void
-): Promise<void> {
-    const loadPromises: Promise<void>[] = [];
-
+    targetArray: THREE.Group[]
+) {
     for (let i = 0; i < count; i++) {
-        const index = (start + i).toString().padStart(4, '0');
-        const absoluteIndex = start + i;
+        const indexStr = (start + i).toString().padStart(4, '0');
 
-        const loadPromise = loadOBJ(`${pathPrefix}${index}.obj`).then(obj => {
+        try {
+            const obj = await loadOBJ(`${pathPrefix}${indexStr}.obj`);
             applyMaterialToGroup(obj, material);
             obj.visible = false;
             scene.add(obj);
-            onFrameLoaded(absoluteIndex, obj);
-        });
-
-        loadPromises.push(loadPromise);
+            targetArray[i] = obj;
+        } catch (e) {
+            console.warn(`Failed to load frame ${indexStr}`, e);
+        }
     }
-
-    await Promise.all(loadPromises);
 }
+
 
 // Frame update based on elapsed time
 function updateFrame() {
     const allFrames = [...mainFrames, ...loopFrames];
-    const totalFrames = allFrames.length;
+    const loopStart = FRAME_COUNT_MAIN;
+    const loopEnd = FRAME_COUNT_MAIN + FRAME_COUNT_LOOP - 1;
 
-    const elapsed = performance.now() - loadStartTime;
+    // find highest loaded index
+    let newestLoaded = -1;
+    for (let i = 0; i < allFrames.length; i++) {
+        if (allFrames[i]) newestLoaded = i;
+    }
+    if (newestLoaded < 0) return;
 
-    // Start playback early if possible
+    // start playback
     if (!playbackStarted) {
-        if (loadedCount() >= MIN_READY_FRAMES || elapsed > FORCE_START_MS) {
-            playbackStarted = true;
-            lastShownFrame = allFrames.findIndex(f => f);
-            if (lastShownFrame < 0) return;
+        playbackStarted = true;
+        lastShownFrame = Math.min(newestLoaded, 0);
+    }
+
+    // hide previous
+    if (lastShownFrame >= 0 && allFrames[lastShownFrame]) {
+        allFrames[lastShownFrame]!.visible = false;
+    }
+
+    let next = lastShownFrame + 1;
+
+    // ---- MAIN → LOOP TRANSITION ----
+    if (!inLoop) {
+        // still in main section
+        if (next <= newestLoaded && next < loopStart) {
+            allFrames[next]!.visible = true;
+            lastShownFrame = next;
+            return;
+        }
+
+        // enter loop
+        if (newestLoaded >= loopStart) {
+            inLoop = true;
+            next = loopStart;
         } else {
+            // main not fully loaded yet → hold
+            allFrames[lastShownFrame]!.visible = true;
             return;
         }
     }
 
-    // Hide everything
-    allFrames.forEach(f => {
-        if (f) f.visible = false;
-    });
+    // ---- LOOP PHASE ----
+    if (inLoop) {
+        if (next > loopEnd || !allFrames[next]) {
+            next = loopStart;
+        }
 
-    // Try to advance to next available frame
-    let next = lastShownFrame + 1;
-
-    // Loop logic
-    if (next >= FRAME_COUNT_MAIN + FRAME_COUNT_LOOP) {
-        next = FRAME_COUNT_MAIN;
+        allFrames[next]!.visible = true;
+        lastShownFrame = next;
     }
-
-    // If next frame isn't loaded yet → HOLD
-    if (!allFrames[next]) {
-        allFrames[lastShownFrame]!.visible = true;
-        return;
-    }
-
-    // Advance
-    allFrames[next]!.visible = true;
-    lastShownFrame = next;
 }
+
+
 
 
 // Animation loop
@@ -228,14 +244,10 @@ onMounted(async () => {
     isAnimationRunning = true;
 
     // Load main frames progressively
-    preloadFramesProgressive(1, FRAME_COUNT_MAIN, FRAME_PATH_MAIN, frameMaterial, (index, frame) => {
-        mainFrames[index - 1] = frame;
-    });
+    preloadFramesProgressive(1, FRAME_COUNT_MAIN, FRAME_PATH_MAIN, frameMaterial, mainFrames);
 
     // Load loop frames progressively
-    preloadFramesProgressive(101, FRAME_COUNT_LOOP, FRAME_PATH_LOOP, frameMaterial, (index, frame) => {
-        loopFrames[index - 101] = frame;
-    });
+    preloadFramesProgressive(101, FRAME_COUNT_LOOP, FRAME_PATH_LOOP, frameMaterial, loopFrames);
 
     const colorRampFrag = await (await fetch('/assets/shaders/color-ramp.glsl')).text();
     const rampTexture = new TextureLoader().load('/assets/ramp.png');
