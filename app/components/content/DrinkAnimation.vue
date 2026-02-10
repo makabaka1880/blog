@@ -62,8 +62,50 @@ function applyMaterialToGroup(group: THREE.Group, material: THREE.Material) {
     });
 }
 
-// Progressive frame loading - loads frames in parallel but notifies as each completes
-async function preloadFramesProgressive(
+// Queue-based frame loading with controlled concurrency
+interface LoadTask {
+    index: number;
+    url: string;
+    targetIndex: number;
+    targetArray: THREE.Group[];
+    material: THREE.Material;
+}
+
+let loadQueue: LoadTask[] = [];
+let activeLoads = 0;
+const MAX_CONCURRENT_LOADS = 4; // Control concurrent network requests
+
+function enqueueLoadTask(task: LoadTask) {
+    loadQueue.push(task);
+    processLoadQueue();
+}
+
+async function processLoadQueue() {
+    while (loadQueue.length > 0 && activeLoads < MAX_CONCURRENT_LOADS) {
+        const task = loadQueue.shift();
+        if (task) {
+            activeLoads++;
+            loadFrame(task, task.material).finally(() => {
+                activeLoads--;
+                processLoadQueue();
+            });
+        }
+    }
+}
+
+async function loadFrame(task: LoadTask, material: THREE.Material) {
+    try {
+        const obj = await loadOBJ(task.url);
+        applyMaterialToGroup(obj, material);
+        obj.visible = false;
+        scene.add(obj);
+        task.targetArray[task.targetIndex] = obj;
+    } catch (e) {
+        console.warn(`Failed to load frame ${task.index}`, e);
+    }
+}
+
+function preloadFramesProgressive(
     start: number,
     count: number,
     pathPrefix: string,
@@ -71,23 +113,21 @@ async function preloadFramesProgressive(
     targetArray: THREE.Group[]
 ) {
     for (let i = 0; i < count; i++) {
-        const indexStr = (start + i).toString().padStart(4, '0');
-
-        try {
-            const obj = await loadOBJ(`${pathPrefix}${indexStr}.obj`);
-            applyMaterialToGroup(obj, material);
-            obj.visible = false;
-            scene.add(obj);
-            targetArray[i] = obj;
-        } catch (e) {
-            console.warn(`Failed to load frame ${indexStr}`, e);
-        }
+        const index = start + i;
+        const indexStr = index.toString().padStart(4, '0');
+        enqueueLoadTask({
+            index,
+            url: `${pathPrefix}${indexStr}.obj`,
+            targetIndex: i,
+            targetArray,
+            material
+        });
     }
 }
 
 
 // Frame update based on elapsed time
-function updateFrame() {
+function updateFrame(elapsedTime: number) {
     const allFrames = [...mainFrames, ...loopFrames];
     const loopStart = FRAME_COUNT_MAIN;
     const loopEnd = FRAME_COUNT_MAIN + FRAME_COUNT_LOOP - 1;
@@ -99,47 +139,45 @@ function updateFrame() {
     }
     if (newestLoaded < 0) return;
 
-    // start playback
-    if (!playbackStarted) {
-        playbackStarted = true;
-        lastShownFrame = Math.min(newestLoaded, 0);
-    }
+    // Calculate current frame based on elapsed time (24 FPS)
+    const targetFPS = 24;
+    const targetFrame = Math.floor(elapsedTime / (1000 / targetFPS));
 
-    // hide previous
+    // Hide previous frame
     if (lastShownFrame >= 0 && allFrames[lastShownFrame]) {
         allFrames[lastShownFrame]!.visible = false;
     }
 
-    let next = lastShownFrame + 1;
+    // Determine which frame to show
+    let frameToShow: number;
 
-    // ---- MAIN → LOOP TRANSITION ----
     if (!inLoop) {
-        // still in main section
-        if (next <= newestLoaded && next < loopStart) {
-            allFrames[next]!.visible = true;
-            lastShownFrame = next;
-            return;
-        }
-
-        // enter loop
-        if (newestLoaded >= loopStart) {
+        // Main sequence
+        if (targetFrame < loopStart) {
+            frameToShow = Math.min(targetFrame, newestLoaded);
+        } else if (newestLoaded >= loopStart) {
+            // Enter loop
             inLoop = true;
-            next = loopStart;
+            frameToShow = loopStart;
         } else {
-            // main not fully loaded yet → hold
-            allFrames[lastShownFrame]!.visible = true;
-            return;
+            // Hold at last loaded frame
+            frameToShow = newestLoaded;
         }
+    } else {
+        // Loop sequence
+        const loopFrame = targetFrame - loopStart;
+        frameToShow = loopStart + (loopFrame % FRAME_COUNT_LOOP);
     }
 
-    // ---- LOOP PHASE ----
-    if (inLoop) {
-        if (next > loopEnd || !allFrames[next]) {
-            next = loopStart;
+    // Show the frame if it's loaded
+    if (allFrames[frameToShow]) {
+        allFrames[frameToShow]!.visible = true;
+        lastShownFrame = frameToShow;
+    } else {
+        // Show last available frame if target not loaded yet
+        if (lastShownFrame >= 0 && allFrames[lastShownFrame]) {
+            allFrames[lastShownFrame]!.visible = true;
         }
-
-        allFrames[next]!.visible = true;
-        lastShownFrame = next;
     }
 }
 
@@ -220,8 +258,7 @@ onMounted(async () => {
     light.position.set(-6, 5, -3);
     scene.add(light);
 
-
-    // Preload animation frames progressively
+    // Frame material for animation frames
     const frameMaterial = new THREE.MeshPhysicalMaterial({
         color: 0xffffff,
         metalness: 0,
@@ -239,14 +276,10 @@ onMounted(async () => {
     mainFrames = new Array(FRAME_COUNT_MAIN);
     loopFrames = new Array(FRAME_COUNT_LOOP);
 
-    // Start progressive loading - don't await, let it load in background
-    animationStartTime = performance.now();
-    isAnimationRunning = true;
-
-    // Load main frames progressively
+    // Load main frames progressively using queue
     preloadFramesProgressive(1, FRAME_COUNT_MAIN, FRAME_PATH_MAIN, frameMaterial, mainFrames);
 
-    // Load loop frames progressively
+    // Load loop frames progressively using queue
     preloadFramesProgressive(101, FRAME_COUNT_LOOP, FRAME_PATH_LOOP, frameMaterial, loopFrames);
 
     const colorRampFrag = await (await fetch('/assets/shaders/color-ramp.glsl')).text();
@@ -285,7 +318,12 @@ onMounted(async () => {
     function animate(time: number) {
         requestAnimationFrame(animate);
 
-        if (!isAnimationRunning) return;
+        // Initialize animation start time on first frame
+        if (!isAnimationRunning) {
+            isAnimationRunning = true;
+            animationStartTime = time;
+            return;
+        }
 
         const elapsedTime = time - animationStartTime;
 
@@ -293,7 +331,7 @@ onMounted(async () => {
         if (time - lastRenderTime >= frameInterval) {
             lastRenderTime = time;
 
-            updateFrame();
+            updateFrame(elapsedTime);
 
             controls.update();
             composer.render();
