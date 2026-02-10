@@ -32,6 +32,7 @@
         "nuxt-icon": "1.0.0-beta.7",
         "nuxt-icons": "4.0.0",
         "pnpm": "^10.28.2",
+        "three": "^0.182.0",
         "vue-freeze-gif": "^0.1.7",
         "vue-powerglitch": "^1.1.0",
         "vue-rough-notation": "^1.0.4",
