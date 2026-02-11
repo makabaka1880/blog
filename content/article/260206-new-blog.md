@@ -13,6 +13,8 @@ Welcome to this awesome new nuxt site!
 
 ## Q0. What Should I Check Out
 In case you havent noticed, the lemonade on the index page is draggable. Also We are working on extending basic components and adding comments. Later on I'll add support for pagerank / embedding cosine similarity based recommendation systems or vis. 
+### test
+shtrdjyfkuy
 
 ## Q1. Why English
 It's easier to embed thus easier to semantically search and compare. 

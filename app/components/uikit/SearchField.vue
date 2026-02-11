@@ -1,37 +1,39 @@
 <template>
-  <div>
-    <input
-      type="text"
-      class="foliage-search-field foliage-input"
-      placeholder="Search"
-      :value="modelValue"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-      @keydown.enter="$emit('search')"
-      />
-  </div>
+    <div>
+        <input type="text" class="search-field input" placeholder="Search" :value="modelValue"
+            @input="handleInput" />
+    </div>
 </template>
 
 <script setup lang="ts">
 defineProps(['modelValue'])
-defineEmits(['update:modelValue', 'search'])
+const emit = defineEmits(['update:modelValue', 'search'])
+
+function handleInput(event: Event) {
+    const value = (event.target as HTMLInputElement).value
+    emit('update:modelValue', value)
+    emit('search')
+}
+
+
 </script>
 
 <style scoped>
 /* Input field */
-.foliage-input {
-  border: none;
-  border-bottom: 1px solid var(--color-input-border);
-  background-color: transparent;
-  color: var(--color-input-text);
-  width: 100%;
+.input {
+    border: none;
+    border-bottom: 1px solid var(--color-input-border);
+    background-color: transparent;
+    color: var(--color-input-text);
+    width: 100%;
 }
 
-.foliage-input:focus{
-  outline: none;
-  border-color: var(--color-primary);
+.input:focus {
+    outline: none;
+    border-color: var(--color-primary);
 }
 
-.foliage-input::placeholder {
-  color: var(--color-text-muted);
+.input::placeholder {
+    color: var(--color-text-muted);
 }
 </style>
