@@ -12,7 +12,7 @@ updateTime: 2026-02-07
 Welcome to this awesome new nuxt site! 
 
 ## Q0. What Should I Check Out
-I made a cool [/about page](/about) page, and we are working on extending basic components and adding comments. Later on I'll add support for pagerank / embedding cosine similarity based recommendation systems or vis. 
+In case you havent noticed, the lemonade on the index page is draggable. Also We are working on extending basic components and adding comments. Later on I'll add support for pagerank / embedding cosine similarity based recommendation systems or vis. 
 
 ## Q1. Why English
 It's easier to embed thus easier to semantically search and compare. 
