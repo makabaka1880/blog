@@ -1,6 +1,6 @@
 <template>
-    <h4 :id="title">
-        <a :href="'#' + title.toLowerCase()" @click.prevent="scrollToAnchor">
+    <h4 :id="slug">
+        <a :href="'#' + slug" @click.prevent="scrollToAnchor">
             <slot />
         </a>
     </h4>
@@ -10,16 +10,19 @@
 import { ref, computed } from 'vue';
 
 const slots = useSlots();
+
+function convertToSlug(text: string) {
+    return text.toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^\w-]+/g, "");
+}
+
 const title = computed(() => {
     if (slots.default) {
-        // The default slot returns an array of VNodes
         const vnodes = slots.default();
-
-        // Concatenate the text content from all child nodes
         let text = "";
         vnodes.forEach(vnode => {
             if (vnode.children) {
-                // vnode.children often contains the raw text content
                 text += String(vnode.children);
             }
         });
@@ -28,10 +31,12 @@ const title = computed(() => {
     return "";
 });
 
+const slug = computed(() => convertToSlug(title.value));
+
 const scrollToAnchor = () => {
-    const element = document.getElementById(title.value.toLowerCase());
+    const element = document.getElementById(slug.value);
     if (element) {
-        const headerHeight = document.querySelector('header')?.clientHeight || 0; // Adjust based on your header's actual height
+        const headerHeight = document.querySelector('header')?.clientHeight || 0;
         window.scrollTo({
             top: element.offsetTop - headerHeight,
             behavior: 'smooth'
@@ -41,7 +46,7 @@ const scrollToAnchor = () => {
 </script>
 
 <style lang="scss" scoped>
-h2 {
+h4 {
     margin-top: 2rem;
 
     &.anchor {
