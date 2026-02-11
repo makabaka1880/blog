@@ -83,19 +83,18 @@ const age = ref(getAgeInDecimal(birth));
 const recentArticles = ref<any[]>([]);
 const showAuthorSection = ref(false);
 
-const scrollThreshold = 150; // Show author section when scrolled past 300px
 
 
 
 onMounted(async () => {
+    const scrollThreshold = window.innerHeight / 200; // Show author section when scrolled past 300px
     const result = await queryCollection('articles').select('title', 'description', 'createTime', 'path').order('createTime', 'DESC');
     const allArticles = await result.all();
     recentArticles.value = allArticles.slice(0, 3);
 
     window.addEventListener('scroll', () => {
         let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        console.log(currentScroll)
-        console.log(showAuthorSection.value)
+        console.log(currentScroll, scrollThreshold)
         showAuthorSection.value = currentScroll > scrollThreshold;
     })
 
@@ -118,8 +117,7 @@ function getAgeInDecimal(dateOfBirth: Date, currentDate: Date = new Date()): num
 
 /* ROOT */
 .hero {
-    position: relative;
-    min-height: 100vh;
+    // min-height: 100vh;
     display: flex;
     align-items: center;
 }
@@ -153,7 +151,6 @@ function getAgeInDecimal(dateOfBirth: Date, currentDate: Date = new Date()): num
     z-index: 1;
 
     max-width: 75ch;
-    min-width: 55ch;
     margin-left: calc(75vw - 40em);
     padding: 4rem 4rem 8rem;
 }
@@ -208,6 +205,10 @@ function getAgeInDecimal(dateOfBirth: Date, currentDate: Date = new Date()): num
     }
 }
 
+body {
+    overflow-x: hidden;
+}
+
 /* ---------------- ARTICLE LIST ---------------- */
 .article-list {
     text-align: left;
@@ -257,16 +258,27 @@ function getAgeInDecimal(dateOfBirth: Date, currentDate: Date = new Date()): num
         display: none;
     }
 
-    .art {
-        position: absolute;
-        inset: 0;
+    .hero {
+        min-height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 
-        transform: translateY(20vh) scale(1.4);
+    .art {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        transform: translateY(20vh) translateX(10vw) scale(1.4);
         opacity: 0.2;
+        z-index: -1;
     }
 
     .content {
+        width: 100%;
         padding: 2rem;
+        margin-left: 0;
+        box-sizing: border-box;
     }
 }
 </style>
