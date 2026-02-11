@@ -4,17 +4,12 @@
             <NuxtLink to="/">
                 <span class="nav-title" v-if="props.title">Home</span>
             </NuxtLink>
-            <NuxtLink to="/about">
-                <span class="nav-title">About</span>
+            <NuxtLink to="/posts">
+                <span class="nav-title">Posts</span>
             </NuxtLink>
             <NuxtLink to="https://github.com/makabaka1880/blog">
                 <span class="nav-title">GitHub</span>
             </NuxtLink>
-        </div>
-        <div class="nav-right">
-            <!-- <NuxtLink v-for="item in navItems" :key="item.route" :to="item.route" class="nav-item">
-                <span class="nav-name">{{ item.name }}</span>
-            </NuxtLink> -->
         </div>
     </nav>
 </template>
