@@ -8,7 +8,7 @@
             <UIKitSearchField v-model="searchValue" @search="onSearch" />
         </div>
         <div class="article-list-wrapper">
-            <div class="article-list">
+            <div v-if="!searchValue" class="article-list">
                 <template v-for="(yearArticles, year) in entriesGrouped" :key="year">
                     <div class="year-title-bar">
                         <h2 class="year-disp"><strong>{{ year }}</strong> </h2> {{ yearArticles.length }} post{{
@@ -28,8 +28,23 @@
                     </div>
                 </template>
             </div>
-            <div class="pagination-wrapper">
-                <UIKitPaginator :current-page="currentPage" :total-pages="totalPages" @page-change="onPageChange" />
+            <div v-else>
+                <div class="search-results">
+                    <div v-for="result in searchResult" :key="result.id" class="search-result-item">
+                        <NuxtLink :to="result.id">
+                            <div class="title-bar">
+                                <h3 v-html="highlightMatches(result.title, result.matches)"> </h3>
+                                <h3 style="color: var(--color-accent); opacity: 0.8;">H{{ result.titles.length + 1 }}</h3>
+                            </div>
+                            <small>{{ result.id }}</small>
+                            <p class="search-preview" v-html="highlightMatches(result.content, result.matches, 200)">
+                            </p>
+                        </NuxtLink>
+                    </div>
+                    <div v-if="searchResult.length === 0" class="no-results">
+                        <p>No results found for "{{ searchValue }}"</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -39,12 +54,10 @@
 import config from '@@/blog.config';
 import { count } from 'node:console';
 import { ref, computed, onMounted } from 'vue';
+import Fuse from 'fuse.js'
 
-const currentPage = ref(1);
-const perPage = 2;
 const searchValue = ref('');
-const searchResult = ref('');
-const totalPages = ref(1);
+const searchResult = ref<any[]>([]);
 const articleCount = ref(0);
 const articles = ref<any[]>([]);
 
@@ -67,17 +80,76 @@ const entriesGrouped = computed(() => {
     return grouped;
 });
 
-function onPageChange(page: number) {
-    currentPage.value = page;
+async function onSearch() {
+    const { data } = await useAsyncData('search-data', () => queryCollectionSearchSections('articles'))
+    const fuse = new Fuse(data.value!, {
+        keys: ['title', 'description', 'content'],
+        isCaseSensitive: true,
+        ignoreLocation: true,
+        minMatchCharLength: 2,
+        includeScore: true,
+        includeMatches: true,
+    })
+    const query = toValue(searchValue.value)
+    searchResult.value = fuse.search(query).map(r => ({
+        ...r.item,
+        matches: r.matches
+    }));
+    console.log(searchResult.value)
 }
 
-function onTotalCountChange(count: number) {
-    totalPages.value = Math.ceil(count / perPage);
-}
+function highlightMatches(text: string, matches: any[] | undefined, maxLength?: number): string {
+    if (!matches || !matches.length) {
+        return maxLength && text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+    }
 
-function onSearch() {
-    currentPage.value = 1;
-    searchResult.value = searchValue.value;
+    // Find all match indices for this text
+    const indices: number[][] = [];
+    for (const match of matches) {
+        if (match.indices) {
+            indices.push(...match.indices);
+        }
+    }
+
+    if (indices.length === 0) {
+        return maxLength && text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+    }
+
+    // Sort and merge overlapping indices
+    indices.sort((a, b) => (a[0] ?? 0) - (b[0] ?? 0));
+    const mergedIndices: number[][] = [];
+    for (const idx of indices) {
+        const [idxStart, idxEnd] = [idx[0] ?? 0, idx[1] ?? 0];
+        if (mergedIndices.length === 0 || idxStart > (mergedIndices[mergedIndices.length - 1]![1] ?? 0) + 1) {
+            mergedIndices.push(idx);
+        } else {
+            const lastIdx = mergedIndices[mergedIndices.length - 1]!;
+            const lastEnd = lastIdx[1] ?? 0;
+            lastIdx[1] = Math.max(lastEnd, idxEnd);
+        }
+    }
+
+    // Build highlighted string
+    let result = '';
+    let lastIndex = 0;
+    for (const [start, end] of mergedIndices) {
+        if (start == null || end == null) continue;
+        const safeStart = Math.max(0, start);
+        const safeEnd = Math.min(text.length - 1, end);
+        if (safeEnd < safeStart) continue;
+        result += text.substring(lastIndex, safeStart);
+        result += `<mark>${text.substring(safeStart, safeEnd + 1)}</mark>`;
+        lastIndex = safeEnd + 1;
+    }
+    result += text.substring(lastIndex);
+
+    // Truncate if needed, preserving highlights
+    if (maxLength && result.length > maxLength) {
+        // Simple truncation - for better UX, could implement context-aware truncation
+        result = result.substring(0, maxLength) + '...';
+    }
+
+    return result;
 }
 
 </script>
@@ -167,6 +239,50 @@ function onSearch() {
         .pagination-wrapper {
             flex-shrink: 0;
             padding-top: 1rem;
+        }
+
+        .search-results {
+            flex: 1;
+
+            .search-result-item {
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                background: var(--surface-elevated);
+                transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+                box-shadow: none;
+
+                &:hover {
+                    background-color: var(--color-card-hover-bg);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    cursor: pointer;
+                }
+
+                .title-bar {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 1rem;
+
+                    h3 {
+                        margin: 0;
+                    }
+                }
+
+                .search-preview {
+                    margin: 0.5rem 0 0 0;
+                    color: var(--text-secondary);
+                    line-height: 1.6;
+
+                }
+            }
+
+            .no-results {
+                padding: 2rem;
+                text-align: center;
+                color: var(--text-muted);
+            }
         }
     }
 

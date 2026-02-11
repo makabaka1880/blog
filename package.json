@@ -26,6 +26,7 @@
         "better-sqlite3": "^12.6.2",
         "chess-fen": "^1.0.2",
         "chess.js": "^1.4.0",
+        "fuse.js": "^7.1.0",
         "katex": "^0.16.28",
         "lodash": "^4.17.23",
         "marked": "^17.0.1",
