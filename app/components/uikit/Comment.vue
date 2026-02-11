@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Comments</h2>
+        <h2 style="margin-bottom: 1.5rem;">Comments</h2>
         <div id="tcomment">
             Comments Loading...
         </div>

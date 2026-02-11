@@ -21,7 +21,7 @@ const blogConfig = {
     favicon: '',
     language: 'en',
     timezone: 'Asia/Shanghai',
-    url: 'https://ablog.com', //! TODO Fill in blog URL
+    url: 'https://blog.makabaka1880.xyz', //! TODO Fill in blog URL
     highlight: {
         languages: ['json', 'js', 'ts', 'html', 'css', 'vue', 'shell', 'mdc', 'md', 'yaml', 'sql', 'swift'],
         theme: {
@@ -37,7 +37,8 @@ const blogConfig = {
     links: blogLinks, //! Do not modify
     twikooConfig: {
         envID: "https://blog-twikoo-one-dun.vercel.app/"
-    }
+    },
+    birth: "2009-11-17"
 }
 
 export default blogConfig
