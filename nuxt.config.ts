@@ -18,13 +18,13 @@ export default defineNuxtConfig({
         { path: "~/components/uikit", prefix: "UIKit" },
         "~/components",
     ],
-    css: ["~/assets/main.scss", "katex/dist/katex.min.css", "~/assets/twikoo.scss"],
+    css: ["~/assets/main.scss", "~/assets/twikoo.scss"],
     content: {
         build: {
             markdown: {
                 highlight: {
-                    theme: blogConfig.highlight.theme,
-                    langs: blogConfig.highlight.languages as (LanguageRegistration)[],
+                    theme: blogConfig.highlight.theme as any,
+                    langs: blogConfig.highlight.languages as any[],
                 },
                 remarkPlugins: {
                     "remark-math": {},
@@ -55,10 +55,6 @@ export default defineNuxtConfig({
             ],
             link: [
                 { rel: "icon", type: "image/x-icon", href: blogConfig.favicon },
-                {
-                    rel: 'stylesheet',
-                    href: 'https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css'
-                }
             ],
             script: [
                 { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" }

@@ -1,24 +1,34 @@
 <template>
-    <canvas ref="canvas" class="board" />
+    <div class="board-wrapper">
+        <ClientOnly>
+            <canvas ref="canvas" class="board" />
+        </ClientOnly>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @use "~/assets/theme.scss" as *;
+@use "sass:color";
 
-.board {
-    --light-square: #{lighten($color-accent, 30%)};
-    --dark-square: #{darken($color-accent, 10%)};
-
+.board-wrapper {
     width: 40vw;
-    display: block;
     margin: 2rem auto;
     aspect-ratio: 1 / 1;
+}
+
+.board {
+    --light-square: #{color.adjust($color-accent, $lightness: 30%)};
+    --dark-square: #{color.adjust($color-accent, $lightness: -10%)};
+
+    width: 100%;
+    height: 100%;
+    display: block;
     border-radius: 5px;
     cursor: pointer;
 }
 
 @media (max-width: $critical-width) {
-    .board {
+    .board-wrapper {
         width: 80%;
     }
 }
@@ -147,7 +157,7 @@ async function redraw() {
     
     drawSquares();
     
-    const position = new Fen(props.fen);
+    const position = new Fen(props.fen || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     const { ctx, cellSize } = board;
     if (props.coords) drawCoordinates(ctx, cellSize, GRID, board.colors);
     
@@ -196,7 +206,7 @@ onMounted(async () => {
     // Use our custom drawSquares instead of the initial drawBoard's square drawing
     drawSquares();
     
-    const position = new Fen(props.fen);
+    const position = new Fen(props.fen || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     const { ctx, cellSize, colors } = board;
     if (props.coords) drawCoordinates(ctx, cellSize, GRID, colors);
 

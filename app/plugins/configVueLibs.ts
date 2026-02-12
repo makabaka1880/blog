@@ -11,5 +11,4 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PowerGlitchPlugin)
     nuxtApp.vueApp.component('Fen', Fen)
     nuxtApp.vueApp.component('VueDepthViewer', VueDepthViewer)
-    nuxtApp.vueApp.use(MotionPlugin)
 })

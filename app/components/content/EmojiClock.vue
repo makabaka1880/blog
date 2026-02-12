@@ -3,10 +3,16 @@ const emojiClock = ['🕛', '🕧', '🕐', '🕜', '🕑', '🕝', '🕒', '�
 
 const now = ref(new Date())
 
+let timer: ReturnType<typeof setInterval> | null = null
+
 onMounted(() => {
-    setInterval(() => {
+    timer = setInterval(() => {
         now.value = new Date()
     }, 60000)
+})
+
+onUnmounted(() => {
+    if (timer) clearInterval(timer)
 })
 
 const clockEmoji = computed(() => {
