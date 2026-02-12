@@ -20,7 +20,7 @@
             </div>
         </div>
         <p>In my free time, I mainly code fun utilies or implement fun theories. I am learning type theory, and is
-            maintaining tge <strong>only</strong> <a href="https://github.com/makabaka1880/learn-tt">repo</a> of answers
+            maintaining the <a href="https://github.com/makabaka1880/learn-tt"><a href="https://github.com/makabaka1880/learn-tt"></a><strong>only</strong> repository on github</a> of answers
             to R.P. Nederpelt's <a
                 href="https://research.tue.nl/en/publications/type-theory-and-formal-proof-an-introduction/">Formal
                 Proof and Type Theory.</a></p>
