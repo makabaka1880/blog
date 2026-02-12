@@ -53,8 +53,19 @@ function testFunction() {
 
 Test image rendering (placeholder):
 
-![Test Image](IMG_5245.webp)
-![Vertical Image](DSC02913.webp)
+::Pic
+---
+alt: Test Image
+src: IMG_5245.webp
+---
+::
+
+::Pic
+---
+alt: Vertical Image
+src: DSC02913.webp
+---
+::
 
 ## Lists Test
 
@@ -70,25 +81,36 @@ Test image rendering (placeholder):
 2. Second item
 3. Third item
 
+
 ## Interactive Components Test
 
 ### Music Player
-:MusicPlayer{mode="server" server="netease" :id="1395957507"}
+::MusicPlayer
+---
+mode: "server"
+server: "netease"
+id: 1395957507
+::
 
 ### Tip Box
-<Tip>
+::Tip
+---
 This is a tip box component to test custom content rendering.
-</Tip>
+::
 
 ### Question Box
-<Quesbox>
+::Quesbox
+---
 This is a question box component for FAQ-style content.
-</Quesbox>
+::
 
 ### Definition Box
-<Defbox term="Test Term">
+::Defbox
+---
+term: "Test Term"
+---
 This is a definition box component. It has a term and its definition.
-</Defbox>
+::
 
 ## Mixed Content Test
 
@@ -112,45 +134,71 @@ This concludes the comprehensive test of all prose components. If everything loo
 ## Chess Components Test
 
 ### Simple Chessboard
-<Chessboard fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR" :coords="true">
+::Chessboard
+---
+fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"
+coords: true
+---
 e2-e4
-</Chessboard>
+::
 
 ### Chess Display with Line
-<ChessDisplay 
-    fen="rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
-    line="1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7"
-    title="Ruy Lopez - Classic Opening"
-    white="White"
-    black="Black"
-    event="Test Game"
-    :coords="true"
-    :linear="false">
+::ChessDisplay
+---
+fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+line: "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7"
+title: "Ruy Lopez - Classic Opening"
+coords: true
+linear: false
+---
 e2->e4
 (Pe2)
-</ChessDisplay>
-
-### Chess Display with Linear Format
+::
 
 ## More Interactive Components
+### Parallax Window
+
+::ParallaxWindowScrolltrack
+---
+src: "/assets/index/poolcore.webp"
+depth: "/assets/index/poolcore-depth.webp"
+angle: -0.785
+::
+
+::ParallaxWindowScrolltrack
+---
+src: "/assets/index/poolcore.webp"
+depth: "/assets/index/poolcore-depth.webp"
+angle: -0.785
+::
+
+::ParallaxWindowMousetrack
+---
+src: "/assets/index/poolcore.webp"
+depth: "/assets/index/poolcore-depth.webp"
+::
 
 ### Chat Component
-<Chat>
+::Chat
+---
 This is a chat component for interactive discussions or Q&A sessions.
-</Chat>
+::
 
 ### Folding Component
-<Folding title="Click to Expand This Section">
+::Folding
+---
+title: "Click to Expand This Section"
+---
 This content is hidden by default and expands when you click the header. Useful for organizing long content or hiding spoilers.
-</Folding>
+::
 
 ### Blur Component
-<Blur>
+::Blur
 This content is blurred until hovered over. Useful for hiding sensitive information or spoilers.
-</Blur>
+::
 
 ### Emoji Clock
-<EmojiClock />
+:EmojiClock
 
 ---
 **End of Test Article**

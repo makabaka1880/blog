@@ -1,107 +1,164 @@
-// Base Theme Configuration
-// Change the base hue to shift the entire color scheme
-$base-hue: 180; // Teal (180) - try: 210 (blue), 150 (green), 270 (purple), 30 (orange)
+// -----------------------------------------------------------------------------
+// 1. Core Variables & Configuration
+// -----------------------------------------------------------------------------
+$base-hue: 180;
 $base-saturation: 50%;
 $base-lightness: 45%;
 
-// Color generation functions
-@function adjust-teal($hue: 0, $sat: 0%, $light: 0%) {
-    @return hsl($base-hue + $hue, $base-saturation + $sat, $base-lightness + $light);
+// -----------------------------------------------------------------------------
+// 2. Pure Color Functions (Functional Approach)
+// -----------------------------------------------------------------------------
+@function theme-color($h-offset: 0, $s-offset: 0%, $l-offset: 0%, $alpha: 1) {
+    @return hsla($base-hue + $h-offset,
+        $base-saturation + $s-offset,
+        $base-lightness + $l-offset,
+        $alpha );
 }
 
-@function adjust-teal-alpha($hue: 0, $sat: 0%, $light: 0%, $alpha: 1) {
-    @return hsla($base-hue + $hue, $base-saturation + $sat, $base-lightness + $light, $alpha);
+// -----------------------------------------------------------------------------
+// 3. Decoupled Utility Palettes
+// -----------------------------------------------------------------------------
+// These stay constant regardless of the theme's base hue
+$palettes: (
+    "success": (hue: 120, sat: 40%, light: 40%),
+    "error": (hue: 10, sat: 60%, light: 45%),
+    "warning": (hue: 35, sat: 80%, light: 50%),
+    "info": (hue: 200, sat: 50%, light: 45%)
+);
+
+@function utility-color($type, $variant: 'base', $alpha: 1) {
+    $config: map-get($palettes, $type);
+    $h: map-get($config, "hue");
+    $s: map-get($config, "sat");
+    $l: map-get($config, "light");
+
+    @if $variant =='bg' {
+        @return hsla($h, 20, 95%, 0.8);
+    }
+
+    @else if $variant =='border' {
+        @return hsla($h, $s, $l - 10%, 1);
+    }
+
+    @else {
+        @return hsla($h, $s, $l - 10%, $alpha);
+    }
 }
 
-// Primary color system (teal family)
-$color-primary: adjust-teal(0, 0%, 0%);
-$color-secondary: adjust-teal(0, -15%, -20%);
-$color-accent: adjust-teal(0, -15%, -10%);
-$color-highlight: adjust-teal(0, -20%, -15%);
-$color-highlight-marker: adjust-teal(0, -25%, -10%);
+// -----------------------------------------------------------------------------
+// 4. Semantic Color Mapping
+// -----------------------------------------------------------------------------
+$colors: (
+    "primary": theme-color(),
+    "secondary": theme-color($s-offset: -15%, $l-offset: -20%),
+    "accent": theme-color($s-offset: -15%, $l-offset: -10%),
+    "bg": theme-color($s-offset: -45%, $l-offset: 52%),
+    "text": theme-color($s-offset: -20%, $l-offset: -30%),
+    "text-muted": theme-color($s-offset: -15%, $l-offset: -10%),
+    "border": theme-color($s-offset: -20%, $l-offset: -10%, $alpha: 0.35)
+);
 
-// Background system (light teal tints)
-$color-background: adjust-teal(0, -45%, 52%);
-$color-background-alt: adjust-teal(0, -40%, 48%);
-$color-section-bg: adjust-teal(0, -35%, 44%);
-$color-footer-bg: adjust-teal(0, -35%, 42%);
+// -----------------------------------------------------------------------------
+// 5. Component Variables (Using the Functions)
+// -----------------------------------------------------------------------------
+
+// Primary color system
+$color-primary: map-get($colors, "primary");
+$color-secondary: map-get($colors, "secondary");
+$color-accent: map-get($colors, "accent");
+$color-highlight: theme-color($s-offset: -20%, $l-offset: -15%);
+$color-highlight-marker: theme-color($s-offset: -25%, $l-offset: -10%);
+
+// Background system
+$color-background: map-get($colors, "bg");
+$color-background-alt: theme-color($s-offset: -40%, $l-offset: 48%);
+$color-section-bg: theme-color($s-offset: -35%, $l-offset: 44%);
+$color-footer-bg: theme-color($s-offset: -35%, $l-offset: 42%);
 $color-card-bg: #ffffff;
-$color-card-hover-bg: adjust-teal(0, -40%, 48%);
-$color-highlight-bg: adjust-teal(0, -40%, 48%);
-$color-hard-bg: adjust-teal(0, 50%, -40%);
+$color-card-hover-bg: theme-color($s-offset: -40%, $l-offset: 48%);
+$color-highlight-bg: theme-color($s-offset: -40%, $l-offset: 48%);
+$color-hard-bg: theme-color($s-offset: 50%, $l-offset: -40%);
 
 // Card colors
-$color-card-border: adjust-teal-alpha(0, -25%, -20%, 0.25);
-$color-card-hover-border: adjust-teal(0, -20%, -15%);
-$color-card-title: adjust-teal(0, -10%, -15%);
-$color-card-metadata: adjust-teal(0, -20%, -15%);
-$color-modal-bg: adjust-teal-alpha(0, -45%, 52%, 0.87);
+$color-card-border: theme-color($s-offset: -25%, $l-offset: -20%, $alpha: 0.25);
+$color-card-hover-border: theme-color($s-offset: -20%, $l-offset: -15%);
+$color-card-title: theme-color($s-offset: -10%, $l-offset: -15%);
+$color-card-metadata: theme-color($s-offset: -20%, $l-offset: -15%);
+$color-modal-bg: theme-color($s-offset: -45%, $l-offset: 52%, $alpha: 0.87);
 
-// Text system (dark teal shades)
-$color-text: adjust-teal(0, -20%, -30%);
-$color-text-light: adjust-teal(0, -10%, -10%);
-$color-text-muted: adjust-teal(0, -15%, -10%);
-$color-heading: adjust-teal(0, -15%, -25%);
+// Text system
+$color-text: map-get($colors, "text");
+$color-text-light: theme-color($s-offset: -10%, $l-offset: -10%);
+$color-text-muted: map-get($colors, "text-muted");
+$color-heading: theme-color($s-offset: -15%, $l-offset: -25%);
 
 // Interactive elements
-$color-link: adjust-teal(0, -20%, -15%);
-$color-link-hover: adjust-teal(0, -10%, -5%);
-$color-emphasis: adjust-teal(0, 0%, 0%);
-$color-subtle: adjust-teal(0, -35%, 44%);
+$color-link: theme-color($s-offset: -20%, $l-offset: -15%);
+$color-link-hover: theme-color($s-offset: -10%, $l-offset: -5%);
+$color-emphasis: map-get($colors, "primary");
+$color-subtle: theme-color($s-offset: -35%, $l-offset: 44%);
 
 // Button colors
-$color-button-bg: adjust-teal(0, 0%, 0%);
-$color-button-hover: adjust-teal(0, -20%, -15%);
+$color-button-bg: map-get($colors, "primary");
+$color-button-hover: theme-color($s-offset: -20%, $l-offset: -15%);
 $color-button-text: #ffffff;
 
 // Input colors
-$color-input-border: adjust-teal(0, 0%, 0%);
-$color-input-text: adjust-teal(0, -10%, -15%);
-$color-input-focus-border: adjust-teal(0, 5%, 5%);
+$color-input-border: map-get($colors, "primary");
+$color-input-text: theme-color($s-offset: -10%, $l-offset: -15%);
+$color-input-focus-border: theme-color($s-offset: 5%, $l-offset: 5%);
 
 // Border and shadow
-$color-border: adjust-teal-alpha(0, -20%, -10%, 0.35);
-$color-shadow: adjust-teal-alpha(0, 0%, 0%, 0.15);
+$color-border: map-get($colors, "border");
+$color-shadow: theme-color($alpha: 0.15);
 
 // Navbar colors
-$color-navbar-bg: adjust-teal-alpha(0, -45%, 52%, 0.95);
-$color-navbar-link: adjust-teal(0, -10%, -15%);
-$color-navbar-link-hover: adjust-teal(0, 0%, 0%);
+$color-navbar-bg: theme-color($s-offset: -45%, $l-offset: 52%, $alpha: 0.95);
+$color-navbar-link: theme-color($s-offset: -10%, $l-offset: -15%);
+$color-navbar-link-hover: map-get($colors, "primary");
 
 // Tag colors
-$color-tag-bg: adjust-teal(0, -40%, 48%);
-$color-tag-text: adjust-teal(0, -10%, -15%);
+$color-tag-bg: theme-color($s-offset: -40%, $l-offset: 48%);
+$color-tag-text: theme-color($s-offset: -10%, $l-offset: -15%);
 
 // Progress and slider
-$color-progress-bg: adjust-teal(0, -35%, 44%);
-$color-progress-fill: adjust-teal(0, 0%, 0%);
-$color-slider-bg: adjust-teal(0, -40%, 48%);
-$color-slider-fill: adjust-teal(0, 0%, 0%);
+$color-progress-bg: theme-color($s-offset: -35%, $l-offset: 44%);
+$color-progress-fill: map-get($colors, "primary");
+$color-slider-bg: theme-color($s-offset: -40%, $l-offset: 48%);
+$color-slider-fill: map-get($colors, "primary");
 
 // Tooltip
-$color-tooltip-bg: adjust-teal(0, -10%, -15%);
+$color-tooltip-bg: theme-color($s-offset: -10%, $l-offset: -15%);
 $color-tooltip-text: #ffffff;
 
 // Content elements
-$color-code-bg: adjust-teal(0, -40%, 48%);
-$color-quote-border: adjust-teal(0, -20%, -15%);
-$color-quote-text: adjust-teal(0, -10%, -15%);
-$color-table-border: adjust-teal(0, -20%, -15%);
+$color-code-bg: theme-color($s-offset: -40%, $l-offset: 48%);
+$color-quote-border: theme-color($s-offset: -20%, $l-offset: -15%);
+$color-quote-text: theme-color($s-offset: -10%, $l-offset: -15%);
+$color-table-border: theme-color($s-offset: -20%, $l-offset: -15%);
 $color-sep-border: #787878;
-$color-table-header-bg: adjust-teal(0, -40%, 48%);
+$color-table-header-bg: theme-color($s-offset: -40%, $l-offset: 48%);
 
-// Status colors (semantic - independent of theme hue)
-$color-warning-bg: #fff4e0;
-$color-warning-text: #cc8800;
-$color-success-bg: #e0ffe0;
-$color-success-text: #009933;
-$color-error-bg: #ffe0e0;
-$color-error-text: #cc3333;
+// Status colors (using utility palettes)
+$color-success-bg: utility-color("success", "bg");
+$color-success-border: utility-color("success", "border");
+$color-success-text: utility-color("success", "text");
+$color-error-bg: utility-color("error", "bg");
+$color-error-border: utility-color("error", "border");
+$color-error-text: utility-color("error", "text");
+$color-warning-bg: utility-color("warning", "bg");
+$color-warning-text: utility-color("warning", "text");
+$color-warning-border: utility-color("warning", "border");
 
-// Layout
+// -----------------------------------------------------------------------------
+// 6. Layout Constants
+// -----------------------------------------------------------------------------
 $section-margin: 5vh 0 10vh 0;
 $critical-width: 860px;
 
+// -----------------------------------------------------------------------------
+// 7. CSS Custom Properties (for runtime theming)
+// -----------------------------------------------------------------------------
 :root {
     --color-hue: #{$base-hue};
     --color-primary: #{$color-primary};
@@ -157,9 +214,12 @@ $critical-width: 860px;
     --color-table-header-bg: #{$color-table-header-bg};
     --color-warning-bg: #{$color-warning-bg};
     --color-warning-text: #{$color-warning-text};
+    --color-warning-border: #{$color-warning-border};
     --color-success-bg: #{$color-success-bg};
+    --color-success-border: #{$color-success-border};
     --color-success-text: #{$color-success-text};
     --color-error-bg: #{$color-error-bg};
+    --color-error-border: #{$color-error-border};
     --color-error-text: #{$color-error-text};
     --section-margin: #{$section-margin};
 

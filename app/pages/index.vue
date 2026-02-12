@@ -13,26 +13,31 @@
 
                     <IndexPageScrollIndicator :hidden="showAuthorSection" />
 
-                    <section ref="authorRef" class="author-section" :class="{
-                        'scroll-up': showAuthorSection,
-                        'strip-active': stripVisible
-                    }">
-                        <canvas ref="stripCanvas"
-                            :class="{ 'strip-canvas': true, 'strip-active': stripVisible }"></canvas>
-                        <IndexPageAuthorSection />
-                        <IndexPageTechStackSection />
-                        <IndexPageScrollIndicator :hidden="showArtSection" />
-                        <section ref="artRef" class="art-section" :class="{ 'scroll-up': showArtSection }">
-                            <IndexPageArtSection />
+                    <div ref="authorTrigger" class="section-trigger">
+                        <section ref="authorRef" class="author-section" :class="{
+                            'scroll-up': showAuthorSection,
+                            'strip-active': stripVisible
+                        }">
+                            <canvas ref="stripCanvas"
+                                :class="{ 'strip-canvas': true, 'strip-active': stripVisible }"></canvas>
+                            <IndexPageAuthorSection />
+                            <IndexPageTechStackSection />
+                            <IndexPageScrollIndicator :hidden="showArtSection" />
+                            <div ref="artTrigger" class="section-trigger">
+                                <section ref="artRef" class="art-section" :class="{ 'scroll-up': showArtSection }">
+                                    <IndexPageArtSection />
+
+                                </section>
+                            </div>
                         </section>
-                    </section>
+                    </div>
         </div>
     </section>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch, onMounted } from 'vue';
-import { useScroll } from '@vueuse/core';
+import { useScroll, useIntersectionObserver } from '@vueuse/core';
 import { useDrinkEvents } from '~/composables/useDrinkEvents';
 import { setupStripShader } from '~/utils/indexPage/parallaxLoader';
 
@@ -40,6 +45,8 @@ const recentArticles = ref<any[]>([]);
 const showAuthorSection = ref(false);
 const showArtSection = ref(false);
 const stripCanvas = ref<HTMLCanvasElement | null>(null);
+const authorTrigger = ref<HTMLElement | null>(null);
+const artTrigger = ref<HTMLElement | null>(null);
 const authorRef = ref<HTMLElement | null>(null);
 const artRef = ref<HTMLElement | null>(null);
 
@@ -83,21 +90,42 @@ onMounted(async () => {
         }
     });
 });
+useIntersectionObserver(
+    authorTrigger,
+    ([entry]) => {
+        if (entry) {
+            showAuthorSection.value = entry.isIntersecting;
+        }
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
+);
 
-// Watch scroll position to show sections
-watch(y, () => {
-    // Author section
-    if (authorRef.value) {
-        const offsetTop = authorRef.value.offsetTop;
-        showAuthorSection.value = y.value > window.innerHeight / 15;
-    }
+useIntersectionObserver(
+    artTrigger,
+    ([entry]) => {
+        if (entry) {
+            showArtSection.value = entry.isIntersecting;
+        }
+    },
+    { threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
+);
+// const triggerOffset = .4; // 20% of viewport
+// watch(y, () => {
+//     const vh = window.innerHeight;
+//     const threshold = vh * (1 - triggerOffset);
 
-    // Art section
-    if (artRef.value) {
-        const offsetTop = artRef.value.offsetTop;
-        showArtSection.value = y.value > window.innerHeight;
-    }
-});
+//     if (authorRef.value) {
+//         const rect = authorRef.value.getBoundingClientRect();
+//         // rect.top is relative to the viewport
+//         // If the top of the element is above our threshold line
+//         showAuthorSection.value = rect.top < threshold;
+//     }
+
+//     if (artRef.value) {
+//         const rect = artRef.value.getBoundingClientRect();
+//         showArtSection.value = rect.top < threshold;
+//     }
+// });
 
 function onHintClick() {
     emit('hint-click');
@@ -125,6 +153,11 @@ body {
 .author-section,
 .art-section {
     scroll-snap-align: start;
+}
+
+.section-trigger {
+    position: relative;
+    min-height: 1px;
 }
 
 /* ---------------- ART ---------------- */
@@ -162,7 +195,7 @@ body {
     position: relative;
     opacity: 0;
     transform: translateY(100%);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    transition: all 0.3s ease-out;
 }
 
 /* Canvas strip */
@@ -198,7 +231,7 @@ body {
 /* ---------------- ART SECTION ---------------- */
 .art-section {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(10%);
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
@@ -239,7 +272,7 @@ body {
 
     .strip-canvas {
         top: -10%;
-        height: 120vh;
+        height: 100%;
         width: 100vw;
         filter: brightness(50%);
     }
