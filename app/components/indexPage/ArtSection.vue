@@ -5,8 +5,8 @@
             <div class="depth-image-container" draggable="false">
                 <VueDepthViewer class="disp-wide" img="/assets/index/poolcore.webp"
                     depth-img="/assets/index/poolcore-depth.webp" :options="{
-                        horizontalThreshold: 100,
-                        verticalThreshold: 150,
+                        horizontalThreshold: 80,
+                        verticalThreshold: 100,
                         useScreen: true
                     }" />
                 <small v-if="showMouseWarning" class="warning">

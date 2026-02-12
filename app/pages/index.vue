@@ -95,7 +95,7 @@ watch(y, () => {
     // Art section
     if (artRef.value) {
         const offsetTop = artRef.value.offsetTop;
-        showArtSection.value = y.value > window.innerHeight * 3 / 4;
+        showArtSection.value = y.value > window.innerHeight;
     }
 });
 
@@ -238,8 +238,8 @@ body {
     }
 
     .strip-canvas {
-        top: -50%;
-        height: 150vh;
+        top: -10%;
+        height: 120vh;
         filter: blur(3px);
     }
 }

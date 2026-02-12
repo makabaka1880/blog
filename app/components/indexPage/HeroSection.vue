@@ -63,8 +63,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+@use "~/assets/theme.scss" as *;
+
 .title-div {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
 
@@ -86,6 +89,20 @@ onMounted(() => {
         font-family: monospace;
         font-size: 1.5rem;
         margin-left: 0.5rem;
+    }
+}
+
+@media (max-width: $critical-width) {
+    .title-div {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        text-align: left;
+
+        span {
+            margin-left: 0;
+            margin-top: 0.5rem;
+        }
     }
 }
 </style>
