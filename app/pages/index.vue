@@ -240,7 +240,8 @@ body {
     .strip-canvas {
         top: -10%;
         height: 120vh;
-        filter: blur(3px);
+        width: 100vw;
+        filter: brightness(50%);
     }
 }
 
