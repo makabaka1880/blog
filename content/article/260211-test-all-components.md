@@ -90,17 +90,16 @@ src: DSC02913.webp
 mode: "server"
 server: "netease"
 id: 1395957507
+---
 ::
 
 ### Tip Box
 ::Tip
----
 This is a tip box component to test custom content rendering.
 ::
 
 ### Question Box
 ::Quesbox
----
 This is a question box component for FAQ-style content.
 ::
 
@@ -163,6 +162,7 @@ e2->e4
 src: "/assets/index/poolcore.webp"
 depth: "/assets/index/poolcore-depth.webp"
 angle: -0.785
+---
 ::
 
 ::ParallaxWindowScrolltrack
@@ -170,18 +170,21 @@ angle: -0.785
 src: "/assets/index/poolcore.webp"
 depth: "/assets/index/poolcore-depth.webp"
 angle: -0.785
+---
 ::
 
 ::ParallaxWindowMousetrack
 ---
 src: "/assets/index/poolcore.webp"
 depth: "/assets/index/poolcore-depth.webp"
+---
 ::
 
 ### Chat Component
 ::Chat
 ---
 This is a chat component for interactive discussions or Q&A sessions.
+---
 ::
 
 ### Folding Component

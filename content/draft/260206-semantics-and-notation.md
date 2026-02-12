@@ -11,7 +11,12 @@ updateTime: 2026-02-07
 
 *Giganticsymbolandlongequationsphobia* has long been a major issue for many students of science and mathematics.
 
-![G45iac Students At Work](screenshot1.png)
+::Pic
+---
+alt: G45iac Students At Work
+src: screenshot1.png
+---
+::
 
 As we all know, terror climbs monotonically with symbol size. Therefore, what students fear most is the kind of equation where multiple scaled-up versions of weird symbols stand shoulder-to-shoulder, staring down at them with fourtytwo different types of variable-binding notation.
 
