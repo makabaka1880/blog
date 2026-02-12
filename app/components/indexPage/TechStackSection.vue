@@ -19,7 +19,11 @@
                 <p>Rust / C++ / Elixir</p>
             </div>
         </div>
-        <p>In my free time, I mainly code fun utilies or implement fun theories. I am learning type theory</p>
+        <p>In my free time, I mainly code fun utilies or implement fun theories. I am learning type theory, and is
+            maintaining tge <strong>only</strong> <a href="https://github.com/makabaka1880/learn-tt">repo</a> of answers
+            to R.P. Nederpelt's <a
+                href="https://research.tue.nl/en/publications/type-theory-and-formal-proof-an-introduction/">Formal
+                Proof and Type Theory.</a></p>
     </div>
 </template>
 
@@ -50,5 +54,10 @@
         margin: 0;
         color: var(--text-secondary);
     }
+
+}
+
+:deep(a) {
+    text-decoration: underline;
 }
 </style>
