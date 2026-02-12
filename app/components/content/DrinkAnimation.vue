@@ -11,7 +11,7 @@ import { TextureLoader, ShaderMaterial } from 'three';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { eventBus, DrinkEventType } from '~/composables/useDrinkEvents';
+import { eventBus, type DrinkEventType } from '~/composables/useDrinkEvents';
 
 // ==================== CONSTANTS ====================
 const ANIMATION_CONFIG = {

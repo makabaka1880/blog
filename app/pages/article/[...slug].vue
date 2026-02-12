@@ -28,7 +28,7 @@ import Comment from '~/components/uikit/Comment.vue'
 
 const route = useRoute()
 
-const { data: page } = await useAsyncData(route.path, () => {
+const { data: page } = await useAsyncData(`article:${route.path}`, () => {
     return queryCollection('articles').path(route.path).first()
 })
 
