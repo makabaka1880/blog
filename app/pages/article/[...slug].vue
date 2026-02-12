@@ -10,6 +10,7 @@
         </div>
         <hr class="sep" />
         <div class="article-container">
+            .
             <ContentRenderer v-if="page" :value="page" />
         </div>
         <hr class="sep" />
@@ -124,7 +125,7 @@ const showUpdated = computed(() => {
 }
 
 .sep {
-    margin: 3rem 0;
+    margin: 3rem 1rem;
     display: block;
     height: 5px;
     border: 0;

@@ -5,139 +5,141 @@
 
         <!-- CONTENT LAYER -->
         <div class="content">
-            <small id="draggable-hint"><- This is draggable</small>
-                    <h2>Hi There 👋</h2>
-                    <GlitchedElement>
-                        <h1 style="margin-top: 0; margin-bottom: 2rem;">{{ blogConfig.title }}</h1>
-                    </GlitchedElement>
+            <small id="draggable-hint" class="disp-wide" @click="onHintClick"><- This is draggable</small>
 
-                    <p>Welcome To the Teal Blog.</p>
+                    <IndexPageHeroSection />
 
-                    <h2 style="margin-top:2rem;">Latest Posts</h2>
-                    <div class="article-list">
-                        <div v-for="article in recentArticles" :key="article.path" class="article-item">
-                            <NuxtLink :to="article.path" class="content-entry">
-                                <small>{{ new Date(article.createTime).toLocaleDateString() }}</small>
-                                <strong>{{ article.title }}</strong>
-                            </NuxtLink>
-                        </div>
-                        <div class="article-item">
-                            <a href="/posts">More -> </a>
-                        </div>
-                    </div>
+                    <IndexPageLatestPostsSection :articles="recentArticles" />
 
-                    <div class="scroll-indicator" :class="{ 'hidden': showAuthorSection }" style="margin: 3rem 0;">
-                        <em>Continue Scrolling...</em>
-                    </div>
+                    <IndexPageScrollIndicator :hidden="showAuthorSection" />
 
-                    <div class="author-section" :class="{ 'scroll-up': showAuthorSection }">
-                        <h2 class="section-header">The Author</h2>
-                        <p>
-                            I'm Sean, currently a highschooler. I'm <strong>{{ age.toFixed(9) }}</strong> years old, and
-                            I
-                            live
-                            in
-                            Shanghai. </p>
-
-                        <p>
-                            I like software engineering, computer science, and formal mathematics. I also enjoy music,
-                            chess,
-                            and 3D
-                            art.
-                        </p>
-
-                        <h2 class="section-header">Tech Stack</h2>
-                        <div class="tech-stack-grid">
-                            <div class="grid-item">
-                                <h3>Frontend</h3>
-                                <p>SwiftUI / UIKit / Vue / Nuxt</p>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Backend</h3>
-                                <p>Vapor / Express / PostgreSQL</p>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Research</h3>
-                                <p>Haskell / Lean / Python / R</p>
-                            </div>
-                            <div class="grid-item">
-                                <h3>Miscellaneous</h3>
-                                <p>Rust / C++ / Elixir</p>
-                            </div>
-                        </div>
-
-                    </div>
+                    <section ref="authorRef" class="author-section" :class="{
+                        'scroll-up': showAuthorSection,
+                        'strip-active': stripVisible
+                    }">
+                        <canvas ref="stripCanvas"
+                            :class="{ 'strip-canvas': true, 'strip-active': stripVisible }"></canvas>
+                        <IndexPageAuthorSection />
+                        <IndexPageTechStackSection />
+                        <IndexPageScrollIndicator :hidden="showArtSection" />
+                        <section ref="artRef" class="art-section" :class="{ 'scroll-up': showArtSection }">
+                            <IndexPageArtSection />
+                        </section>
+                    </section>
         </div>
     </section>
 </template>
 
-
 <script lang="ts" setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
-import blogConfig from '~~/blog.config';
+import { ref, watch, onMounted } from 'vue';
+import { useScroll } from '@vueuse/core';
+import { useDrinkEvents } from '~/composables/useDrinkEvents';
+import { setupStripShader } from '~/utils/indexPage/parallaxLoader';
 
-const videoEnded = ref(false);  // Track whether the first video has ended
-const glitched = ref<{ startGlitch: () => void; stopGlitch: () => void } | null>(null);
-const birth = new Date(blogConfig.birth)
-const age = ref(getAgeInDecimal(birth));
 const recentArticles = ref<any[]>([]);
 const showAuthorSection = ref(false);
+const showArtSection = ref(false);
+const stripCanvas = ref<HTMLCanvasElement | null>(null);
+const authorRef = ref<HTMLElement | null>(null);
+const artRef = ref<HTMLElement | null>(null);
+
+// Use VueUse scroll tracking
+const { y } = useScroll(window);
+let shaderRender: ((y: number) => void) | undefined = undefined;
 
 
 
+// Use drink events
+const { emit } = useDrinkEvents();
+
+definePageMeta({
+    layout: 'default-unsafe',
+})
+
+const stripVisible = computed(() => {
+    return showAuthorSection.value && !showArtSection.value
+});
 
 onMounted(async () => {
-    const scrollThreshold = window.innerHeight / 200; // Show author section when scrolled past 300px
     const result = await queryCollection('articles').select('title', 'description', 'createTime', 'path').order('createTime', 'DESC');
     const allArticles = await result.all();
     recentArticles.value = allArticles.slice(0, 3);
-
-    window.addEventListener('scroll', () => {
-        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        console.log(currentScroll, scrollThreshold)
-        showAuthorSection.value = currentScroll > scrollThreshold;
-    })
-
-    setInterval(() => {
-        age.value = getAgeInDecimal(birth)
-    })
+    const canvasRenderer = await setupStripShader(stripCanvas.value!)!;
+    shaderRender = canvasRenderer?.render;
+    const handleResize = (canvas: HTMLCanvasElement) => {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = canvas.clientWidth * dpr;
+        canvas.height = canvas.clientHeight * dpr;
+        if (shaderRender) shaderRender(y.value);
+    };
+    handleResize(stripCanvas.value!);
+    const resizeObserver = new ResizeObserver(() => {
+        if (stripCanvas.value) handleResize(stripCanvas.value);
+    });
+    resizeObserver.observe(stripCanvas.value!);
+    watch(y, (newY) => {
+        if (shaderRender) {
+            shaderRender(newY);
+        }
+    });
 });
 
+// Watch scroll position to show sections
+watch(y, () => {
+    // Author section
+    if (authorRef.value) {
+        const offsetTop = authorRef.value.offsetTop;
+        showAuthorSection.value = y.value > window.innerHeight / 15;
+    }
 
-function getAgeInDecimal(dateOfBirth: Date, currentDate: Date = new Date()): number {
-    const diffInMs = currentDate.getTime() - dateOfBirth.getTime();
-    const diffInYears = diffInMs / (1000 * 60 * 60 * 24 * 365.25); // Convert ms to years (taking leap years into account)
-    return diffInYears;
+    // Art section
+    if (artRef.value) {
+        const offsetTop = artRef.value.offsetTop;
+        showArtSection.value = y.value > window.innerHeight * 3 / 4;
+    }
+});
+
+function onHintClick() {
+    emit('hint-click');
 }
-
 </script>
 
 <style lang="scss" scoped>
 @use '~/assets/theme' as *;
 
+html,
+body {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    height: 100%;
+    margin: 0;
+}
+
 /* ROOT */
 .hero {
-    // min-height: 100vh;
     display: flex;
     align-items: center;
 }
 
+.hero,
+.author-section,
+.art-section {
+    scroll-snap-align: start;
+}
+
 /* ---------------- ART ---------------- */
-/* 🚫 NOT in layout, 🚫 NOT flex child */
 .art {
     position: fixed;
     left: 0;
     top: 50%;
     width: 45vw;
-
+    opacity: 0.6;
     transform: translateY(-50%);
     pointer-events: none;
     z-index: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     mix-blend-mode: darken;
 
     :deep(canvas) {
@@ -149,120 +151,75 @@ function getAgeInDecimal(dateOfBirth: Date, currentDate: Date = new Date()): num
 .content {
     position: relative;
     z-index: 1;
-
-    max-width: 75ch;
-    margin-left: calc(75vw - 40em);
-    padding: 4rem 4rem 8rem;
-}
-
-/* ---------------- SCROLL INDICATOR ---------------- */
-.scroll-indicator {
-    opacity: 1;
-    transition: opacity 0.3s ease-out;
-}
-
-.scroll-indicator.hidden {
-    opacity: 0;
+    width: 50vw;
+    margin-left: calc(45vw);
+    margin-top: 15vh;
+    margin-bottom: 15vh;
 }
 
 /* ---------------- AUTHOR SECTION ---------------- */
 .author-section {
+    position: relative;
     opacity: 0;
     transform: translateY(100%);
-    /* Initially out of view */
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    margin: 5rem 0;
 }
 
+/* Canvas strip */
+.strip-canvas {
+    position: absolute;
+    top: -5%;
+    left: calc(-45vw);
+    width: 100vw;
+    height: 40rem;
+    pointer-events: none;
+    z-index: -1;
+    // filter: hue-rotate(#{$base-hue}deg);
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+/* Active text color */
+.author-section.strip-active * {
+    color: var(--color-background) !important;
+}
+
+/* Fade in strip when author section scrolls up */
+.strip-canvas.strip-active {
+    opacity: 1;
+}
+
+/* Author section visible */
 .author-section.scroll-up {
     opacity: 1;
     transform: translateY(0);
-    /* Animate back into view */
 }
 
-/* ---------------- SECTION HEADER ---------------- */
-.section-header {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+/* ---------------- ART SECTION ---------------- */
+.art-section {
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
-/* ---------------- TECH STACK GRID ---------------- */
-.tech-stack-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-}
-
-.grid-item {
-    h3 {
-        margin: 0 0 0.5rem 0;
-        font-size: 1.1rem;
-    }
-
-    p {
-        margin: 0;
-        color: var(--text-secondary);
-    }
-}
-
-body {
-    overflow-x: hidden;
-}
-
-/* ---------------- ARTICLE LIST ---------------- */
-.article-list {
-    text-align: left;
-
-    .article-item {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 1rem;
-        align-items: start;
-        padding: 0.75rem;
-        transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-
-        &:hover {
-            background-color: var(--color-card-hover-bg);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .content-entry {
-            display: contents;
-            text-decoration: none;
-            color: inherit;
-
-            small {
-                color: var(--text-muted);
-                font-size: 0.875rem;
-                white-space: nowrap;
-            }
-
-            strong {
-                font-weight: 600;
-            }
-        }
-    }
-
-    .article-item:last-child {
-        border: none;
-        background: none;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
+.art-section.scroll-up {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* ---------------- MOBILE ---------------- */
 @media (max-width: $critical-width) {
-    #draggable-hint {
-        display: none;
-    }
-
     .hero {
-        min-height: 100vh;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        min-height: 100vh;
+    }
+
+    .strip-canvas {
+        left: -10vw;
+        width: 120vw;
+        height: 20rem;
     }
 
     .art {
@@ -270,15 +227,24 @@ body {
         inset: 0;
         width: 100%;
         transform: translateY(20vh) translateX(10vw) scale(1.4);
-        opacity: 0.2;
+        opacity: 0.1;
+        filter: blur(1px);
         z-index: -1;
     }
 
     .content {
-        width: 100%;
-        padding: 2rem;
-        margin-left: 0;
-        box-sizing: border-box;
+        margin: 10vh 10vw;
+        width: auto;
     }
+
+    .strip-canvas {
+        top: -50%;
+        height: 150vh;
+        filter: blur(3px);
+    }
+}
+
+#draggable-hint {
+    cursor: pointer;
 }
 </style>

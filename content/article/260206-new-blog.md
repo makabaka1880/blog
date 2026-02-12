@@ -8,7 +8,6 @@ updateTime: 2026-02-07
 <MusicPlayer mode="server" server="netease" :id="1913745954"> </MusicPlayer>
 
 
-
 Welcome to this awesome new nuxt site! 
 
 ## Q0. What Should I Check Out

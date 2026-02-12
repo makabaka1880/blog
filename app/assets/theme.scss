@@ -1,63 +1,109 @@
-$color-primary: #3a9a9a;
-$color-secondary: #4a8888;
-$color-accent: #5aaaaa;
-$color-highlight: #4a9494;
-$color-highlight-marker: #699f9f;
-$color-highlight-bg: #e8f2f2;
-$color-background: #f5f9f9;
-$color-background-alt: #e8f2f2;
-$color-section-bg: #dde8e8;
-$color-footer-bg: #d5e5e5;
+// Base Theme Configuration
+// Change the base hue to shift the entire color scheme
+$base-hue: 180; // Teal (180) - try: 210 (blue), 150 (green), 270 (purple), 30 (orange)
+$base-saturation: 50%;
+$base-lightness: 45%;
+
+// Color generation functions
+@function adjust-teal($hue: 0, $sat: 0%, $light: 0%) {
+    @return hsl($base-hue + $hue, $base-saturation + $sat, $base-lightness + $light);
+}
+
+@function adjust-teal-alpha($hue: 0, $sat: 0%, $light: 0%, $alpha: 1) {
+    @return hsla($base-hue + $hue, $base-saturation + $sat, $base-lightness + $light, $alpha);
+}
+
+// Primary color system (teal family)
+$color-primary: adjust-teal(0, 0%, 0%);
+$color-secondary: adjust-teal(0, -15%, -20%);
+$color-accent: adjust-teal(0, -15%, -10%);
+$color-highlight: adjust-teal(0, -20%, -15%);
+$color-highlight-marker: adjust-teal(0, -25%, -10%);
+
+// Background system (light teal tints)
+$color-background: adjust-teal(0, -45%, 52%);
+$color-background-alt: adjust-teal(0, -40%, 48%);
+$color-section-bg: adjust-teal(0, -35%, 44%);
+$color-footer-bg: adjust-teal(0, -35%, 42%);
 $color-card-bg: #ffffff;
-$color-card-hover-bg: #e8f2f2;
-$color-card-border: #465f5f31;
-$color-card-hover-border: #4a8888;
-$color-card-title: #3a7070;
-$color-card-metadata: #4a8888;
-$color-modal-bg: #ffffffdd;
-$color-text: #3a7070;
-$color-text-light: #4a8888;
-$color-text-muted: #5a9999;
-$color-heading: #2a5555;
-$color-link: #3a9a9a;
-$color-link-hover: #4a8888;
-$color-emphasis: #3a9a9a;
-$color-subtle: #dde8e8;
-$color-button-bg: #3a9a9a;
-$color-button-hover: #4a8888;
+$color-card-hover-bg: adjust-teal(0, -40%, 48%);
+$color-highlight-bg: adjust-teal(0, -40%, 48%);
+$color-hard-bg: adjust-teal(0, 50%, -40%);
+
+// Card colors
+$color-card-border: adjust-teal-alpha(0, -25%, -20%, 0.25);
+$color-card-hover-border: adjust-teal(0, -20%, -15%);
+$color-card-title: adjust-teal(0, -10%, -15%);
+$color-card-metadata: adjust-teal(0, -20%, -15%);
+$color-modal-bg: adjust-teal-alpha(0, -45%, 52%, 0.87);
+
+// Text system (dark teal shades)
+$color-text: adjust-teal(0, -20%, -30%);
+$color-text-light: adjust-teal(0, -10%, -10%);
+$color-text-muted: adjust-teal(0, -15%, -10%);
+$color-heading: adjust-teal(0, -15%, -25%);
+
+// Interactive elements
+$color-link: adjust-teal(0, -20%, -15%);
+$color-link-hover: adjust-teal(0, -10%, -5%);
+$color-emphasis: adjust-teal(0, 0%, 0%);
+$color-subtle: adjust-teal(0, -35%, 44%);
+
+// Button colors
+$color-button-bg: adjust-teal(0, 0%, 0%);
+$color-button-hover: adjust-teal(0, -20%, -15%);
 $color-button-text: #ffffff;
-$color-input-border: #3a9a9a;
-$color-input-text: #3a7070;
-$color-input-focus-border: #5aaaaa;
-$color-border: #80acac7b;
-$color-shadow: rgba(58, 154, 154, 0.15);
-$color-navbar-bg: rgba(245, 249, 249, 0.95);
-$color-navbar-link: #3a7070;
-$color-navbar-link-hover: #3a9a9a;
-$color-tag-bg: #e8f2f2;
-$color-tag-text: #3a7070;
-$color-progress-bg: #dde8e8;
-$color-progress-fill: #3a9a9a;
-$color-slider-bg: #e8f2f2;
-$color-slider-fill: #3a9a9a;
-$color-tooltip-bg: #3a7070;
+
+// Input colors
+$color-input-border: adjust-teal(0, 0%, 0%);
+$color-input-text: adjust-teal(0, -10%, -15%);
+$color-input-focus-border: adjust-teal(0, 5%, 5%);
+
+// Border and shadow
+$color-border: adjust-teal-alpha(0, -20%, -10%, 0.35);
+$color-shadow: adjust-teal-alpha(0, 0%, 0%, 0.15);
+
+// Navbar colors
+$color-navbar-bg: adjust-teal-alpha(0, -45%, 52%, 0.95);
+$color-navbar-link: adjust-teal(0, -10%, -15%);
+$color-navbar-link-hover: adjust-teal(0, 0%, 0%);
+
+// Tag colors
+$color-tag-bg: adjust-teal(0, -40%, 48%);
+$color-tag-text: adjust-teal(0, -10%, -15%);
+
+// Progress and slider
+$color-progress-bg: adjust-teal(0, -35%, 44%);
+$color-progress-fill: adjust-teal(0, 0%, 0%);
+$color-slider-bg: adjust-teal(0, -40%, 48%);
+$color-slider-fill: adjust-teal(0, 0%, 0%);
+
+// Tooltip
+$color-tooltip-bg: adjust-teal(0, -10%, -15%);
 $color-tooltip-text: #ffffff;
-$color-code-bg: #e8f2f2;
-$color-quote-border: #3a9a9a;
-$color-quote-text: #3a7070;
-$color-table-border: #3a9a9a;
+
+// Content elements
+$color-code-bg: adjust-teal(0, -40%, 48%);
+$color-quote-border: adjust-teal(0, -20%, -15%);
+$color-quote-text: adjust-teal(0, -10%, -15%);
+$color-table-border: adjust-teal(0, -20%, -15%);
 $color-sep-border: #787878;
-$color-table-header-bg: #e8f2f2;
+$color-table-header-bg: adjust-teal(0, -40%, 48%);
+
+// Status colors (semantic - independent of theme hue)
 $color-warning-bg: #fff4e0;
 $color-warning-text: #cc8800;
 $color-success-bg: #e0ffe0;
 $color-success-text: #009933;
 $color-error-bg: #ffe0e0;
 $color-error-text: #cc3333;
+
+// Layout
 $section-margin: 5vh 0 10vh 0;
 $critical-width: 860px;
 
 :root {
+    --color-hue: #{$base-hue};
     --color-primary: #{$color-primary};
     --color-secondary: #{$color-secondary};
     --color-accent: #{$color-accent};
@@ -70,6 +116,7 @@ $critical-width: 860px;
     --color-footer-bg: #{$color-footer-bg};
     --color-card-bg: #{$color-card-bg};
     --color-card-hover-bg: #{$color-card-hover-bg};
+    --color-hard-bg: #{$color-hard-bg};
     --color-card-border: #{$color-card-border};
     --color-card-hover-border: #{$color-card-hover-border};
     --color-card-title: #{$color-card-title};
@@ -120,4 +167,17 @@ $critical-width: 860px;
     --color-defbox-bg: #{$color-card-bg};
 
     --critical-width: #{$critical-width};
+}
+
+// Responsive display utility classes
+@media (min-width: $critical-width) {
+    .disp-mobile {
+        display: none;
+    }
+}
+
+@media (max-width: $critical-width) {
+    .disp-wide {
+        display: none;
+    }
 }

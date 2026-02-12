@@ -61,15 +61,18 @@ const headerText = computed(() => {
 
 .chessboard-line-container {
     display: block;
-    width: min-content;
+    width: 100%;
+    max-width: 100%;
     margin: 2rem auto;
+    overflow-x: hidden;
 }
 
 .chessboard-line {
     display: flex;
     gap: 0;
     margin: 0 auto;
-    width: max-content;
+    width: 100%;
+    max-width: 100%;
     background-color: var(--color-card-bg);
 
     & * {
@@ -87,15 +90,19 @@ const headerText = computed(() => {
 .board {
     display: flex;
     justify-content: center;
+    flex: 0 0 auto;
 }
 
 .line {
     padding: 1rem 1.25rem;
     background: var(--color-card-bg);
     height: 40vw;
+    max-height: 500px;
     overflow-y: auto;
 
-    width: max-content;
+    width: 100%;
+    max-width: 400px;
+    flex: 1 1 auto;
 }
 
 .line :deep(.chessline-turn + .chessline-turn) {
@@ -108,12 +115,14 @@ const headerText = computed(() => {
     .chessboard-line {
         flex-direction: column;
         align-items: center;
-        gap: 0;
+        gap: 1rem;
     }
 
     .line {
-        width: 80%;
+        width: 100%;
+        max-width: none;
         height: auto;
+        max-height: 400px;
     }
 }
 </style>
