@@ -1,9 +1,9 @@
 <template>
     <div class="prose-img-container">
-        <div class="prose-img-frame">
-            <nuxt-img class="prose-img" :src="resolvedSrc" :alt="alt" />
-            <p class="prose-img-caption">{{ alt }}</p>
+        <div class="prose-img-square">
+            <nuxt-img :src="resolvedSrc" :alt="alt" />
         </div>
+        <p class="prose-img-caption">{{ alt }}</p>
     </div>
 </template>
 
@@ -26,24 +26,39 @@ const resolvedSrc = computed(() => {
 
 <style lang="scss" scoped>
 .prose-img-container {
-    display: block;
-    max-width: 30rem;
-    margin: 3rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem auto;
+    width: 100%;           // parent width defined
 
-    .prose-img-frame {
+    .prose-img-caption {
+        opacity: 0.8;
+        font-size: 0.8rem;
+        margin-top: 0.6rem;
+        text-align: center;
+    }
+
+    .prose-img-square {
+        width: 70%;               // 70% of parent
+        aspect-ratio: 1 / 1;      // perfect square
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
 
-        .prose-img {
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
             border-radius: 1rem;
+            display: block;
         }
+    }
+}
 
-        .prose-img-caption {
-            opacity: .8;
-            font-size: .8rem;
-            margin-top: .6rem;
-        }
+@media (max-width: 860px) {
+    .prose-img-square {
+        width: 90%;              // bigger square on mobile
     }
 }
 </style>

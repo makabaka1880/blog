@@ -48,6 +48,7 @@ const scrollToAnchor = () => {
 <style lang="scss" scoped>
 h3 {
     margin-top: 2rem;
+    font-weight: 600;
 
     &.anchor {
         display: block;

@@ -1,11 +1,15 @@
 @use './theme' as *;
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "JetBrains Mono", monospace;
+    // font-family: "Inconsolata", monospace;
+
+    font-optical-sizing: auto;
 }
 
 ::selection {
@@ -49,7 +53,7 @@ h4,
 h5,
 h6 {
     color: var(--color-heading);
-    font-weight: normal;
+    font-weight: 600;
     margin: 0.5em 0;
 }
 

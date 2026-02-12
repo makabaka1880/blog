@@ -1,9 +1,9 @@
 <template>
-    <h6 :id="slug">
+    <h1 :id="slug">
         <a :href="'#' + slug" @click.prevent="scrollToAnchor">
             <slot />
         </a>
-    </h6>
+    </h1>
 </template>
 
 <script lang="ts" setup>
@@ -46,9 +46,10 @@ const scrollToAnchor = () => {
 </script>
 
 <style lang="scss" scoped>
-h6 {
+h1 {
     margin-top: 2rem;
-    font-weight: 500;
+    font-weight: 800;
+    font-size: 2rem;
 
     &.anchor {
         display: block;

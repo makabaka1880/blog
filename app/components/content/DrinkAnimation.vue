@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -11,6 +11,7 @@ import { TextureLoader, ShaderMaterial } from 'three';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { eventBus, DrinkEventType } from '~/composables/useDrinkEvents';
 
 // ==================== CONSTANTS ====================
 const ANIMATION_CONFIG = {
@@ -39,6 +40,15 @@ const CAMERA_CONFIG = {
     POSITION: { x: 0, y: 5, z: -12 },
 } as const;
 
+const WOBBLE_CONFIG = {
+    DURATION: 500,      // Wobble duration in ms
+    AMPLITUDE: 5,     // Maximum wobble displacement
+    PERIOD_X: 20,        // Number of complete oscillation cycles for X axis
+    PERIOD_Y: 1,        // Number of complete oscillation cycles for Y axis
+    AMPLITUDE_RATIO_Y: 0.5,  // Y axis amplitude as ratio of X amplitude
+    OSCILLATION_CYCLES: 2,   // Number of oscillation cycles for decay envelope
+} as const;
+
 // ==================== STATE ====================
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
@@ -60,6 +70,15 @@ let lastRenderTime = 0;
 // Frame loading queue state
 let loadQueue: LoadTask[] = [];
 let activeLoads = 0;
+
+// Camera wobble state
+let isWobbling = false;
+let wobbleStartTime = 0;
+let originalCameraPos: THREE.Vector3;
+let originalTarget: THREE.Vector3;
+
+// Event listener unsubscribe function
+let unsubscribeHintClick: (() => void) | null = null;
 
 // ==================== TYPES ====================
 interface LoadTask {
@@ -105,6 +124,38 @@ function initControls(camera: THREE.PerspectiveCamera, canvas: HTMLCanvasElement
     controls.enablePan = false;
     controls.target.set(0, 2, 0);
     return controls;
+}
+
+// ==================== CAMERA WOBBLE ====================
+function triggerCameraWobble(): void {
+    if (isWobbling) return;
+    
+    isWobbling = true;
+    wobbleStartTime = performance.now();
+    originalCameraPos = camera.position.clone();
+    originalTarget = controls.target.clone();
+}
+
+function updateCameraWobble(currentTime: number): void {
+    if (!isWobbling) return;
+    
+    const elapsed = currentTime - wobbleStartTime;
+    
+    if (elapsed >= WOBBLE_CONFIG.DURATION) {
+        // Wobble complete, restore original position
+        camera.position.copy(originalCameraPos);
+        controls.target.copy(originalTarget);
+        isWobbling = false;
+        return;
+    }
+    
+    // Wobble animation using sine wave
+    const progress = elapsed / WOBBLE_CONFIG.DURATION;
+    const decayEnvelope = Math.sin(progress * Math.PI * WOBBLE_CONFIG.OSCILLATION_CYCLES) * (1 - progress);
+    const wobbleAmount = WOBBLE_CONFIG.AMPLITUDE * decayEnvelope;
+    
+    camera.position.x = originalCameraPos.x + Math.sin(progress * Math.PI * WOBBLE_CONFIG.PERIOD_X) * wobbleAmount;
+    camera.position.y = originalCameraPos.y + Math.cos(progress * Math.PI * WOBBLE_CONFIG.PERIOD_Y) * wobbleAmount * WOBBLE_CONFIG.AMPLITUDE_RATIO_Y;
 }
 
 // ==================== MATERIALS ====================
@@ -303,6 +354,7 @@ function animate(time: number): void {
     if (time - lastRenderTime >= frameInterval) {
         lastRenderTime = time;
         updateFrame(elapsedTime);
+        updateCameraWobble(time);
         controls.update();
         composer.render();
     }
@@ -384,14 +436,27 @@ async function setupScene(): Promise<void> {
         loopFrames
     );
 
+    // Listen for hint-click event
+    unsubscribeHintClick = eventBus.on('hint-click' as DrinkEventType, () => {
+        triggerCameraWobble();
+    });
+
     // Start animation loop
     requestAnimationFrame(animate);
 }
 
 onMounted(setupScene);
+
+onBeforeUnmount(() => {
+    if (unsubscribeHintClick) {
+        unsubscribeHintClick();
+    }
+});
 </script>
 
 <style lang="scss" scoped>
+@use "~/assets/theme.scss" as *;
+
 #threejs-canvas {
     min-height: 600px;
     pointer-events: auto;
@@ -399,6 +464,7 @@ onMounted(setupScene);
     :deep(canvas) {
         display: block;
         pointer-events: auto;
+        filter: hue-rotate(#{$base-hue}deg);
     }
 }
 </style>

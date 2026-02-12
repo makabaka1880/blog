@@ -35,7 +35,7 @@ export default defineNuxtConfig({
             }
         }
     },
-    modules: ['@nuxt/content', "@nuxtjs/mdc", '@nuxt/image', '@nuxt/icon', '@vueuse/nuxt'],
+    modules: ['@nuxt/content', "@nuxtjs/mdc", '@nuxt/image', '@nuxt/icon', '@vueuse/motion'],
     plugins: [
         '~/plugins/configVueLibs',
     ],

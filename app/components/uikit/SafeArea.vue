@@ -8,10 +8,20 @@
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "~/assets/theme.scss" as *;
+
 .safe-area {
-    width: 100%;
+    display: block;
+    margin: 5rem auto;
+    width: calc(#{$critical-width} - 8rem);
     height: 100%;
-    padding: 5vh 10vw;
+}
+
+@media (max-width: $critical-width) {
+    .safe-area {
+        width: calc(100% - 8rem);
+        margin: 5rem 4rem;
+    }
 }
 </style>

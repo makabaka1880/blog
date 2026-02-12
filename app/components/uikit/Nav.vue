@@ -1,15 +1,15 @@
 <template>
     <nav class="nav-bar">
         <div class="nav-left">
-            <NuxtLink to="/">
+            <UtilsNavLink to="/">
                 <span class="nav-title" v-if="props.title">Home</span>
-            </NuxtLink>
-            <NuxtLink to="/posts">
+            </UtilsNavLink>
+            <UtilsNavLink to="/posts">
                 <span class="nav-title">Posts</span>
-            </NuxtLink>
-            <NuxtLink to="https://github.com/makabaka1880/blog">
+            </UtilsNavLink>
+            <UtilsNavLink to="https://github.com/makabaka1880/blog">
                 <span class="nav-title">GitHub</span>
-            </NuxtLink>
+            </UtilsNavLink>
         </div>
     </nav>
 </template>
@@ -28,9 +28,10 @@ const props = defineProps<{ title?: string }>()
     justify-content: space-between;
     align-items: center;
     background-color: var(--color-navbar-bg);
-    padding: 0 2rem;
+    padding: 2rem 2rem;
     transition: all 0.2s ease-in-out;
     user-select: none;
+
     .nav-title {
         font-size: .8em;
     }
@@ -43,11 +44,10 @@ a {
     /* border: 2px solid transparent; */
     transition: all 0.2s ease-in-out;
     font-size: 1.2rem;
-}
 
-a:hover {
-    /* border: 2px solid var(--color-navbar-link-border); */
-    color: var(--color-navbar-link-hover);
+    &:hover {
+        color: var(--color-navbar-link-hover);
+    }
 }
 
 .nav-right {

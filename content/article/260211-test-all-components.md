@@ -1,0 +1,156 @@
+---
+title: Test All Components
+description: Comprehensive test for all prose components
+createTime: 2026-02-11
+updateTime: 2026-02-11
+---
+
+This is a test article to verify all prose components work correctly.
+
+# Heading 1
+This is a paragraph to test basic text rendering.
+
+## Heading 2
+Testing the h2 component with some **bold text** and *italic text*.
+
+### Heading 3
+This is h3 level. Let's test some combinations: **bold and italic** together.
+
+#### Heading 4
+This is h4 level. The font weights should be slightly lighter than h3.
+
+##### Heading 5
+This is h5 level. Getting lighter.
+
+###### Heading 6
+This is h6 level. The lightest heading.
+
+## Text Formatting Tests
+
+Here's some **bold text** using the ProseStrong component.
+
+Here's some *italic text* using the ProseEm component.
+
+You can also combine them like this: **bold** and *italic* in the same paragraph.
+
+## Blockquote Test
+
+> This is a blockquote to test the ProseBlockquote component.
+> It should have proper styling and indentation.
+>
+> This is a second paragraph in the blockquote.
+
+## Code Block Test
+
+```js
+function testFunction() {
+    console.log("This is a code block");
+    return true;
+}
+```
+
+## Image Test
+
+Test image rendering (placeholder):
+
+![Test Image](IMG_5245.webp)
+![Vertical Image](DSC02913.webp)
+
+## Lists Test
+
+### Unordered List
+- Item 1
+- Item 2
+    - Nested item 2.1
+    - Nested item 2.2
+- Item 3
+
+### Ordered List
+1. First item
+2. Second item
+3. Third item
+
+## Interactive Components Test
+
+### Music Player
+:MusicPlayer{mode="server" server="netease" :id="1395957507"}
+
+### Tip Box
+<Tip>
+This is a tip box component to test custom content rendering.
+</Tip>
+
+### Question Box
+<Quesbox>
+This is a question box component for FAQ-style content.
+</Quesbox>
+
+### Definition Box
+<Defbox term="Test Term">
+This is a definition box component. It has a term and its definition.
+</Defbox>
+
+## Mixed Content Test
+
+This paragraph tests **bold** text, *italic* text, and regular text all together. We can also add `inline code` to test that styling.
+
+> **Bold text in blockquote**
+> *Italic text in blockquote*
+>
+> Regular text in blockquote
+
+## Long Content Test
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+
+**Important note**: This is a longer paragraph to test wrapping and spacing.
+
+## Conclusion
+
+This concludes the comprehensive test of all prose components. If everything looks correct, all components are working as expected!
+
+## Chess Components Test
+
+### Simple Chessboard
+<Chessboard fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR" :coords="true">
+e2-e4
+</Chessboard>
+
+### Chess Display with Line
+<ChessDisplay 
+    fen="rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+    line="1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7"
+    title="Ruy Lopez - Classic Opening"
+    white="White"
+    black="Black"
+    event="Test Game"
+    :coords="true"
+    :linear="false">
+e2->e4
+(Pe2)
+</ChessDisplay>
+
+### Chess Display with Linear Format
+
+## More Interactive Components
+
+### Chat Component
+<Chat>
+This is a chat component for interactive discussions or Q&A sessions.
+</Chat>
+
+### Folding Component
+<Folding title="Click to Expand This Section">
+This content is hidden by default and expands when you click the header. Useful for organizing long content or hiding spoilers.
+</Folding>
+
+### Blur Component
+<Blur>
+This content is blurred until hovered over. Useful for hiding sensitive information or spoilers.
+</Blur>
+
+### Emoji Clock
+<EmojiClock />
+
+---
+**End of Test Article**

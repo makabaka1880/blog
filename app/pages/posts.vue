@@ -16,11 +16,10 @@
                     </div>
                     <div class="year-art-container">
                         <div v-for="article in yearArticles" :key="article.path" class="article-item">
-                            {{ console.log(article.path) }}
                             <NuxtLink :to="article.path">
                                 <div class="title-bar">
                                     <h3>{{ article.title }}</h3>
-                                    <small>{{ new Date(article.createTime).toLocaleDateString() }}</small>
+                                    <small>{{ new Date(article.createTime).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }) }}</small>
                                 </div>
                                 <p>{{ article.description }}</p>
                             </NuxtLink>
@@ -33,7 +32,7 @@
                     <div v-for="result in searchResult" :key="result.id" class="search-result-item">
                         <NuxtLink :to="result.id">
                             <div class="title-bar">
-                                <h3 v-html="highlightMatches(result.title, result.matches)"> </h3>
+                                <h3 v-html="highlightMatches(result.title, result.matches)"></h3>
                                 <h3 style="color: var(--color-accent); opacity: 0.8;">H{{ result.titles.length + 1 }}</h3>
                             </div>
                             <small>{{ result.id }}</small>
@@ -52,7 +51,6 @@
 
 <script setup lang="ts">
 import config from '@@/blog.config';
-import { count } from 'node:console';
 import { ref, computed, onMounted } from 'vue';
 import Fuse from 'fuse.js'
 
@@ -65,7 +63,6 @@ onMounted(async () => {
     const result = await queryCollection('articles').select('title', 'description', 'createTime', 'path').order('createTime', 'DESC');
     articleCount.value = await result.count();
     articles.value = await result.all();
-    console.log('Article count:', articles.value);
 });
 
 const entriesGrouped = computed(() => {
@@ -95,7 +92,6 @@ async function onSearch() {
         ...r.item,
         matches: r.matches
     }));
-    console.log(searchResult.value)
 }
 
 function highlightMatches(text: string, matches: any[] | undefined, maxLength?: number): string {
@@ -204,7 +200,9 @@ function highlightMatches(text: string, matches: any[] | undefined, maxLength?: 
                     background: var(--surface-elevated);
                     transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
                     box-shadow: none;
-
+                    :deep(a):hover {
+                        text-decoration: none;
+                    }
                     &:hover {
                         background-color: var(--color-card-hover-bg);
                         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

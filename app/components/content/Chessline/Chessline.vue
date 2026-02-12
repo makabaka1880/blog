@@ -1,6 +1,6 @@
 <template>
     <div v-for="(value, sidx) in line" :key="sidx" class="chessline-turn">
-        <Chessturn :idx="idx + sidx + 1" :turn="value" :foldable="foldable" />
+        <Chessturn :idx="idx + sidx + 1" :turn="value" :foldable="foldable" :linear="false" />
     </div>
 </template>
 

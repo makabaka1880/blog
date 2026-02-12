@@ -1,7 +1,7 @@
 <template>
-    <div class="turn-block">
+    <div class="turn-block" :class="{ 'linear-mode': linear }">
         <div v-if="hasWhiteSidelines">
-            <div class="turn-row">
+            <div class="turn-row" :class="{ 'linear-mode': linear }">
                 <span class="move-num">{{ idx }}.</span>
                 <span class="san-token">
                     <Icon v-if="isPieceMove(turn.white?.move)" :name="pieceIcon(turn.white!.move!, 'w')" />
@@ -19,7 +19,7 @@
                 </details>
                 <ChesslineLinear v-else :idx="idx - 1" :line="line" :foldable="foldable" />
             </div>
-            <div v-if="hasBlackSidelines" style="margin-left: 2rem;">
+            <div v-if="hasBlackSidelines" :style="{ marginLeft: linear ? '0' : '2rem' }">
                 <div v-for="(line, sidx) in turn.black!.sidelines" :key="`b-${sidx}`" class="sideline">
                     <details v-if="isFoldable" class="sideline-details">
                         <summary>Sideline</summary>
@@ -31,7 +31,7 @@
         </div>
 
         <div v-else>
-            <div class="turn-row">
+            <div class="turn-row" :class="{ 'linear-mode': linear }">
                 <span class="move-num">{{ idx }}.</span>
                 <span class="san-token">
                     <Icon v-if="isPieceMove(turn.white?.move)" :name="pieceIcon(turn.white!.move!, 'w')" />
@@ -42,7 +42,7 @@
                     <span>{{ toSANMove(turn.black?.move) }}</span>
                 </span>
             </div>
-            <div v-if="hasBlackSidelines" style="margin-left: 2rem;">
+            <div v-if="hasBlackSidelines" :style="{ marginLeft: linear ? '0' : '2rem' }">
                 <div v-for="(line, sidx) in turn.black!.sidelines" :key="`b-${sidx}`" class="sideline">
                     <details v-if="isFoldable" class="sideline-details">
                         <summary>Sideline</summary>
@@ -63,6 +63,7 @@ const props = defineProps<{
     idx: number,
     turn: Turn
     foldable?: boolean
+    linear?: boolean
 }>();
 
 const isFoldable = computed(() => props.foldable !== false);
@@ -94,15 +95,33 @@ function pieceIcon(move: MoveText, color: 'w' | 'b'): string {
 </script>
 
 <style lang="scss" scoped>
+.turn-block {
+    &.linear-mode {
+        display: inline;
+    }
+}
+
 .turn-row {
     display: grid;
     grid-template-columns: auto minmax(5rem, 1fr) minmax(5rem, 1fr);
     gap: 0.7rem;
     align-items: center;
+
+    &.linear-mode {
+        display: inline-flex;
+        gap: 0.25rem;
+        padding-right: 0.5rem;
+    }
 }
 
 .move-num {
     min-width: 2.2rem;
+
+    .turn-row.linear-mode & {
+        min-width: auto;
+        margin-right: 0.15rem;
+        color: var(--color-text-muted);
+    }
 }
 
 .san-token {
@@ -111,10 +130,15 @@ function pieceIcon(move: MoveText, color: 'w' | 'b'): string {
     line-height: 2;
     min-width: 0;
     
+    .turn-row.linear-mode & {
+        line-height: 1.8;
+        min-width: 0;
+        padding: 0 0.1rem;
+    }
+    
     span {
         margin-left: .2rem;
 
-        // TODO: Parametrize over accent color
         &.iconify {
             filter: invert(53%) sepia(87%) saturate(288%) hue-rotate(130deg) brightness(70%) contrast(93%);
         }
@@ -124,6 +148,11 @@ function pieceIcon(move: MoveText, color: 'w' | 'b'): string {
 
 .sideline {
     margin-left: 2rem;
+
+    .turn-block.linear-mode & {
+        margin-left: 0;
+        margin-top: 0.25rem;
+    }
 }
 
 .sideline-details {
