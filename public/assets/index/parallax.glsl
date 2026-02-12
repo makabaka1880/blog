@@ -44,19 +44,15 @@ void main() {
     vec2 baseUv = getImageUv(v_uv);
     vec4 sampledDepth = texture2D(u_depth, baseUv);
     
-    // 1. Depth Delineation
     float depth = sampledDepth.r;
     float delineatedDepth = pow(abs(depth - .5), 1.) * sign(depth - .5) + .5;
     vec4 enhancedDepth = vec4(vec3(delineatedDepth), 1.);
     
-    // 2. Parallax Displacement
     float sensitivity = .0004;
-    float displaced = -(u_offset - 500.) * sensitivity;
+    float displaced = -(u_offset - 550.) * sensitivity;
     vec2 displacedUv = getDisplacedUv(baseUv, enhancedDepth, vec2(.0, displaced));
     
-    // 3. Rotation logic
-    // We can link rotation to u_offset to make it feel like a "tilt"
-    float rotationAngle = displaced * 0.1; // Subtle rotation tied to scroll
+    float rotationAngle = displaced * 0.2;
     vec2 finalUv = rotate(displacedUv, rotationAngle, vec2(0.6));
     
     gl_FragColor = texture2D(u_texture, mirrored(finalUv));

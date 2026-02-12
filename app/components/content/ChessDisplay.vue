@@ -1,18 +1,20 @@
 <template>
-    <div class="chessboard-line-container">
-        <div class="chessboard-line-header" v-if="showHeader && headerText">{{ headerText }}</div>
-        <!-- <div class="chessboard-line-wrap"> -->
-        <div class="chessboard-line">
-            <div class="board">
-                <Chessboard :fen="fen" :coords="coords">
-                    <slot />
-                </Chessboard>
-            </div>
-            <div class="line">
-                <ChesslineTree :line="line" :linear="linear" />
+    <div>
+        <div class="chessboard-line-container">
+            <div class="chessboard-line-header" v-if="showHeader && headerText">{{ headerText }}</div>
+            <div class="chessboard-line-wrap">
+                <div class="chessboard-line">
+                    <div class="board">
+                        <Chessboard :fen="fen" :coords="coords">
+                            <slot />
+                        </Chessboard>
+                    </div>
+                    <div class="line">
+                        <ChesslineTree :line="line" :linear="linear" />
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- </div> -->
     </div>
 </template>
 
@@ -75,9 +77,9 @@ const headerText = computed(() => {
     max-width: 100%;
     background-color: var(--color-card-bg);
 
-    & * {
-        margin: 0;
-    }
+    // & * {
+    //     margin: 0;
+    // }
 }
 
 .chessboard-line-header {

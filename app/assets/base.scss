@@ -17,6 +17,13 @@
     background-color: var(--color-highlight-bg);
 }
 
+:where(.iconify) {
+    display: inline-block;
+    flex-shrink: 0;
+    font-size: 1.2em;
+    vertical-align: sub;
+}
+
 /* 页面 */
 body {
     background-color: var(--color-background);

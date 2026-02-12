@@ -134,4 +134,8 @@ const showUpdated = computed(() => {
     padding: 0;
     width: 60%;
 }
+
+:deep(.image-like) {
+    margin: 2rem auto;
+}
 </style>

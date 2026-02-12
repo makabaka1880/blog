@@ -3,16 +3,11 @@
         <h2 class="section-header">Art</h2>
         <div class="project-display">
             <div class="depth-image-container" draggable="false">
-                <VueDepthViewer class="disp-wide" img="/assets/index/poolcore.webp"
-                    depth-img="/assets/index/poolcore-depth.webp" :options="{
-                        horizontalThreshold: 80,
-                        verticalThreshold: 100,
-                        useScreen: true
-                    }" />
-                <small v-if="showMouseWarning" class="warning">
-                    Your device does not support mouse interactions. Parallax effect may not work.
-                </small>
-                <small v-else>Try moving your cursor around.</small>
+                <ParallaxWindowMousetrack src="/assets/index/poolcore.webp" depth="/assets/index/poolcore-depth.webp"
+                    :sensitivity-x="0.02" :sensitivity-y="0.02" :show-warning="false"/>
+                <UIKitWarningTag class="feature-tag" v-if="showMouseWarning"
+                    msg="Your device does not support mouse interactions. Parallax effect may not work." />
+                <small v-if="!showMouseWarning">Try moving your cursor around.</small>
             </div>
             <p>
                 The above is a recreation of a frame in the second scene in my render collection
@@ -49,6 +44,10 @@ onMounted(() => {
     margin-bottom: 1rem;
 }
 
+.feature-tag {
+    margin: 1rem auto;
+    width: 80%;
+}
 .project-display {
     .depth-image-container {
         text-align: center;

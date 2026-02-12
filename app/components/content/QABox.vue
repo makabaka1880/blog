@@ -1,9 +1,9 @@
 <template>
     <div class="box-container">
-        <div class="quesbox-container">
-            <span class="quesbox-Q">Q</span>
-            <div class="quesbox-content">
-                <b> Problem. </b>
+        <div :class="['qabox-container', type]">
+            <span :class="['qabox-label', type]">{{ label }}</span>
+            <div class="qabox-content">
+                <b>{{ prefix }} </b>
                 <slot />
             </div>
         </div>
@@ -12,11 +12,14 @@
 
 <script lang="ts" setup>
 const props = defineProps({
-    id: { type: String }
+    type: {
+        type: String as PropType<'question' | 'answer'>,
+        default: 'question'
+    }
 })
-const title = computed(() => {
-    return props.id!
-})
+
+const label = computed(() => props.type === 'question' ? 'Q' : 'A')
+const prefix = computed(() => props.type === 'question' ? 'Problem.' : 'Solution.')
 </script>
 
 <style lang="scss" scoped>
@@ -26,7 +29,7 @@ const title = computed(() => {
     margin: 1rem 0;
 }
 
-.quesbox-container {
+.qabox-container {
     background-color: var(--color-defbox-bg);
     padding: 1rem;
     border: 1px var(--color-border) solid;
@@ -35,30 +38,40 @@ const title = computed(() => {
     align-items: flex-start;
     gap: 0.75rem;
     text-align: left;
+
+    &.answer {
+        background-color: var(--color-success-bg);
+        border-color: var(--color-success-border);
+    }
 }
 
-.quesbox-Q {
+.qabox-label {
     font-size: 3rem;
     font-weight: 700;
     line-height: 1;
     opacity: 0.4;
     flex-shrink: 0;
+
+    &.answer {
+        color: var(--color-success-text);
+        opacity: 0.6;
+    }
 }
 
-.quesbox-content {
+.qabox-content {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
 }
 
-.quesbox-content b {
+.qabox-content b {
     font-weight: 600;
     color: var(--color-text);
 }
 
 @media (max-width: $critical-width) {
-    .quesbox-container {
+    .qabox-container {
         flex-direction: row;
     }
 }

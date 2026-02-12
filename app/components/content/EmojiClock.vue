@@ -3,9 +3,11 @@ const emojiClock = ['🕛', '🕧', '🕐', '🕜', '🕑', '🕝', '🕒', '�
 
 const now = ref(new Date())
 
-setInterval(() => {
-    now.value = new Date()
-}, 60000)
+onMounted(() => {
+    setInterval(() => {
+        now.value = new Date()
+    }, 60000)
+})
 
 const clockEmoji = computed(() => {
     const clockIndex = now.value.getHours() * 2 + Math.round(now.value.getMinutes() / 30)
