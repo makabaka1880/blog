@@ -182,9 +182,7 @@ depth: "/assets/index/poolcore-depth.webp"
 
 ### Chat Component
 ::Chat
----
 This is a chat component for interactive discussions or Q&A sessions.
----
 ::
 
 ### Folding Component
