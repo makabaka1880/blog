@@ -29,10 +29,43 @@ vec2 getImageUv(vec2 screenUv){
     );
 }
 
-vec2 getDisplacedUv(vec2 baseUv,vec4 depthData,vec2 view){
-    float depth=depthData.r;
-    vec2 displacement=(depth-.5)*view;
-    return baseUv+displacement;
+// We remove the pre-sampled depthData and use the texture inside the loop
+vec2 getDisplacedUv(vec2 baseUv,vec2 view){
+    const int layers=16;
+    float layerStep=1./float(layers);
+    
+    // How much to shift UVs per layer step
+    vec2 deltaUV=view/float(layers);
+    
+    float currentLayerHeight=1.;// Start at the "top"
+    vec2 currentUV=baseUv;
+    float mapHeight=texture2D(u_depth,currentUV).r;
+    
+    // We need to store the previous state for the interpolation at the end
+    float prevLayerHeight=currentLayerHeight;
+    float prevMapHeight=mapHeight;
+    
+    for(int i=0;i<layers;i++){
+        // Break when our ray goes "below" the heightmap value
+        if(currentLayerHeight<mapHeight)break;
+        
+        // Keep track of the "before hit" state
+        prevLayerHeight=currentLayerHeight;
+        prevMapHeight=mapHeight;
+        
+        // March deeper
+        currentLayerHeight-=layerStep;
+        currentUV+=deltaUV;
+        mapHeight=texture2D(u_depth,currentUV).r;
+    }
+    
+    // --- Linear Interpolation (Smoothing) ---
+    // This calculates exactly where the ray pierced the surface between steps
+    float nextHeight=prevLayerHeight-prevMapHeight;
+    float prevHeight=mapHeight-currentLayerHeight;
+    float weight=nextHeight/(nextHeight+prevHeight);
+    
+    return mix(currentUV,currentUV-deltaUV,weight);
 }
 
 vec2 mirrored(vec2 v){
@@ -45,20 +78,20 @@ void main(){
     vec4 sampledDepth=texture2D(u_depth,baseUv);
     
     float depth=sampledDepth.r;
-    float delineatedDepth=pow(abs(depth-.5),1.)*sign(depth-.5)+.5;
+    float delineatedDepth=depth;
     vec4 enhancedDepth=vec4(vec3(delineatedDepth),1.);
     
     float sensitivity=.0004;
     float displaced=-(u_offset-550.)*sensitivity;
     
     // Chromatic Aberration
-    float aberrationAmount=max((.1-displaced) * 0.75,0.);
+    float aberrationAmount=max((-.1-displaced)*.1,0.);
     
     vec2 pivot=vec2(.6);
     
-    vec2 uvG=getDisplacedUv(baseUv,enhancedDepth,vec2(0.,displaced));
-    vec2 uvR=getDisplacedUv(baseUv,enhancedDepth,vec2(0.,displaced+aberrationAmount));
-    vec2 uvB=getDisplacedUv(baseUv,enhancedDepth,vec2(0.,displaced-aberrationAmount));
+    vec2 uvG=getDisplacedUv(baseUv,vec2(0.,displaced));
+    vec2 uvR=getDisplacedUv(baseUv,vec2(0.,displaced+aberrationAmount));
+    vec2 uvB=getDisplacedUv(baseUv,vec2(0.,displaced-aberrationAmount));
     
     float rotationAngle=displaced*.2;
     

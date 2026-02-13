@@ -59,7 +59,7 @@ const posts = computed(() => (adjacentPosts as Record<string, any>)[page.value?.
 }
 
 :deep(p) {
-    margin-bottom: 0.5rem;
+    margin: 0.2rem 0;
 }
 
 </style>

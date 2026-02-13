@@ -3,16 +3,21 @@
         <h2 class="section-header">Art</h2>
         <div class="project-display">
             <div class="depth-image-container" draggable="false">
-                <ParallaxWindowMousetrack src="/assets/index/poolcore.webp" depth="/assets/index/poolcore-depth.webp"
-                    :sensitivity-x="0.02" :sensitivity-y="0.02" :show-warning="false"/>
-                <UIKitWarningTag class="feature-tag" v-if="showMouseWarning"
-                    msg="Your device does not support mouse interactions. Parallax effect may not work." />
+                <ParallaxWindowMousetrack v-if="!showMouseWarning" src="/assets/index/poolcore.webp" :sensitivity-x="0.02" :sensitivity-y="0.02" />
+                <ParallaxWindowScrolltrack v-else src="/assets/index/poolcore.webp":sensitivity="0.5" :offset="0.5" />
                 <small v-if="!showMouseWarning">Try moving your cursor around.</small>
             </div>
             <p>
                 The above is a recreation of a frame in the second scene in my render collection
                 inspired by the poolcore style. I use blender and mostly open-sourced assets like bridge for renders.
             </p>
+            <div class="depth-image-container" draggable="false">
+                <ParallaxWindowMousetrack v-if="!showMouseWarning" src="/assets/index/cat.webp" :sensitivity-x="0.03"
+                    :sensitivity-y="0.03" :view-height="0.1" />
+                <ParallaxWindowScrolltrack v-else src="/assets/index/cat.webp":sensitivity="0.2" :angle="0.785" :view-height="0.1" />
+                <small v-if="!showMouseWarning">Try moving your cursor around.</small>
+            </div>
+            <p>I use a A7II (ILCE-7M2) for photography. All parallax windows on this site utilizes </p>
         </div>
     </div>
 </template>
@@ -48,6 +53,7 @@ onMounted(() => {
     margin: 1rem auto;
     width: 80%;
 }
+
 .project-display {
     .depth-image-container {
         text-align: center;

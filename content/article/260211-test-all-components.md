@@ -157,32 +157,51 @@ e2->e4
 ## More Interactive Components
 ### Parallax Window
 
+Scrolling Parallax with an angle of $-\frac{\pi}{4}$ and sensitivity of 0.04:
 ::ParallaxWindowScrolltrack
 ---
 src: "/assets/index/poolcore.webp"
-depth: "/assets/index/poolcore-depth.webp"
+sensitivity: 0.04
 angle: -0.785
 ---
 ::
 
-::ParallaxWindowScrolltrack
----
-src: "/assets/index/poolcore.webp"
-depth: "/assets/index/poolcore-depth.webp"
-angle: -0.785
----
-::
-
+Mouse-track Parallax with sensitivity $\langle 0.01, 0.03 \rangle$ and $h_0 = 0.8$
 ::ParallaxWindowMousetrack
 ---
-src: "/assets/index/poolcore.webp"
-depth: "/assets/index/poolcore-depth.webp"
+src: "/assets/index/a7ef2bdaba15aa117a047b797a3ddde6.jpg"
+sensitivity-y: 0.01
+sensitivity-x: 0.03
+view-height: 0.8
 ---
 ::
+
+
 
 ### Chat Component
 ::Chat
-This is a chat component for interactive discussions or Q&A sessions.
+{:2026-02-14 05:01:35}
+
+{.Dev}
+
+Hello! How can I help you?
+
+{Makabaka1880}
+
+What are parallax effects?
+
+{.Dev}
+
+They create depth by moving backgrounds slower than foregrounds.
+
+{Makabaka1880}
+
+Cool! Can we use WebGL?
+
+{.Dev}
+
+Yes! Depth maps and shaders work great for real-time performance.
+
 ::
 
 ### Folding Component

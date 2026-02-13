@@ -31,3 +31,5 @@ pnpm-lock.yaml
 features.faiss
 features.meta.json
 __pycache__
+
+models

@@ -3,25 +3,25 @@ import path from "node:path";
 
 const args = process.argv.slice(2);
 if (args.length === 0) {
-  console.error("Usage: pnpm new:article \"Title Here\"");
-  process.exit(1);
+    console.error("Usage: pnpm new:article \"Title Here\"");
+    process.exit(1);
 }
 
 const title = args.join(" ").trim();
 if (!title) {
-  console.error("Error: title is empty.");
-  process.exit(1);
+    console.error("Error: title is empty.");
+    process.exit(1);
 }
 
 const slug = title
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")
-  .replace(/^-+|-+$/g, "")
-  .replace(/--+/g, "-");
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/--+/g, "-");
 
 if (!slug) {
-  console.error("Error: title must include letters or numbers.");
-  process.exit(1);
+    console.error("Error: title must include letters or numbers.");
+    process.exit(1);
 }
 
 const now = new Date();
@@ -36,20 +36,20 @@ const targetDir = path.join(process.cwd(), "content", "draft");
 const targetPath = path.join(targetDir, filename);
 
 if (fs.existsSync(targetPath)) {
-  console.error(`Error: file already exists: ${targetPath}`);
-  process.exit(1);
+    console.error(`Error: file already exists: ${targetPath}`);
+    process.exit(1);
 }
 
 const frontmatter = [
-  "---",
-  `title: ${title}`,
-  "description: TODO",
-  `createTime: ${isoDate}`,
-  `updateTime: ${isoDate}`,
-  "---",
-  "",
-  "# TODO",
-  "",
+    "---",
+    `title: ${title}`,
+    "description: TODO",
+    `createTime: ${isoDate}`,
+    `updateTime: ${isoDate}`,
+    "---",
+    "",
+    "# TODO",
+    "",
 ].join("\n");
 
 fs.mkdirSync(targetDir, { recursive: true });

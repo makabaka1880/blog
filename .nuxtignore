@@ -1,0 +1,2 @@
+# Exclude script files from Nuxt type generation
+scripts/**

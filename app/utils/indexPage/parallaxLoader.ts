@@ -83,8 +83,8 @@ export async function setupStripShader(canvas: HTMLCanvasElement) {
 
     // Load assets in parallel
     const [colorTex, depthTex] = await Promise.all([
-        loadTexture('/assets/index/bg-strip-color.webp'),
-        loadTexture('/assets/index/bg-strip-depthmap.webp')
+        loadTexture('/assets/index/bg-strip-albedo.webp'),
+        loadTexture('/assets/index/bg-strip-depth.webp')
     ]);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     const render = (y: number) => {

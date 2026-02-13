@@ -1,24 +1,50 @@
 <template>
-    <canvas class="image-like-content" ref="parallaxCanvas"></canvas>
+    <span class="prose-img-container image-like">
+        <canvas class="image-like-content" ref="parallaxCanvas"></canvas>
+        <div v-if="alt" class="prose-img-caption">
+            <strong>Fig.</strong>
+            <span class="caption-text">{{ alt }}</span>
+        </div>
+    </span>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, watch, watchEffect } from 'vue';
 
 const props = withDefaults(defineProps<{
-    src: string,
+    albedo: string,
     depth: string,
+    src?: string,
+    alt?: string,
     offsetX?: number,
     offsetY?: number,
     sensitivityX?: number,
     sensitivityY?: number,
-    reverseDepth?: boolean
+    viewHeight?: number
 }>(), {
+    alt: "",
     offsetX: 0,
     offsetY: 0,
     sensitivityX: 0.004,
     sensitivityY: 0.004,
-    reverseDepth: false
+    viewHeight: 1
+});
+
+// Derive albedo and depth from src if provided
+const derivedAlbedo = computed(() => {
+    if (props.src) {
+        const ext = props.src.match(/\.[^.]+$/)?.[0] || '';
+        return props.src.replace(ext, `-albedo${ext}`);
+    }
+    return props.albedo;
+});
+
+const derivedDepth = computed(() => {
+    if (props.src) {
+        const ext = props.src.match(/\.[^.]+$/)?.[0] || '';
+        return props.src.replace(ext, `-depth${ext}`);
+    }
+    return props.depth;
 });
 
 const parallaxCanvas = ref<HTMLCanvasElement | null>(null);
@@ -95,8 +121,8 @@ async function setupShader(canvas: HTMLCanvasElement) {
 
     setupGeometry(gl, program);
 
-    const albedoResult = await loadTexture(gl, props.src);
-    const depthResult = await loadTexture(gl, props.depth);
+    const albedoResult = await loadTexture(gl, derivedAlbedo.value);
+    const depthResult = await loadTexture(gl, derivedDepth.value);
 
     // Set aspect ratio from image dimensions
     imageAspectRatio.value = albedoResult.width / albedoResult.height;
@@ -116,7 +142,7 @@ async function setupShader(canvas: HTMLCanvasElement) {
         uDepthPower: gl.getUniformLocation(program, 'u_depthPower'),
         uDepthCenter2: gl.getUniformLocation(program, 'u_depthCenter2'),
         uRotationPivot: gl.getUniformLocation(program, 'u_rotationPivot'),
-        uReverseDepth: gl.getUniformLocation(program, 'u_reverseDepth')
+        uViewHeight: gl.getUniformLocation(program, 'u_viewHeight'),
     };
 
     const render = (offsetX: number = props.offsetX, offsetY: number = props.offsetY) => {
@@ -133,6 +159,7 @@ async function setupShader(canvas: HTMLCanvasElement) {
         gl.uniform2f(uniforms.uRes, canvas.width, canvas.height);
         gl.uniform2f(uniforms.uImageRes, albedoResult.width, albedoResult.height);
         gl.uniform2f(uniforms.uSensitivity, props.sensitivityX, props.sensitivityY);
+        gl.uniform1f(uniforms.uViewHeight, props.viewHeight);
 
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, albedoResult.texture);
@@ -141,8 +168,6 @@ async function setupShader(canvas: HTMLCanvasElement) {
         gl.activeTexture(gl.TEXTURE1);
         gl.bindTexture(gl.TEXTURE_2D, depthResult.texture);
         gl.uniform1i(uniforms.uDepth, 1);
-
-        gl.uniform1i(uniforms.uReverseDepth, props.reverseDepth ? 1 : 0);
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
     };
@@ -173,6 +198,24 @@ defineExpose({
 <style lang="scss" scoped>
 @use '~/assets/theme.scss' as *;
 
+.prose-img-container {
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .prose-img-caption {
+        margin-top: 0.5rem;
+        display: block;
+        width: max-content;
+        text-align: center;
+
+        span {
+            margin-left: 0.25rem;
+        }
+    }
+}
+
 canvas {
     aspect-ratio: v-bind(imageAspectRatio);
 }
@@ -181,13 +224,12 @@ canvas {
     display: block;
     width: 80%;
     border-radius: 1rem;
-    margin: 0rem auto;
+    height: auto;
 }
 
 @media (max-width: $critical-width) {
     .image-like-content {
         width: 100%;
     }
-    
 }
 </style>

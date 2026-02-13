@@ -1,7 +1,7 @@
 <template>
     <div ref="elementRef" class="image-like">
-        <ParallaxWindow :src="props.src" :depth="props.depth" :sensitivity-x="props.sensitivityX"
-            :sensitivity-y="props.sensitivityY" ref="pwindow" :reverse-depth="props.reverse" />
+        <ParallaxWindow :albedo="derivedAlbedo" :depth="derivedDepth" :alt="props.alt" :sensitivity-x="props.sensitivityX"
+            :sensitivity-y="props.sensitivityY" ref="pwindow" :reverse-depth="props.reverse" :view-height="props.viewHeight" />
         <div v-if="!hasMouse && props.showWarning" class="no-mouse-overlay" @click="isWarningVisible = !isWarningVisible">
             <Icon name="uil:exclamation-triangle" size="1.2em" />
         </div>
@@ -16,20 +16,45 @@ import { useElementMouse } from '~/utils/useElementMouse';
 import WarningTag from '../uikit/WarningTag.vue';
 
 const props = withDefaults(defineProps<{
-    src: string,
-    depth: string,
+    albedo?: string,
+    depth?: string,
+    src?: string,
+    alt?: string,
     sensitivityX?: number,
     sensitivityY?: number,
     reverse?: boolean,
-    showWarning?: boolean
+    showWarning?: boolean,
+    viewHeight?: number
 }>(), {
+    albedo: undefined,
+    depth: undefined,
+    src: undefined,
+    alt: "",
     reverse: true,
     sensitivityX: 0.04,
     sensitivityY: 0.04,
-    showWarning: true
+    showWarning: true,
+    viewHeight: 1
 });
 
-const pwindow = ref<any>(null);
+// Derive albedo and depth from src if provided
+const derivedAlbedo = computed(() => {
+    if (props.src) {
+        const ext = props.src.match(/\.[^.]+$/)?.[0] || '';
+        return props.src.replace(ext, `-albedo${ext}`);
+    }
+    return props.albedo;
+});
+
+const derivedDepth = computed(() => {
+    if (props.src) {
+        const ext = props.src.match(/\.[^.]+$/)?.[0] || '';
+        return props.src.replace(ext, `-depth${ext}`);
+    }
+    return props.depth;
+});
+
+const pwindow = ref<{ render: (x: number, y: number) => void } | null>(null);
 const elementRef = ref<HTMLElement | null>(null);
 const isWarningVisible = ref(false);
 

@@ -33,6 +33,8 @@ function render() {
 </template>
 
 <style lang="scss" scoped>
+@use '~/assets/theme.scss' as *;
+
 .chat {
 	margin-inline: 2vw;
 	font-size: 0.9em;
@@ -42,6 +44,7 @@ function render() {
 	.chat-caption {
 		opacity: 0.8;
 		font-size: 0.9em;
+		color: var(--color-text-muted);
 	}
 
 	.chat-body {
@@ -53,12 +56,19 @@ function render() {
 		padding: 0 1em;
 		border-radius: 1em;
 		border-start-start-radius: 0.2em;
-		background-color: var(--c-bg-2);
+		background-color: var(--color-card-bg);
+		border: 1px solid var(--color-border);
+		color: var(--color-text);
+	}
+
+	.chat-text {
+        margin: 0 0;
 	}
 
 	.chat-system {
 		margin-bottom: 1em;
 		text-align: center;
+		color: var(--color-text-muted);
 	}
 
 	.chat-myself {
@@ -69,7 +79,8 @@ function render() {
 			margin-inline-start: auto;
 			border-radius: 1em;
 			border-start-end-radius: 0.2em;
-			background-color: var(--c-primary-soft);
+			background-color: var(--color-success-bg);
+			border-color: var(--color-success-border);
 		}
 	}
 }
