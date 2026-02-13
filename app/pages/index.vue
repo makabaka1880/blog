@@ -7,11 +7,11 @@
         <div class="content">
             <small id="draggable-hint" class="disp-wide" @click="onHintClick"><- This is draggable</small>
 
-                    <IndexPageHeroSection />
-
-                    <IndexPageLatestPostsSection :articles="recentArticles" />
-
-                    <IndexPageScrollIndicator :hidden="showAuthorSection" />
+                    <div id="hero-section">
+                        <IndexPageHeroSection />
+                        <IndexPageLatestPostsSection :articles="recentArticles" />
+                        <IndexPageScrollIndicator :hidden="showAuthorSection" />
+                    </div>
 
                     <div ref="authorTrigger" class="section-trigger">
                         <section ref="authorRef" class="author-section" :class="{
@@ -97,7 +97,7 @@ useIntersectionObserver(
             showAuthorSection.value = entry.isIntersecting;
         }
     },
-    { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
+    { threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
 );
 
 useIntersectionObserver(
@@ -147,6 +147,10 @@ body {
 .hero {
     display: flex;
     align-items: center;
+}
+
+#hero-section {
+    min-height: 100vh;
 }
 
 .hero,

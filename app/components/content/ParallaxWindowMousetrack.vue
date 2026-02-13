@@ -24,7 +24,11 @@ const props = withDefaults(defineProps<{
     sensitivityY?: number,
     reverse?: boolean,
     showWarning?: boolean,
-    viewHeight?: number
+    viewHeight?: number,
+    offsetX?: number,
+    offsetY?: number,
+    scaleX?: number,
+    scaleY?: number
 }>(), {
     albedo: undefined,
     depth: undefined,
@@ -34,7 +38,11 @@ const props = withDefaults(defineProps<{
     sensitivityX: 0.04,
     sensitivityY: 0.04,
     showWarning: true,
-    viewHeight: 1
+    viewHeight: 1,
+    offsetX: 0,
+    offsetY: 0,
+    scaleX: 1,
+    scaleY: 1
 });
 
 // Derive albedo and depth from src if provided
@@ -67,9 +75,17 @@ onMounted(() => {
 
 const { mouseX, mouseY } = useElementMouse(elementRef);
 
+// Linear interpolation function
+function lerp(a: number, b: number, t: number): number {
+    return a + (b - a) * t;
+}
+
 watch([mouseX, mouseY], ([newX, newY]) => {
     if (pwindow.value && pwindow.value.render) {
-        pwindow.value.render(newX, newY);
+        // Normalize mouse values from [0, 1] to [-1, 1] using lerp
+        const normalizedX = lerp(-1, 1, newX);
+        const normalizedY = lerp(-1, 1, newY);
+        pwindow.value.render(normalizedX, normalizedY);
     }
 });
 </script>
