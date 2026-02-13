@@ -52,7 +52,7 @@ void main(){
     float displaced=-(u_offset-550.)*sensitivity;
     
     // Chromatic Aberration
-    float aberrationAmount=max((.1-displaced),0.);
+    float aberrationAmount=max((.1-displaced) * 0.75,0.);
     
     vec2 pivot=vec2(.6);
     
