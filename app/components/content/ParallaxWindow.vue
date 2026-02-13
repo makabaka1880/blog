@@ -171,6 +171,8 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+@use '~/assets/theme.scss' as *;
+
 canvas {
     aspect-ratio: v-bind(imageAspectRatio);
 }
@@ -180,5 +182,12 @@ canvas {
     width: 80%;
     border-radius: 1rem;
     margin: 0rem auto;
+}
+
+@media (max-width: $critical-width) {
+    .image-like-content {
+        width: 100%;
+    }
+    
 }
 </style>
