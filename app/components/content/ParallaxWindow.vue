@@ -1,6 +1,7 @@
 <template>
     <span class="prose-img-container image-like">
-        <canvas class="image-like-content" ref="parallaxCanvas"></canvas>
+        <canvas v-if="!prefersReducedMotion" class="image-like-content" ref="parallaxCanvas"></canvas>
+        <img v-else class="image-like-content" :src="fallbackImageSrc" :alt="alt" />
         <div v-if="alt" class="prose-img-caption">
             <strong>Fig.</strong>
             <span class="caption-text">{{ alt }}</span>
@@ -9,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, watchEffect } from 'vue';
+import { ref, onMounted, watch, watchEffect, computed } from 'vue';
 
 const props = withDefaults(defineProps<{
     albedo: string,
@@ -47,9 +48,13 @@ const derivedDepth = computed(() => {
     return props.depth;
 });
 
+// Fallback image source (use albedo when reduced motion is enabled)
+const fallbackImageSrc = computed(() => props.src || derivedAlbedo.value);
+
 const parallaxCanvas = ref<HTMLCanvasElement | null>(null);
 let renderFn: ((offsetX: number, offsetY: number) => void) | null = null;
 const imageAspectRatio = ref<number | null>(null);
+const prefersReducedMotion = ref(false);
 
 // --- WebGL helper functions ---
 function loadTexture(gl: WebGLRenderingContext, url: string): Promise<{ texture: WebGLTexture; width: number; height: number }> {
@@ -179,14 +184,27 @@ async function setupShader(canvas: HTMLCanvasElement) {
 }
 
 onMounted(async () => {
-    if (!parallaxCanvas.value) return;
-    const shader = await setupShader(parallaxCanvas.value);
-    if (shader) {
-        renderFn = shader.render;
-        const resizeObserver = new ResizeObserver(() => {
-            if (renderFn) renderFn(props.offsetX, props.offsetY);
-        });
-        resizeObserver.observe(parallaxCanvas.value);
+    // Check for prefers-reduced-motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    prefersReducedMotion.value = mediaQuery.matches;
+
+    // Only setup WebGL if reduced motion is not preferred
+    if (!prefersReducedMotion.value && parallaxCanvas.value) {
+        const shader = await setupShader(parallaxCanvas.value);
+        if (shader) {
+            renderFn = shader.render;
+            const resizeObserver = new ResizeObserver(() => {
+                if (renderFn) renderFn(props.offsetX, props.offsetY);
+            });
+            resizeObserver.observe(parallaxCanvas.value);
+        }
+    } else {
+        // Set aspect ratio from fallback image when reduced motion is enabled
+        const img = new Image();
+        img.onload = () => {
+            imageAspectRatio.value = img.width / img.height;
+        };
+        img.src = fallbackImageSrc.value;
     }
 });
 
@@ -219,7 +237,7 @@ defineExpose({
     }
 }
 
-canvas {
+canvas, img {
     aspect-ratio: v-bind(imageAspectRatio);
 }
 

@@ -76,6 +76,7 @@ let intersectionObserver: IntersectionObserver | null = null;
 
 onMounted(() => {
     hasMouse.value = window.matchMedia('(hover: hover)').matches;
+    console.log(hasMouse)
 
     // Setup Intersection Observer to track viewport visibility
     if (elementRef.value && 'IntersectionObserver' in window) {

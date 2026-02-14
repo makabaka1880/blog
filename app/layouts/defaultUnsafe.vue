@@ -27,7 +27,7 @@ import config from '@@/blog.config';
 .nav-bar {
     width: 100%;
     height: 3rem;
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 10;
 }

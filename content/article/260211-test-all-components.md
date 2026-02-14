@@ -176,6 +176,14 @@ view-height: 0.8
 ---
 ::
 
+::ParallaxWindowMousetrack
+---
+src: '/assets/index/36a606ac6089c50086b83040732a5aae.jpg'
+sensitivity-y: 0.05
+sensitivity-x: 0.05
+---
+::
+
 
 
 ### Chat Component
