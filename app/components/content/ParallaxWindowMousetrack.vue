@@ -1,7 +1,8 @@
 <template>
     <div ref="elementRef" class="image-like">
         <ParallaxWindow :albedo="derivedAlbedo" :depth="derivedDepth" :alt="props.alt" :sensitivity-x="props.sensitivityX"
-            :sensitivity-y="props.sensitivityY" ref="pwindow" :reverse-depth="props.reverse" :view-height="props.viewHeight" />
+            :sensitivity-y="props.sensitivityY" ref="pwindow" :reverse-depth="props.reverse" :view-height="props.viewHeight"
+            :offset-x="props.offsetX" :offset-y="props.offsetY" />
         <div v-if="!hasMouse && props.showWarning" class="no-mouse-overlay" @click="isWarningVisible = !isWarningVisible">
             <Icon name="uil:exclamation-triangle" size="1.2em" />
         </div>
@@ -11,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useElementMouse } from '~/utils/useElementMouse';
 import WarningTag from '../uikit/WarningTag.vue';
 
@@ -69,8 +70,31 @@ const isWarningVisible = ref(false);
 // Detect if device supports mouse hover interactions
 const hasMouse = ref(true);
 
+// Track if element is in viewport
+const isInViewport = ref(true);
+let intersectionObserver: IntersectionObserver | null = null;
+
 onMounted(() => {
     hasMouse.value = window.matchMedia('(hover: hover)').matches;
+
+    // Setup Intersection Observer to track viewport visibility
+    if (elementRef.value && 'IntersectionObserver' in window) {
+        intersectionObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    isInViewport.value = entry.isIntersecting;
+                });
+            },
+            { threshold: 0 }
+        );
+        intersectionObserver.observe(elementRef.value);
+    }
+});
+
+onUnmounted(() => {
+    if (intersectionObserver) {
+        intersectionObserver.disconnect();
+    }
 });
 
 const { mouseX, mouseY } = useElementMouse(elementRef);
@@ -80,8 +104,14 @@ function lerp(a: number, b: number, t: number): number {
     return a + (b - a) * t;
 }
 
-watch([mouseX, mouseY], ([newX, newY]) => {
+watch([mouseX, mouseY, isInViewport], ([newX, newY, inViewport]) => {
     if (pwindow.value && pwindow.value.render) {
+        // Center the mouse when not in viewport
+        if (!inViewport) {
+            pwindow.value.render(0, 0);
+            return;
+        }
+
         // Normalize mouse values from [0, 1] to [-1, 1] using lerp
         const normalizedX = lerp(-1, 1, newX);
         const normalizedY = lerp(-1, 1, newY);

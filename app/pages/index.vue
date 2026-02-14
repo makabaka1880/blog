@@ -97,7 +97,7 @@ useIntersectionObserver(
             showAuthorSection.value = entry.isIntersecting;
         }
     },
-    { threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
+    { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
 );
 
 useIntersectionObserver(
@@ -198,7 +198,7 @@ body {
 .author-section {
     position: relative;
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(80%);
     transition: all 0.3s ease-out;
 }
 

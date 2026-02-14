@@ -18,7 +18,7 @@ def download_depth_model(repo_id, local_dir):
         print(f"❌ Error downloading model: {e}")
 
 if __name__ == "__main__":
-    MODEL_ID = "Xenova/depth-anything-small-hf"
-    SAVE_PATH = "./models/depth-model"
+    MODEL_ID = "Qwen/Qwen3-VL-Embedding-2B"
+    SAVE_PATH = "./models/embed-model"
     
     download_depth_model(MODEL_ID, SAVE_PATH)

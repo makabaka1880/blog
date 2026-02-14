@@ -145,7 +145,7 @@ async function setupShader(canvas: HTMLCanvasElement) {
         uViewHeight: gl.getUniformLocation(program, 'u_viewHeight'),
     };
 
-    const render = (offsetX: number = props.offsetX, offsetY: number = props.offsetY) => {
+    const render = (offsetX: number = 0, offsetY: number = 0) => {
         if (!canvas) return;
         const dpr = window.devicePixelRatio || 1;
         canvas.width = canvas.clientWidth * dpr;
@@ -154,8 +154,11 @@ async function setupShader(canvas: HTMLCanvasElement) {
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
-        // Feed in the provided offsets
-        gl.uniform2f(uniforms.uOffset, offsetX, offsetY);
+        // Combine base props offset with dynamic offset
+        const totalOffsetX = props.offsetX + offsetX;
+        const totalOffsetY = props.offsetY + offsetY;
+
+        gl.uniform2f(uniforms.uOffset, totalOffsetX, totalOffsetY);
         gl.uniform2f(uniforms.uRes, canvas.width, canvas.height);
         gl.uniform2f(uniforms.uImageRes, albedoResult.width, albedoResult.height);
         gl.uniform2f(uniforms.uSensitivity, props.sensitivityX, props.sensitivityY);
@@ -181,7 +184,7 @@ onMounted(async () => {
     if (shader) {
         renderFn = shader.render;
         const resizeObserver = new ResizeObserver(() => {
-            if (renderFn) renderFn(0, 0);
+            if (renderFn) renderFn(props.offsetX, props.offsetY);
         });
         resizeObserver.observe(parallaxCanvas.value);
     }
@@ -223,8 +226,17 @@ canvas {
 .image-like-content {
     display: block;
     width: 80%;
-    border-radius: 1rem;
+    /* Default width */
+    max-width: 100%;
+    /* Ensure it doesn't bleed out */
+    max-height: 50vh;
+    /* The "Master" constraint */
     height: auto;
+    /* Allow height to be determined by aspect-ratio */
+    width: auto;
+    /* Crucial: allow width to shrink if max-height is hit */
+    margin: 0 auto;
+    border-radius: 1rem;
 }
 
 @media (max-width: $critical-width) {
