@@ -1,22 +1,19 @@
-<script setup lang="ts">
-defineProps<{
-	text?: string
-}>()
-</script>
-
 <template>
-<span class="blur">
-	<slot>{{ text }}</slot>
-</span>
+    <div class="blur">
+        <slot />
+    </div>
 </template>
+
+<script setup lang="ts">
+</script>
 
 <style lang="scss" scoped>
 .blur {
-	transition: filter 0.2s;
-	filter: blur(4px);
+    transition: filter 0.2s;
+    filter: blur(0.25rem);
 
-	&:hover {
-		filter: blur(0);
-	}
+    &:hover {
+        filter: blur(0);
+    }
 }
 </style>

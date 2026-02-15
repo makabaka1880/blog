@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, watchEffect, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 
 const props = withDefaults(defineProps<{
     albedo: string,
@@ -55,6 +55,9 @@ const parallaxCanvas = ref<HTMLCanvasElement | null>(null);
 let renderFn: ((offsetX: number, offsetY: number) => void) | null = null;
 const imageAspectRatio = ref<number | null>(null);
 const prefersReducedMotion = ref(false);
+let resizeObserver: ResizeObserver | null = null;
+let resizeRaf = 0;
+let lastCanvasSize = { width: 0, height: 0 };
 
 // --- WebGL helper functions ---
 function loadTexture(gl: WebGLRenderingContext, url: string): Promise<{ texture: WebGLTexture; width: number; height: number }> {
@@ -193,8 +196,17 @@ onMounted(async () => {
         const shader = await setupShader(parallaxCanvas.value);
         if (shader) {
             renderFn = shader.render;
-            const resizeObserver = new ResizeObserver(() => {
-                if (renderFn) renderFn(props.offsetX, props.offsetY);
+            resizeObserver = new ResizeObserver(() => {
+                if (!parallaxCanvas.value || !renderFn) return;
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(() => {
+                    resizeRaf = 0;
+                    const width = parallaxCanvas.value!.clientWidth;
+                    const height = parallaxCanvas.value!.clientHeight;
+                    if (width === lastCanvasSize.width && height === lastCanvasSize.height) return;
+                    lastCanvasSize = { width, height };
+                    renderFn?.(props.offsetX, props.offsetY);
+                });
             });
             resizeObserver.observe(parallaxCanvas.value);
         }
@@ -206,6 +218,13 @@ onMounted(async () => {
         };
         img.src = fallbackImageSrc.value;
     }
+});
+
+onBeforeUnmount(() => {
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = 0;
+    resizeObserver?.disconnect();
+    resizeObserver = null;
 });
 
 defineExpose({

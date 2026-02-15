@@ -62,7 +62,7 @@ const meta = computed(() => {
     position: relative;
     padding: 0.75em 1em;
     background-color: var(--color-card-bg);
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 0.0625rem solid var(--color-border);
     font-family: 'JetBrains Mono', monospace;
 
     .filename {
@@ -76,7 +76,7 @@ const meta = computed(() => {
     position: relative;
     padding: 1em 0;
     font-family: 'JetBrains Mono', monospace !important;
-    font-size: 0.9rem;
+    font-size: var(--font-size-md);
     line-height: 1.6;
 
     * {
@@ -117,7 +117,7 @@ const meta = computed(() => {
         left: -0.5em;
         top: 0;
         bottom: 0;
-        width: 1px;
+        width: 0.0625rem;
         background-color: var(--color-border);
         opacity: 0.5;
     }

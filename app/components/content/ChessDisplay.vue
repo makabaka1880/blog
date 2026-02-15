@@ -99,16 +99,16 @@ const headerText = computed(() => {
     padding: 1rem 1.25rem;
     background: var(--color-card-bg);
     height: 40vw;
-    max-height: 500px;
+    max-height: 31.25rem;
     overflow-y: auto;
 
     width: 100%;
-    max-width: 400px;
+    max-width: 25rem;
     flex: 1 1 auto;
 }
 
 .line :deep(.chessline-turn + .chessline-turn) {
-    border-top: 1px solid var(--color-border);
+    border-top: 0.0625rem solid var(--color-border);
     margin-top: 0.5rem;
     padding-top: 0.5rem;
 }
@@ -124,7 +124,7 @@ const headerText = computed(() => {
         width: 100%;
         max-width: none;
         height: auto;
-        max-height: 400px;
+        max-height: 25rem;
     }
 }
 </style>

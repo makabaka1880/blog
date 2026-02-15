@@ -1,18 +1,44 @@
+@use "sass:math";
+@use "sass:color";
+
 // -----------------------------------------------------------------------------
 // 1. Core Variables & Configuration
 // -----------------------------------------------------------------------------
-$base-hue: 180;
-$base-saturation: 50%;
+$base-hue: 200;
+$base-saturation: 40%;
 $base-lightness: 45%;
+
+
+$highlight-hue: (($base-hue + 200) % 360) * 1deg;
 
 // -----------------------------------------------------------------------------
 // 2. Pure Color Functions (Functional Approach)
 // -----------------------------------------------------------------------------
+@function clamp-value($value, $min, $max) {
+    @if $value < $min {
+        @return $min;
+    }
+    @if $value > $max {
+        @return $max;
+    }
+    @return $value;
+}
+
+@function saturation-to-chroma($saturation) {
+    $safe-saturation: clamp-value($saturation, 0%, 100%);
+    @return math.div($safe-saturation, 100%) * 0.24;
+}
+
 @function theme-color($h-offset: 0, $s-offset: 0%, $l-offset: 0%, $alpha: 1) {
-    @return hsla($base-hue + $h-offset,
-        $base-saturation + $s-offset,
-        $base-lightness + $l-offset,
-        $alpha );
+    $hue: ($base-hue + $h-offset) % 360;
+    @if $hue < 0 {
+        $hue: $hue + 360;
+    }
+    $hue-angle: $hue * 1deg;
+    $lightness: math.div(clamp-value($base-lightness + $l-offset, 0%, 100%), 100%);
+    $chroma: saturation-to-chroma($base-saturation + $s-offset);
+
+    @return color.change(oklch($lightness $chroma $hue-angle), $alpha: $alpha);
 }
 
 // -----------------------------------------------------------------------------
@@ -29,19 +55,22 @@ $palettes: (
 @function utility-color($type, $variant: 'base', $alpha: 1) {
     $config: map-get($palettes, $type);
     $h: map-get($config, "hue");
+    $h-angle: $h * 1deg;
     $s: map-get($config, "sat");
     $l: map-get($config, "light");
+    $chroma: saturation-to-chroma($s);
+    $lightness: math.div(clamp-value($l - 10%, 0%, 100%), 100%);
 
     @if $variant =='bg' {
-        @return hsla($h, 20, 95%, 0.8);
+        @return color.change(oklch(0.95 0.03 $h-angle), $alpha: 0.8);
     }
 
     @else if $variant =='border' {
-        @return hsla($h, $s, $l - 10%, 1);
+        @return color.change(oklch($lightness $chroma $h-angle), $alpha: 1);
     }
 
     @else {
-        @return hsla($h, $s, $l - 10%, $alpha);
+        @return color.change(oklch($lightness $chroma $h-angle), $alpha: $alpha);
     }
 }
 
@@ -66,15 +95,16 @@ $colors: (
 $color-primary: map-get($colors, "primary");
 $color-secondary: map-get($colors, "secondary");
 $color-accent: map-get($colors, "accent");
-$color-highlight: theme-color($s-offset: -20%, $l-offset: -15%);
+$color-highlight: theme-color($s-offset: -20%, $l-offset: -25%);
 $color-highlight-marker: theme-color($s-offset: -25%, $l-offset: -10%);
+https://linux.do/invites/J5qfyRHjHP
 
 // Background system
 $color-background: map-get($colors, "bg");
 $color-background-alt: theme-color($s-offset: -40%, $l-offset: 48%);
 $color-section-bg: theme-color($s-offset: -35%, $l-offset: 44%);
 $color-footer-bg: theme-color($s-offset: -35%, $l-offset: 42%);
-$color-card-bg: #ffffff;
+$color-card-bg: oklch(1 0 0deg);
 $color-card-hover-bg: theme-color($s-offset: -40%, $l-offset: 48%);
 $color-highlight-bg: theme-color($s-offset: -40%, $l-offset: 48%);
 $color-hard-bg: theme-color($s-offset: 50%, $l-offset: -40%);
@@ -93,7 +123,7 @@ $color-text-muted: map-get($colors, "text-muted");
 $color-heading: theme-color($s-offset: -15%, $l-offset: -25%);
 
 // Interactive elements
-$color-link: theme-color($s-offset: -20%, $l-offset: -15%);
+$color-link: theme-color($s-offset: 10%, $l-offset: 5%);
 $color-link-hover: theme-color($s-offset: -10%, $l-offset: -5%);
 $color-emphasis: map-get($colors, "primary");
 $color-subtle: theme-color($s-offset: -35%, $l-offset: 44%);
@@ -101,7 +131,7 @@ $color-subtle: theme-color($s-offset: -35%, $l-offset: 44%);
 // Button colors
 $color-button-bg: map-get($colors, "primary");
 $color-button-hover: theme-color($s-offset: -20%, $l-offset: -15%);
-$color-button-text: #ffffff;
+$color-button-text: oklch(1 0 0deg);
 
 // Input colors
 $color-input-border: map-get($colors, "primary");
@@ -113,9 +143,11 @@ $color-border: map-get($colors, "border");
 $color-shadow: theme-color($alpha: 0.15);
 
 // Navbar colors
-$color-navbar-bg: theme-color($s-offset: -45%, $l-offset: 52%, $alpha: 0.95);
-$color-navbar-link: theme-color($s-offset: -10%, $l-offset: -15%);
-$color-navbar-link-hover: map-get($colors, "primary");
+$color-navbar-bg: theme-color($s-offset: -45%, $l-offset: 52%, $alpha: 0.8);
+$color-navlink-special: oklch(0.4354 0.0396 $base-hue);
+$color-navlink-special-hover: oklch(0.5742 0.0873 ($base-hue - 10deg));
+$color-navbar-link: $color-navlink-special;
+$color-navbar-link-hover: $color-navlink-special-hover;
 
 // Tag colors
 $color-tag-bg: theme-color($s-offset: -40%, $l-offset: 48%);
@@ -129,14 +161,14 @@ $color-slider-fill: map-get($colors, "primary");
 
 // Tooltip
 $color-tooltip-bg: theme-color($s-offset: -10%, $l-offset: -15%);
-$color-tooltip-text: #ffffff;
+$color-tooltip-text: oklch(1 0 0deg);
 
 // Content elements
 $color-code-bg: theme-color($s-offset: -40%, $l-offset: 48%);
 $color-quote-border: theme-color($s-offset: -20%, $l-offset: -15%);
 $color-quote-text: theme-color($s-offset: -10%, $l-offset: -15%);
 $color-table-border: theme-color($s-offset: -20%, $l-offset: -15%);
-$color-sep-border: #787878;
+$color-sep-border: oklch(0.57 0 0deg);
 $color-table-header-bg: theme-color($s-offset: -40%, $l-offset: 48%);
 
 // Status colors (using utility palettes)
@@ -154,7 +186,25 @@ $color-warning-border: utility-color("warning", "border");
 // 6. Layout Constants
 // -----------------------------------------------------------------------------
 $section-margin: 5vh 0 10vh 0;
-$critical-width: 860px;
+$critical-width: 53.75rem;
+
+// Sidebar layout
+$sidebar-width: 20rem;
+$aside-width: 10rem;
+$sidebar-gap: 1rem;
+$safearea-inline-padding: 2rem;
+$sidebar-top-offset: 5rem;
+
+// Navbar layout
+$navbar-content-height: 2.5rem;
+$navbar-margin-block: 1.5rem;
+$navbar-top-offset: 0rem;
+$navbar-z-index: 10;
+$navbar-padding-inline: 2rem;
+$navbar-link-padding-inline: 1.5rem;
+$navbar-group-gap: 0.5rem;
+$navbar-group-offset: 1rem;
+$navbar-blur-radius: 10px;
 
 // -----------------------------------------------------------------------------
 // 7. CSS Custom Properties (for runtime theming)
@@ -198,6 +248,8 @@ $critical-width: 860px;
     --color-navbar-bg: #{$color-navbar-bg};
     --color-navbar-link: #{$color-navbar-link};
     --color-navbar-link-hover: #{$color-navbar-link-hover};
+    --color-navlink-special: #{$color-navlink-special};
+    --color-navlink-special-hover: #{$color-navlink-special-hover};
     --color-tag-bg: #{$color-tag-bg};
     --color-tag-text: #{$color-tag-text};
     --color-progress-bg: #{$color-progress-bg};
@@ -221,12 +273,39 @@ $critical-width: 860px;
     --color-error-bg: #{$color-error-bg};
     --color-error-border: #{$color-error-border};
     --color-error-text: #{$color-error-text};
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.8125rem;
+    --font-size-md: 0.875rem;
+    --font-size-base: 0.95rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.1rem;
+    --font-size-2xl: 1.25rem;
+    --font-size-3xl: 1.4rem;
+    --font-size-4xl: 1.6rem;
+    --font-size-5xl: 1.8rem;
+    --font-size-quote: clamp(3rem, 8vw, 5rem);
     --section-margin: #{$section-margin};
 
     // Boxes
     --color-defbox-bg: #{$color-card-bg};
 
     --critical-width: #{$critical-width};
+    --sidebar-width: #{$sidebar-width};
+    --aside-width: #{$aside-width};
+    --sidebar-gap: #{$sidebar-gap};
+    --safearea-inline-padding: #{$safearea-inline-padding};
+    --sidebar-top-offset: #{$sidebar-top-offset};
+
+    --navbar-content-height: #{$navbar-content-height};
+    --navbar-margin-block: #{$navbar-margin-block};
+    --navbar-height: calc(var(--navbar-content-height) + (var(--navbar-margin-block) * 2));
+    --navbar-top-offset: #{$navbar-top-offset};
+    --navbar-z-index: #{$navbar-z-index};
+    --navbar-padding-inline: #{$navbar-padding-inline};
+    --navbar-link-padding-inline: #{$navbar-link-padding-inline};
+    --navbar-group-gap: #{$navbar-group-gap};
+    --navbar-group-offset: #{$navbar-group-offset};
+    --navbar-blur-radius: #{$navbar-blur-radius};
 }
 
 // Responsive display utility classes

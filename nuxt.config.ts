@@ -15,8 +15,11 @@ export default defineNuxtConfig({
     },
     components: [
         // { path: "~/components/foliageUIKit", prefix: "Foliage" },
-        { path: "~/components/uikit", prefix: "UIKit" },
-        "~/components",
+        { path: "~/components/ui/kit", prefix: "UIKit", pathPrefix: false },
+        { path: "~/components/ui/utils", prefix: "Utils", pathPrefix: false },
+        { path: "~/components/page/index", prefix: "IndexPage", pathPrefix: false },
+        { path: "~/components/blog", prefix: "Blog", pathPrefix: false },
+        { path: "~/components/content", pathPrefix: false },
     ],
     css: ["~/assets/main.scss", "~/assets/twikoo.scss"],
     content: {

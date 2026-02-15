@@ -18,7 +18,7 @@ const title = computed(() => {
 .box-container {
     background-color: var(--color-defbox-bg);
     padding: 1em;
-    border: 1px var(--color-border) solid;
+    border: 0.0625rem var(--color-border) solid;
     margin: 1rem 0;
 }
 </style>

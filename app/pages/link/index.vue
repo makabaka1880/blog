@@ -22,7 +22,7 @@ const links = blogConfig.links
 <style scoped>
 .links-container {
     margin: 0 auto;
-    padding: 0 var(--section-margin);
+    padding: 0;
 }
 
 .link-header {
@@ -35,21 +35,21 @@ const links = blogConfig.links
 }
 
 .category-section h2 {
-    font-size: 1.5rem;
+    font-size: var(--font-size-3xl);
     font-weight: 600;
     color: var(--color-text);
     margin-bottom: 1rem;
 }
 
 .category-section .subtitle {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
     color: var(--color-text-secondary);
     margin-bottom: 1rem;
 }
 
 .links-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
     gap: 1.5rem;
 }
 </style>

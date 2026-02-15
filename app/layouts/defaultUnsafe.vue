@@ -26,10 +26,10 @@ import config from '@@/blog.config';
 
 .nav-bar {
     width: 100%;
-    height: 3rem;
+    height: var(--navbar-height);
     position: fixed;
-    top: 0;
-    z-index: 10;
+    top: var(--navbar-top-offset);
+    z-index: var(--navbar-z-index);
 }
 
 .content {

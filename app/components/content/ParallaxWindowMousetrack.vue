@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useElementMouse } from '~/utils/useElementMouse';
-import WarningTag from '../uikit/WarningTag.vue';
+import WarningTag from '~/components/ui/kit/WarningTag.vue';
 
 const props = withDefaults(defineProps<{
     albedo?: string,

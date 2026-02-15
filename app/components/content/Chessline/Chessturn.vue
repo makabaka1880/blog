@@ -161,7 +161,7 @@ function pieceIcon(move: MoveText, color: 'w' | 'b'): string {
 
 .sideline-details > summary {
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: var(--font-size-md);
     color: var(--color-text-muted);
     margin-bottom: 0.25rem;
 }

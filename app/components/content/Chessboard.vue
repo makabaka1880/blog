@@ -1,14 +1,11 @@
 <template>
     <div class="board-wrapper">
-        <ClientOnly>
-            <canvas ref="canvas" class="board" />
-        </ClientOnly>
+        <canvas ref="canvas" class="board" />
     </div>
 </template>
 
 <style lang="scss" scoped>
 @use "~/assets/theme.scss" as *;
-@use "sass:color";
 
 .board-wrapper {
     width: 40vw;
@@ -17,13 +14,13 @@
 }
 
 .board {
-    --light-square: #{color.adjust($color-accent, $lightness: 30%)};
-    --dark-square: #{color.adjust($color-accent, $lightness: -10%)};
+    --light-square: color-mix(in oklab, var(--color-accent) 35%, oklch(1 0 0deg));
+    --dark-square: color-mix(in oklab, var(--color-accent) 92%, oklch(0 0 0deg));
 
     width: 100%;
     height: 100%;
     display: block;
-    border-radius: 5px;
+    border-radius: 0.25rem;
     cursor: pointer;
 }
 
@@ -42,6 +39,7 @@ import {
     buildCoordsToACN,
     parseAnnotationLine,
     drawBoard,
+    getCanvasColors,
     drawCoordinates,
     drawFigure,
     drawArrow,
@@ -86,22 +84,26 @@ let board: { ctx: CanvasRenderingContext2D; cellSize: number; colors: { light: s
 let hoveredSquare: { file: number; rank: number } | null = null;
 
 function drawSquares() {
-    if (!board) return;
+    const el = canvas.value;
+    if (!board || !el) return;
     const { ctx, cellSize, colors } = board;
-    
+    const nextColors = getCanvasColors(el);
+    colors.light = nextColors.light;
+    colors.dark = nextColors.dark;
+
     for (let y = 0; y < GRID; y += 1) {
         for (let x = 0; x < GRID; x += 1) {
             let fillColor = (x + y) % 2 === 0 ? colors.light : colors.dark;
-            
+
             ctx.fillStyle = fillColor;
             ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-            
+
             // Display coordinate on hovered square
             if (hoveredSquare && hoveredSquare.file === x && hoveredSquare.rank === y) {
                 const files = 'ABCDEFGH';
                 const ranks = '87654321';
                 const coord = files[x]! + ranks[y]!;
-                
+
                 ctx.save();
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
                 ctx.font = `bold ${cellSize * 0.4}px Jetbrains Mono`;
@@ -114,24 +116,15 @@ function drawSquares() {
     }
 }
 
-function lighten(color: string, percent: number): string {
-    const num = parseInt(color.replace('#', ''), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = (num >> 16) + amt;
-    const G = (num >> 8 & 0x00FF) + amt;
-    const B = (num & 0x0000FF) + amt;
-    return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 + (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
-}
-
 function handleMouseMove(e: MouseEvent) {
     const el = canvas.value;
     if (!el || !board) return;
-    
+
     const rect = el.getBoundingClientRect();
     const cellSize = board.cellSize;
     const file = Math.floor((e.clientX - rect.left) / cellSize);
     const rank = Math.floor((e.clientY - rect.top) / cellSize);
-    
+
     if (file >= 0 && file < GRID && rank >= 0 && rank < GRID) {
         const newHovered = { file, rank };
         if (!hoveredSquare || hoveredSquare.file !== file || hoveredSquare.rank !== rank) {
@@ -154,13 +147,13 @@ function handleMouseLeave() {
 async function redraw() {
     const el = canvas.value;
     if (!el || !board) return;
-    
+
     drawSquares();
-    
+
     const position = new Fen(props.fen || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     const { ctx, cellSize } = board;
     if (props.coords) drawCoordinates(ctx, cellSize, GRID, board.colors);
-    
+
     // Redraw pieces
     for (const [acn, grid] of coordsToACN) {
         const fig = position.get(acn);
@@ -175,7 +168,7 @@ async function redraw() {
             );
         }
     }
-    
+
     // Redraw annotations
     const annotationLines = getAnnotationLines();
     const annotations = annotationLines.map(parseAnnotationLine);
@@ -205,7 +198,7 @@ onMounted(async () => {
 
     // Use our custom drawSquares instead of the initial drawBoard's square drawing
     drawSquares();
-    
+
     const position = new Fen(props.fen || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     const { ctx, cellSize, colors } = board;
     if (props.coords) drawCoordinates(ctx, cellSize, GRID, colors);
@@ -243,7 +236,7 @@ onMounted(async () => {
                 break;
         }
     }
-    
+
     el.addEventListener('mousemove', handleMouseMove);
     el.addEventListener('mouseleave', handleMouseLeave);
 });

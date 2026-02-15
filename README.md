@@ -1,45 +1,45 @@
 # Teal Blog
 
-My personal blog, a continuation of the AFlory blog by ABloom25, with the same spirit but a fresh coat of teal and a tighter, more technical focus.
+Personal blog built with Nuxt 4 and Nuxt Content.
 
-Below are the technical details and how to run it.
-
-## Highlights
-- Content-first authoring with `@nuxt/content`
-- Math rendering via KaTeX
-- Code highlighting with Shiki
-- Optional embedding graph builder (FAISS + numpy) for related-article links
-- GitHub Pages deployment workflow included
+## Tech Stack
+- Nuxt 4
+- Vue 3
+- `@nuxt/content` for Markdown content
+- Shiki for code highlighting
+- KaTeX for math rendering
+- pnpm for package management
 
 ## Requirements
 - Node.js 20+
-- Python 3.11+ (only if you want to run the embedding graph pipeline)
+- pnpm
+- Python 3.11+ (optional, for embedding/depth scripts)
 
 ## Quick Start
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
-Then open `http://localhost:3000`.
+Open `http://localhost:3000`.
 
-## Scripts
-- `npm run dev` Start the dev server
-- `npm run build` Production build
-- `npm run preview` Preview production build
-- `npm run generate` Static output (used for GitHub Pages)
-- `npm run buildgraph` Run the embedding graph pipeline
-- `npm run new:article` Create a new article via `scripts/create-article.mjs`
+## Available Scripts
+- `pnpm dev`: start the dev server
+- `pnpm build`: production build
+- `pnpm preview`: preview the production build
+- `pnpm generate`: generate static output
+- `pnpm new:article "Your Title"`: create a draft article in `content/draft`
+- `pnpm buildgraph`: run the article embedding graph pipeline (requires `.venv`)
+- `pnpm assets:genmaps`: generate depth maps for `public/assets/*-albedo.*`
 
 ## Content Workflow
-- Drafts live in `content/draft`
-- Published articles live in `content/article`
+- Drafts: `content/draft`
+- Published articles: `content/article`
+- Nuxt Content collection: `articles` (configured in `content.config.ts`)
 
-## Embedding Graph (Optional)
-This project includes a Python pipeline that builds an adjacency graph for articles. It uses FAISS and numpy and writes the output to `features.faiss`, `features.meta.json`, and the adjacency store configured in `embed/config.py`.
+## Optional Python Pipeline
+The Nuxt build hook tries to run `buildgraph.py` using `.venv/bin/python`. If `.venv` is missing, it is skipped.
 
-The Nuxt build hook attempts to run the pipeline from a local venv at `.venv/bin/python`. If that venv does not exist (for example in CI), the prebuild step is skipped.
-
-To run it locally:
+Set up locally:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
@@ -47,16 +47,16 @@ pip install -r requirements.txt
 python buildgraph.py
 ```
 
-Note: If you do not need embeddings, you can ignore this step.
-
-## Deployment (GitHub Pages)
-A GitHub Actions workflow is included at `.github/workflows/deploy.yml`. It builds a static site with `npm run generate` and deploys to Pages.
+## Build Output
+- SSR build output: `.output/`
+- Static site output (from `pnpm generate`): `.output/public/`
 
 ## Project Structure
-- `app/` Nuxt app (pages, layouts, components)
-- `content/` Markdown content
-- `embed/` Embedding pipeline
-- `public/` Static assets
+- `app/`: pages, layouts, components, assets
+- `content/`: Markdown content
+- `scripts/`: project scripts (`new:article`, depth map generation)
+- `embed/`: embedding pipeline utilities
+- `public/`: static assets
 
 ## License
 All rights reserved unless otherwise stated.

@@ -216,8 +216,8 @@ const format = (t: number) => {
 <style lang="scss" scoped>
 .audio-player-container {
     padding: 1.5em 1em;
-    border: 1.2pt var(--color-border) solid;
-    box-shadow: 1px 1px 2px;
+    border: 0.0625rem var(--color-border) solid;
+    box-shadow: 0.0625rem 0.0625rem 0.125rem;
     border-radius: 0.5rem;
     margin-bottom: 2rem;
 
@@ -231,7 +231,7 @@ const format = (t: number) => {
         width: 3.5rem;
         height: 3.5rem;
         border-radius: 0.25rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
         position: relative;
         overflow: hidden;
         flex-shrink: 0;
@@ -265,7 +265,7 @@ const format = (t: number) => {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.2rem;
+        gap: 0.25rem;
 
         em {
             font-style: normal;
@@ -273,14 +273,14 @@ const format = (t: number) => {
         }
 
         .meta {
-            font-size: 0.85em;
+            font-size: var(--font-size-sm);
             color: var(--color-text-muted);
             display: flex;
             gap: 0.5em;
 
             .album {
                 opacity: 0.8;
-                font-size: 0.95em;
+                font-size: var(--font-size-md);
             }
         }
     }
@@ -288,7 +288,7 @@ const format = (t: number) => {
     .audio-player {
         display: flex;
         align-items: center;
-        gap: 0.75em;
+        gap: 0.75rem;
         margin-top: 1rem;
     }
 }
@@ -317,7 +317,7 @@ input[type='range'] {
 }
 
 .time {
-    font-size: 0.8em;
+    font-size: var(--font-size-xs);
     opacity: 0.7;
     white-space: nowrap;
 }
@@ -333,7 +333,7 @@ input[type='range'] {
     border: none;
     background: none;
     cursor: pointer;
-    padding: 0.15rem;
+    padding: 0.25rem;
     color: var(--color-accent);
 }
 
@@ -348,12 +348,12 @@ input[type='range'] {
     right: 0;
     bottom: 100%;
     margin-bottom: 0.5rem;
-    padding: 0.4rem 0.6rem;
+    padding: 0.5rem 0.75rem;
     background: var(--color-bg);
-    border: 1pt var(--color-border) solid;
+    border: 0.0625rem var(--color-border) solid;
     border-radius: 0.5rem;
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(0.5rem);
     pointer-events: none;
     transition:
         opacity 120ms ease,

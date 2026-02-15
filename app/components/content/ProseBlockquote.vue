@@ -17,8 +17,8 @@
         margin: 1.25em 0;
         padding: 0.75em 1.25em 0.75em 1.5em;
 
-        border-left: 4px solid var(--color-border);
-        border-radius: 4px;
+        border-left: 0.25rem solid var(--color-border);
+        border-radius: 0.25rem;
 
         background-color: var(--color-card-bg);
         color: var(--color-text);
@@ -26,7 +26,7 @@
         line-height: 1.6;
 
         /* subtle depth */
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.04);
     }
 
     &-content-container {
@@ -38,7 +38,7 @@
             position: absolute;
             top: -0.2em;
 
-            font-size: 10em;
+            font-size: var(--font-size-quote);
             line-height: 1;
             font-weight: 700;
 

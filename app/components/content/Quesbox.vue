@@ -29,7 +29,7 @@ const title = computed(() => {
 .quesbox-container {
     background-color: var(--color-defbox-bg);
     padding: 1rem;
-    border: 1px var(--color-border) solid;
+    border: 0.0625rem var(--color-border) solid;
     border-radius: 0.5rem;
     display: flex;
     align-items: flex-start;
@@ -38,7 +38,7 @@ const title = computed(() => {
 }
 
 .quesbox-Q {
-    font-size: 3rem;
+    font-size: var(--font-size-5xl);
     font-weight: 700;
     line-height: 1;
     opacity: 0.4;

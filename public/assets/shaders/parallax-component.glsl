@@ -31,7 +31,7 @@ void main(){
     float prev_ray_height=current_ray_height;
     float prev_map_height=map_height;
     
-    for(int i=0;i<16;i++){
+    for(float i=0.;i<layers;i++){
         if(current_ray_height<=map_height)break;
         
         prev_uv=current_uv;

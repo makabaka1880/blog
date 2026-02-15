@@ -1,5 +1,6 @@
 // Import theme variables
 @use 'theme' as theme;
+@use "sass:color";
 
 /*!
  * Twikoo v1.6.44 - Customized with Theme Variables
@@ -51,10 +52,10 @@ $twikoo-primary: $primary;
 $twikoo-link: $link;
 $twikoo-link-hover: $link-hover;
 $twikoo-error: #ff0000;
-$twikoo-border-light: rgba(theme.$color-accent, 0.31);
-$twikoo-border-gray: rgba(theme.$color-accent, 0.31);
-$twikoo-bg-gray: rgba(theme.$color-accent, 0.13);
-$twikoo-bg-gray-light: rgba(theme.$color-accent, 0.063);
+$twikoo-border-light: color.change(theme.$color-accent, $alpha: 0.31);
+$twikoo-border-gray: color.change(theme.$color-accent, $alpha: 0.31);
+$twikoo-bg-gray: color.change(theme.$color-accent, $alpha: 0.13);
+$twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
 
 // Avatar styles
 .tk-avatar {
@@ -934,8 +935,8 @@ $twikoo-bg-gray-light: rgba(theme.$color-accent, 0.063);
         &:focus,
         &:hover {
             color: $color-primary;
-            background-color: rgba($color-primary, 0.063);
-            border-color: rgba($color-primary, 0.50);
+            background-color: color.change($color-primary, $alpha: 0.063);
+            border-color: color.change($color-primary, $alpha: 0.50);
         }
     }
 
@@ -943,8 +944,8 @@ $twikoo-bg-gray-light: rgba(theme.$color-accent, 0.063);
     .el-button--primary.is-disabled:active,
     .el-button--primary.is-disabled:focus,
     .el-button--primary.is-disabled:hover {
-        color: rgba($color-button-text, 0.63);
-        background-color: rgba($color-primary, 0.50);
+        color: color.change($color-button-text, $alpha: 0.63);
+        background-color: color.change($color-primary, $alpha: 0.50);
         border-color: transparent;
     }
 
@@ -1073,7 +1074,7 @@ $twikoo-bg-gray-light: rgba(theme.$color-accent, 0.063);
             right: -1px;
             bottom: -1px;
             border-radius: inherit;
-            background-color: rgba($color-card-bg, .35);
+            background-color: color.change($color-card-bg, $alpha: 0.35);
         }
     }
 
@@ -1125,8 +1126,8 @@ $twikoo-bg-gray-light: rgba(theme.$color-accent, 0.063);
 
     &.is-plain {
         color: $bg;
-        background: rgba($bg, 0.1);
-        border-color: rgba($bg, 0.7);
+        background: color.change($bg, $alpha: 0.1);
+        border-color: color.change($bg, $alpha: 0.7);
 
         &:focus,
         &:hover {
@@ -1146,9 +1147,9 @@ $twikoo-bg-gray-light: rgba(theme.$color-accent, 0.063);
         &.is-disabled:active,
         &.is-disabled:focus,
         &.is-disabled:hover {
-            color: rgba($bg, 0.6);
-            background-color: rgba($bg, 0.1);
-            border-color: rgba($bg, 0.85);
+            color: color.change($bg, $alpha: 0.6);
+            background-color: color.change($bg, $alpha: 0.1);
+            border-color: color.change($bg, $alpha: 0.85);
         }
     }
 }
@@ -1662,7 +1663,7 @@ $twikoo-bg-gray-light: rgba(theme.$color-accent, 0.063);
 .el-loading-mask {
     position: absolute;
     z-index: 2000;
-    background-color: rgba($color-card-bg, .9);
+    background-color: color.change($color-card-bg, $alpha: 0.9);
     margin: 0;
     top: 0;
     right: 0;

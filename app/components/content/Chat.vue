@@ -37,13 +37,13 @@ function render() {
 
 .chat {
 	margin-inline: 2vw;
-	font-size: 0.9em;
+	font-size: var(--font-size-md);
 }
 
 :deep() {
 	.chat-caption {
 		opacity: 0.8;
-		font-size: 0.9em;
+		font-size: var(--font-size-md);
 		color: var(--color-text-muted);
 	}
 
@@ -57,7 +57,7 @@ function render() {
 		border-radius: 1em;
 		border-start-start-radius: 0.2em;
 		background-color: var(--color-card-bg);
-		border: 1px solid var(--color-border);
+		border: 0.0625rem solid var(--color-border);
 		color: var(--color-text);
 	}
 

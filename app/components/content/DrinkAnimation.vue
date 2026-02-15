@@ -458,7 +458,7 @@ onBeforeUnmount(() => {
 @use "~/assets/theme.scss" as *;
 
 #threejs-canvas {
-    min-height: 600px;
+    min-height: 37.5rem;
     pointer-events: auto;
 
     :deep(canvas) {

@@ -49,12 +49,12 @@ const scrollToAnchor = () => {
 h1 {
     margin-top: 2rem;
     font-weight: 800;
-    font-size: 2rem;
+    font-size: var(--font-size-4xl);
 
     &.anchor {
         display: block;
         position: relative;
-        top: -100px;
+        top: -6.25rem;
         visibility: hidden;
     }
 }

@@ -53,7 +53,7 @@ h5 {
     &.anchor {
         display: block;
         position: relative;
-        top: -100px;
+        top: -6.25rem;
         visibility: hidden;
     }
 }

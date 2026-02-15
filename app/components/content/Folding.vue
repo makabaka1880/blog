@@ -19,10 +19,10 @@ defineProps<{
 details {
     margin: 1em 0;
     padding: 0.5em 0.8em;
-    border: 1px solid var(--c-border);
+    border: 0.0625rem solid var(--c-border);
     border-radius: 0.5em;
     background-color: var(--c-bg-2);
-    font-size: 0.9em;
+    font-size: var(--font-size-md);
 
     &[open] {
         >summary {
