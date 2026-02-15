@@ -6,8 +6,13 @@
                 <h2> Welcome </h2>
             </div>
         </div>
-        <button class="search-button" type="button" @click="isSearchOpen = true">Search</button>
+        <button class="search-button" type="button" @click="isSearchOpen = true">
+            <span>
+                <Icon name="uil:search" /> Search
+            </span>
+        </button>
         <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
+        <p>SITE UNDER DEVELOPMENT.</p>
     </div>
 </template>
 
@@ -39,6 +44,10 @@ const isSearchOpen = ref(false);
     }
 
     .search-button {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 78%;
         margin-top: 1rem;
         border: 0.0625rem solid var(--color-border);
         background: var(--color-card-bg);
@@ -47,6 +56,24 @@ const isSearchOpen = ref(false);
         padding: 0.5rem 0.75rem;
         cursor: pointer;
         font-size: var(--font-size-md);
+        transition: width 0.1s ease-in-out;
+        will-change: width;
+
+        span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        &:hover {
+            width: 100%;
+            color: var(--color-link);
+            border-color: var(--color-link);
+            background-color: var(--color-card-hover-bg);
+        }
+    }
+    p {
+        margin-top: 5rem; // TODO: REMOVE
     }
 }
 </style>

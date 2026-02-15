@@ -3,6 +3,11 @@
         <div class="hero">
             <h1>Articles</h1>
             <p>{{ config.description }}</p>
+            <button class="search-fallback-button" type="button" @click="isSearchOpen = true">
+                <span>
+                    <Icon name="uil:search" /> Search
+                </span>
+            </button>
         </div>
         <div class="article-list-wrapper">
             <div class="article-list">
@@ -28,14 +33,17 @@
                 </template>
             </div>
         </div>
+        <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
     </div>
 </template>
 
 <script setup lang="ts">
 import config from '@@/blog.config';
 import { ref, computed, onMounted } from 'vue';
+import SearchModal from '~/components/blog/SearchModal.vue';
 
 const articles = ref<any[]>([]);
+const isSearchOpen = ref(false);
 
 onMounted(async () => {
     const result = await queryCollection('articles').select('title', 'description', 'createTime', 'path').order('createTime', 'DESC');
@@ -53,9 +61,12 @@ const entriesGrouped = computed(() => {
     });
     return grouped;
 });
+
 </script>
 
 <style lang="scss" scoped>
+@use "~/assets/theme.scss" as *;
+
 .container {
     width: 100%;
     height: 100%;
@@ -147,6 +158,42 @@ const entriesGrouped = computed(() => {
 
     h2 {
         margin-bottom: 1rem;
+    }
+}
+
+.search-fallback-button {
+    display: none;
+    align-items: center;
+    justify-content: flex-start;
+    width: 78%;
+    margin-top: 1rem;
+    border: 0.0625rem solid var(--color-border);
+    background: var(--color-card-bg);
+    color: var(--color-text);
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    transition: width 0.1s ease-in-out;
+    will-change: width;
+
+    span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+    }
+
+    &:hover {
+        width: 100%;
+        color: var(--color-link);
+        border-color: var(--color-link);
+        background-color: var(--color-card-hover-bg);
+    }
+}
+
+@media (max-width: calc(#{$critical-width} + #{$sidebar-margin} * 2)) {
+    .search-fallback-button {
+        display: flex;
     }
 }
 </style>

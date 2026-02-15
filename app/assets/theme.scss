@@ -8,7 +8,6 @@ $base-hue: 200;
 $base-saturation: 40%;
 $base-lightness: 45%;
 
-
 $highlight-hue: (($base-hue + 200) % 360) * 1deg;
 
 // -----------------------------------------------------------------------------
@@ -35,6 +34,14 @@ $highlight-hue: (($base-hue + 200) % 360) * 1deg;
         $hue: $hue + 360;
     }
     $hue-angle: $hue * 1deg;
+    $lightness: math.div(clamp-value($base-lightness + $l-offset, 0%, 100%), 100%);
+    $chroma: saturation-to-chroma($base-saturation + $s-offset);
+
+    @return color.change(oklch($lightness $chroma $hue-angle), $alpha: $alpha);
+}
+
+@function secondary-color($h-offset: 0deg, $s-offset: 0%, $l-offset: 0%, $alpha: 1) {
+    $hue-angle: $highlight-hue + $h-offset;
     $lightness: math.div(clamp-value($base-lightness + $l-offset, 0%, 100%), 100%);
     $chroma: saturation-to-chroma($base-saturation + $s-offset);
 
@@ -96,8 +103,9 @@ $color-primary: map-get($colors, "primary");
 $color-secondary: map-get($colors, "secondary");
 $color-accent: map-get($colors, "accent");
 $color-highlight: theme-color($s-offset: -20%, $l-offset: -25%);
-$color-highlight-marker: theme-color($s-offset: -25%, $l-offset: -10%);
-https://linux.do/invites/J5qfyRHjHP
+$color-highlight-marker: secondary-color($s-offset: 25%, $l-offset: 10%);
+
+// https://linux.do/invites/J5qfyRHjHP
 
 // Background system
 $color-background: map-get($colors, "bg");
@@ -191,8 +199,8 @@ $critical-width: 53.75rem;
 // Sidebar layout
 $sidebar-width: 20rem;
 $aside-width: 10rem;
-$sidebar-gap: 1rem;
-$safearea-inline-padding: 2rem;
+$sidebar-gap: 5rem;
+$sidebar-margin: 4rem;
 $sidebar-top-offset: 5rem;
 
 // Navbar layout
@@ -293,7 +301,7 @@ $navbar-blur-radius: 10px;
     --sidebar-width: #{$sidebar-width};
     --aside-width: #{$aside-width};
     --sidebar-gap: #{$sidebar-gap};
-    --safearea-inline-padding: #{$safearea-inline-padding};
+    --sidebar-margin: #{$sidebar-margin};
     --sidebar-top-offset: #{$sidebar-top-offset};
 
     --navbar-content-height: #{$navbar-content-height};

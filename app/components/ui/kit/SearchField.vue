@@ -3,50 +3,19 @@
         <div class="search-field-wrapper" :class="{ 'is-focused': isFocused, 'is-disabled': disabled }">
             <!-- Search Icon -->
             <div class="search-icon">
-                <svg v-if="!isLoading" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <svg v-else class="loading-spinner" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="2" x2="12" y2="6"></line>
-                    <line x1="12" y1="18" x2="12" y2="22"></line>
-                    <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-                    <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-                    <line x1="2" y1="12" x2="6" y2="12"></line>
-                    <line x1="18" y1="12" x2="22" y2="12"></line>
-                    <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
-                    <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
-                </svg>
+                <Icon name="uil:search" v-if="!isLoading" />
+                <Icon name="uil:spinner" v-else />
             </div>
 
             <!-- Input Field -->
-            <input 
-                ref="searchInput"
-                type="text" 
-                class="search-field input" 
-                :placeholder="placeholder"
-                :value="modelValue"
-                :disabled="disabled"
-                :aria-label="ariaLabel"
-                :aria-describedby="ariaDescribedby"
-                @input="handleInput"
-                @focus="handleFocus"
-                @blur="handleBlur"
-                @keydown="handleKeydown"
-            />
+            <input ref="searchInput" type="text" class="search-field input" :placeholder="placeholder"
+                :value="modelValue" :disabled="disabled" :aria-label="ariaLabel" :aria-describedby="ariaDescribedby"
+                @input="handleInput" @focus="handleFocus" @blur="handleBlur" @keydown="handleKeydown" />
 
             <!-- Clear Button -->
-            <button 
-                v-if="showClearButton && modelValue"
-                type="button"
-                class="clear-button"
-                :aria-label="clearButtonLabel"
-                @click="handleClear"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+            <button v-if="showClearButton && modelValue" type="button" class="clear-button"
+                :aria-label="clearButtonLabel" @click="handleClear">
+                <Icon name="mage:multiply" />
             </button>
         </div>
 
@@ -101,12 +70,12 @@ const ariaDescribedby = computed(() => props.helperText ? 'search-helper-text' :
 function handleInput(event: Event) {
     const value = (event.target as HTMLInputElement).value
     emit('update:modelValue', value)
-    
+
     // Debounce search
     if (debounceTimer.value) {
         clearTimeout(debounceTimer.value)
     }
-    
+
     debounceTimer.value = window.setTimeout(() => {
         emit('search', value)
     }, props.debounceDelay)
@@ -201,6 +170,7 @@ defineExpose({
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
