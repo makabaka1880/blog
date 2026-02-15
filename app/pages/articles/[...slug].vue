@@ -124,16 +124,6 @@ const showUpdated = computed(() => {
     margin: var(--section-margin) 0;
 }
 
-.sep {
-    margin: 3rem 1rem;
-    display: block;
-    height: 0.25rem;
-    border: 0;
-    border-top: 0.0625rem solid var(--color-sep-border);
-    opacity: .5;
-    padding: 0;
-    width: 60%;
-}
 
 :deep(.image-like) {
     margin: 2rem auto;

@@ -106,10 +106,22 @@ mark {
         line-height: 0em;
         padding-bottom: 0.5em;
     }
+
     &.search-match-title-mark {
         background-color: var(--color-highlight-marker);
         color: white;
     }
+}
+
+.sep {
+    margin: 3rem 1rem;
+    display: block;
+    height: 0.25rem;
+    border: 0;
+    border-top: 0.0625rem solid var(--color-sep-border);
+    opacity: .5;
+    padding: 0;
+    width: 60%;
 }
 
 /* MARK: Table */
