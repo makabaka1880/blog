@@ -12,7 +12,11 @@
             </span>
         </button>
         <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
-        <p>SITE UNDER DEVELOPMENT.</p>
+        <p>
+            SITE UNDER DEVELOPMENT. <br /><br />
+            COOL EFFECTS ARE REMOVED.<br /><br />
+            COME AGAIN ANOTHER DAY.
+        </p>
     </div>
 </template>
 
@@ -72,6 +76,7 @@ const isSearchOpen = ref(false);
             background-color: var(--color-card-hover-bg);
         }
     }
+
     p {
         margin-top: 5rem; // TODO: REMOVE
     }
