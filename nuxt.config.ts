@@ -50,7 +50,7 @@ export default defineNuxtConfig({
                 lang: blogConfig.language,
             },
             charset: 'utf-8',
-            viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+            viewport: 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover',
             meta: [
                 {
                     name: "author",

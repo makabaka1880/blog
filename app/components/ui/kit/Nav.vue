@@ -24,11 +24,13 @@
             ☰
         </button>
 
-        <div v-if="menuOpen" class="nav-popover">
-            <UtilsNavLink to="/" @click="closeMenu">Home</UtilsNavLink>
-            <UtilsNavLink to="/articles" @click="closeMenu">Articles</UtilsNavLink>
-            <UtilsNavLink to="https://github.com/makabaka1880/blog" @click="closeMenu">GitHub</UtilsNavLink>
-        </div>
+        <Transition name="nav-popover">
+            <div v-if="menuOpen" class="nav-popover">
+                <UtilsNavLink to="/" @click="closeMenu">Home</UtilsNavLink>
+                <UtilsNavLink to="/articles" @click="closeMenu">Articles</UtilsNavLink>
+                <UtilsNavLink to="https://github.com/makabaka1880/blog" @click="closeMenu">GitHub</UtilsNavLink>
+            </div>
+        </Transition>
     </nav>
 </template>
 
@@ -140,14 +142,21 @@ onBeforeUnmount(() => {
 
 .nav-menu-toggle {
     display: none;
-    border: 0.0625rem solid var(--color-border);
-    background: var(--color-card-bg);
+    border: none;
+    background: none;
     color: var(--color-navbar-link);
     border-radius: 0.25rem;
     padding: 0.25rem 0.5rem;
     cursor: pointer;
     font-size: var(--font-size-lg);
     line-height: 1;
+    transform: scale(1);
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.06);
+        color: var(--color-navbar-link-hover);
+    }
 }
 
 .nav-popover {
@@ -171,6 +180,17 @@ onBeforeUnmount(() => {
         border-radius: 0.25rem;
 
     }
+}
+
+.nav-popover-enter-active,
+.nav-popover-leave-active {
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.nav-popover-enter-from,
+.nav-popover-leave-to {
+    opacity: 0;
+    transform: translateY(-0.25rem) scale(0.98);
 }
 
 @media (max-width: calc(#{$critical-width} + #{$sidebar-margin} * 2)) {
