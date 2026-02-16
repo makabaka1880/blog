@@ -1,0 +1,292 @@
+@use "sass:math";
+@use "sass:color";
+@use "sass:map";
+
+// -----------------------------------------------------------------------------
+// Shared color math helpers
+// -----------------------------------------------------------------------------
+@function clamp-value($value, $min, $max) {
+    @if $value < $min {
+        @return $min;
+    }
+    @if $value > $max {
+        @return $max;
+    }
+    @return $value;
+}
+
+@function normalize-hue($hue) {
+    $normalized: $hue % 360;
+    @if $normalized < 0 {
+        @return $normalized + 360;
+    }
+    @return $normalized;
+}
+
+@function saturation-to-chroma($saturation) {
+    $safe-saturation: clamp-value($saturation, 0%, 100%);
+    @return math.div($safe-saturation, 100%) * 0.24;
+}
+
+@function theme-color($base-hue, $base-saturation, $base-lightness, $h-offset: 0, $s-offset: 0%, $l-offset: 0%, $alpha: 1) {
+    $hue-angle: normalize-hue($base-hue + $h-offset) * 1deg;
+    $lightness: math.div(clamp-value($base-lightness + $l-offset, 0%, 100%), 100%);
+    $chroma: saturation-to-chroma($base-saturation + $s-offset);
+
+    @return color.change(oklch($lightness $chroma $hue-angle), $alpha: $alpha);
+}
+
+@function secondary-color($base-hue, $base-saturation, $base-lightness, $h-offset: 0deg, $s-offset: 0%, $l-offset: 0%, $alpha: 1) {
+    $highlight-hue: normalize-hue($base-hue + 200) * 1deg;
+    $hue-angle: $highlight-hue + $h-offset;
+    $lightness: math.div(clamp-value($base-lightness + $l-offset, 0%, 100%), 100%);
+    $chroma: saturation-to-chroma($base-saturation + $s-offset);
+
+    @return color.change(oklch($lightness $chroma $hue-angle), $alpha: $alpha);
+}
+
+$palettes: (
+    "success": (hue: 120, sat: 40%, light: 40%),
+    "error": (hue: 10, sat: 60%, light: 45%),
+    "warning": (hue: 35, sat: 80%, light: 50%),
+    "info": (hue: 200, sat: 50%, light: 45%)
+);
+
+@function utility-color($type, $variant: "base", $alpha: 1) {
+    $config: map.get($palettes, $type);
+    $h: map.get($config, "hue");
+    $h-angle: $h * 1deg;
+    $s: map.get($config, "sat");
+    $l: map.get($config, "light");
+    $chroma: saturation-to-chroma($s);
+    $lightness: math.div(clamp-value($l - 10%, 0%, 100%), 100%);
+
+    @if $variant == "bg" {
+        @return color.change(oklch(0.95 0.03 $h-angle), $alpha: 0.8);
+    }
+
+    @if $variant == "border" {
+        @return color.change(oklch($lightness $chroma $h-angle), $alpha: 1);
+    }
+
+    @return color.change(oklch($lightness $chroma $h-angle), $alpha: $alpha);
+}
+
+// -----------------------------------------------------------------------------
+// Per-scheme palette computation
+// -----------------------------------------------------------------------------
+// Default compile-time palette kept for Sass consumers that still need color
+// objects (e.g. color.change in third-party overrides).
+$default-base-hue: 200;
+$default-base-saturation: 40%;
+$default-base-lightness: 45%;
+
+$color-primary: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness);
+$color-secondary: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -15%, $l-offset: -20%);
+$color-accent: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -15%, $l-offset: -10%);
+$color-highlight: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -20%, $l-offset: -25%);
+$color-highlight-marker: secondary-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: 25%, $l-offset: 10%);
+
+$color-background: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -45%, $l-offset: 52%);
+$color-background-alt: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -40%, $l-offset: 48%);
+$color-section-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -35%, $l-offset: 44%);
+$color-footer-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -35%, $l-offset: 42%);
+$color-card-bg: oklch(1 0 0deg);
+$color-card-hover-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -40%, $l-offset: 48%);
+$color-highlight-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -40%, $l-offset: 48%);
+$color-hard-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: 50%, $l-offset: -40%);
+
+$color-card-border: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -25%, $l-offset: -20%, $alpha: 0.25);
+$color-card-hover-border: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -20%, $l-offset: -15%);
+$color-card-title: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -10%, $l-offset: -15%);
+$color-card-metadata: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -20%, $l-offset: -15%);
+$color-modal-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -45%, $l-offset: 52%, $alpha: 0.87);
+
+$color-text: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -20%, $l-offset: -30%);
+$color-text-light: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -10%, $l-offset: -10%);
+$color-text-muted: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -15%, $l-offset: -10%);
+$color-heading: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -15%, $l-offset: -25%);
+
+$color-link: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: 10%, $l-offset: 5%);
+$color-link-hover: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -10%, $l-offset: -5%);
+$color-emphasis: $color-primary;
+$color-subtle: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -35%, $l-offset: 44%);
+
+$color-button-bg: $color-primary;
+$color-button-hover: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -20%, $l-offset: -15%);
+$color-button-text: oklch(1 0 0deg);
+
+$color-input-border: $color-primary;
+$color-input-text: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -10%, $l-offset: -15%);
+$color-input-focus-border: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: 5%, $l-offset: 5%);
+
+$color-border: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -20%, $l-offset: -10%, $alpha: 0.35);
+$color-shadow: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $alpha: 0.15);
+
+$color-navbar-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -45%, $l-offset: 52%, $alpha: 0.8);
+$color-navlink-special: oklch(0.4354 0.0396 $default-base-hue * 1deg);
+$color-navlink-special-hover: oklch(0.5742 0.0873 normalize-hue($default-base-hue - 10) * 1deg);
+$color-navbar-link: $color-navlink-special;
+$color-navbar-link-hover: $color-navlink-special-hover;
+
+$color-tag-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -40%, $l-offset: 48%);
+$color-tag-text: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -10%, $l-offset: -15%);
+
+$color-progress-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -35%, $l-offset: 44%);
+$color-progress-fill: $color-primary;
+$color-slider-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -40%, $l-offset: 48%);
+$color-slider-fill: $color-primary;
+
+$color-tooltip-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -10%, $l-offset: -15%);
+$color-tooltip-text: oklch(1 0 0deg);
+
+$color-code-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -40%, $l-offset: 48%);
+$color-quote-border: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -20%, $l-offset: -15%);
+$color-quote-text: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -10%, $l-offset: -15%);
+$color-table-border: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -20%, $l-offset: -15%);
+$color-sep-border: oklch(0.57 0 0deg);
+$color-table-header-bg: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: -40%, $l-offset: 48%);
+
+$color-success-bg: utility-color("success", "bg");
+$color-success-border: utility-color("success", "border");
+$color-success-text: utility-color("success", "text");
+$color-error-bg: utility-color("error", "bg");
+$color-error-border: utility-color("error", "border");
+$color-error-text: utility-color("error", "text");
+$color-warning-bg: utility-color("warning", "bg");
+$color-warning-text: utility-color("warning", "text");
+$color-warning-border: utility-color("warning", "border");
+
+// -----------------------------------------------------------------------------
+// Runtime aliases consumed by the rest of the SCSS codebase
+// -----------------------------------------------------------------------------
+$color-primary-runtime: var(--color-primary-colormode);
+$color-secondary-runtime: var(--color-secondary-colormode);
+$color-accent-runtime: var(--color-accent-colormode);
+$color-highlight-runtime: var(--color-highlight-colormode);
+$color-highlight-marker-runtime: var(--color-highlight-marker-colormode);
+$color-highlight-bg-runtime: var(--color-highlight-bg-colormode);
+$color-background-runtime: var(--color-background-colormode);
+$color-background-alt-runtime: var(--color-background-alt-colormode);
+$color-section-bg-runtime: var(--color-section-bg-colormode);
+$color-footer-bg-runtime: var(--color-footer-bg-colormode);
+$color-card-bg-runtime: var(--color-card-bg-colormode);
+$color-card-hover-bg-runtime: var(--color-card-hover-bg-colormode);
+$color-hard-bg-runtime: var(--color-hard-bg-colormode);
+$color-card-border-runtime: var(--color-card-border-colormode);
+$color-card-hover-border-runtime: var(--color-card-hover-border-colormode);
+$color-card-title-runtime: var(--color-card-title-colormode);
+$color-card-metadata-runtime: var(--color-card-metadata-colormode);
+$color-modal-bg-runtime: var(--color-modal-bg-colormode);
+$color-text-runtime: var(--color-text-colormode);
+$color-text-light-runtime: var(--color-text-light-colormode);
+$color-text-muted-runtime: var(--color-text-muted-colormode);
+$color-heading-runtime: var(--color-heading-colormode);
+$color-link-runtime: var(--color-link-colormode);
+$color-link-hover-runtime: var(--color-link-hover-colormode);
+$color-emphasis-runtime: var(--color-emphasis-colormode);
+$color-subtle-runtime: var(--color-subtle-colormode);
+$color-button-bg-runtime: var(--color-button-bg-colormode);
+$color-button-hover-runtime: var(--color-button-hover-colormode);
+$color-button-text-runtime: var(--color-button-text-colormode);
+$color-input-border-runtime: var(--color-input-border-colormode);
+$color-input-text-runtime: var(--color-input-text-colormode);
+$color-input-focus-border-runtime: var(--color-input-focus-border-colormode);
+$color-border-runtime: var(--color-border-colormode);
+$color-shadow-runtime: var(--color-shadow-colormode);
+$color-navbar-bg-runtime: var(--color-navbar-bg-colormode);
+$color-navbar-link-runtime: var(--color-navbar-link-colormode);
+$color-navbar-link-hover-runtime: var(--color-navbar-link-hover-colormode);
+$color-navlink-special-runtime: var(--color-navlink-special-colormode);
+$color-navlink-special-hover-runtime: var(--color-navlink-special-hover-colormode);
+$color-tag-bg-runtime: var(--color-tag-bg-colormode);
+$color-tag-text-runtime: var(--color-tag-text-colormode);
+$color-progress-bg-runtime: var(--color-progress-bg-colormode);
+$color-progress-fill-runtime: var(--color-progress-fill-colormode);
+$color-slider-bg-runtime: var(--color-slider-bg-colormode);
+$color-slider-fill-runtime: var(--color-slider-fill-colormode);
+$color-tooltip-bg-runtime: var(--color-tooltip-bg-colormode);
+$color-tooltip-text-runtime: var(--color-tooltip-text-colormode);
+$color-code-bg-runtime: var(--color-code-bg-colormode);
+$color-quote-border-runtime: var(--color-quote-border-colormode);
+$color-quote-text-runtime: var(--color-quote-text-colormode);
+$color-table-border-runtime: var(--color-table-border-colormode);
+$color-sep-border-runtime: var(--color-sep-border-colormode);
+$color-table-header-bg-runtime: var(--color-table-header-bg-colormode);
+$color-warning-bg-runtime: var(--color-warning-bg-colormode);
+$color-warning-text-runtime: var(--color-warning-text-colormode);
+$color-warning-border-runtime: var(--color-warning-border-colormode);
+$color-success-bg-runtime: var(--color-success-bg-colormode);
+$color-success-border-runtime: var(--color-success-border-colormode);
+$color-success-text-runtime: var(--color-success-text-colormode);
+$color-error-bg-runtime: var(--color-error-bg-colormode);
+$color-error-border-runtime: var(--color-error-border-colormode);
+$color-error-text-runtime: var(--color-error-text-colormode);
+
+:root {
+    --color-hue: var(--color-hue-colormode);
+    --color-highlight-hue: var(--color-highlight-hue-colormode);
+
+    --color-primary: #{$color-primary-runtime};
+    --color-secondary: #{$color-secondary-runtime};
+    --color-accent: #{$color-accent-runtime};
+    --color-highlight: #{$color-highlight-runtime};
+    --color-highlight-marker: #{$color-highlight-marker-runtime};
+    --color-highlight-bg: #{$color-highlight-bg-runtime};
+    --color-background: #{$color-background-runtime};
+    --color-background-alt: #{$color-background-alt-runtime};
+    --color-section-bg: #{$color-section-bg-runtime};
+    --color-footer-bg: #{$color-footer-bg-runtime};
+    --color-card-bg: #{$color-card-bg-runtime};
+    --color-card-hover-bg: #{$color-card-hover-bg-runtime};
+    --color-hard-bg: #{$color-hard-bg-runtime};
+    --color-card-border: #{$color-card-border-runtime};
+    --color-card-hover-border: #{$color-card-hover-border-runtime};
+    --color-card-title: #{$color-card-title-runtime};
+    --color-card-metadata: #{$color-card-metadata-runtime};
+    --color-modal-bg: #{$color-modal-bg-runtime};
+    --color-text: #{$color-text-runtime};
+    --color-text-light: #{$color-text-light-runtime};
+    --color-text-muted: #{$color-text-muted-runtime};
+    --color-heading: #{$color-heading-runtime};
+    --color-link: #{$color-link-runtime};
+    --color-link-hover: #{$color-link-hover-runtime};
+    --color-emphasis: #{$color-emphasis-runtime};
+    --color-subtle: #{$color-subtle-runtime};
+    --color-button-bg: #{$color-button-bg-runtime};
+    --color-button-hover: #{$color-button-hover-runtime};
+    --color-button-text: #{$color-button-text-runtime};
+    --color-input-border: #{$color-input-border-runtime};
+    --color-input-text: #{$color-input-text-runtime};
+    --color-input-focus-border: #{$color-input-focus-border-runtime};
+    --color-border: #{$color-border-runtime};
+    --color-shadow: #{$color-shadow-runtime};
+    --color-navbar-bg: #{$color-navbar-bg-runtime};
+    --color-navbar-link: #{$color-navbar-link-runtime};
+    --color-navbar-link-hover: #{$color-navbar-link-hover-runtime};
+    --color-navlink-special: #{$color-navlink-special-runtime};
+    --color-navlink-special-hover: #{$color-navlink-special-hover-runtime};
+    --color-tag-bg: #{$color-tag-bg-runtime};
+    --color-tag-text: #{$color-tag-text-runtime};
+    --color-progress-bg: #{$color-progress-bg-runtime};
+    --color-progress-fill: #{$color-progress-fill-runtime};
+    --color-slider-bg: #{$color-slider-bg-runtime};
+    --color-slider-fill: #{$color-slider-fill-runtime};
+    --color-tooltip-bg: #{$color-tooltip-bg-runtime};
+    --color-tooltip-text: #{$color-tooltip-text-runtime};
+    --color-code-bg: #{$color-code-bg-runtime};
+    --color-quote-border: #{$color-quote-border-runtime};
+    --color-quote-text: #{$color-quote-text-runtime};
+    --color-table-border: #{$color-table-border-runtime};
+    --color-sep-border: #{$color-sep-border-runtime};
+    --color-table-header-bg: #{$color-table-header-bg-runtime};
+    --color-warning-bg: #{$color-warning-bg-runtime};
+    --color-warning-text: #{$color-warning-text-runtime};
+    --color-warning-border: #{$color-warning-border-runtime};
+    --color-success-bg: #{$color-success-bg-runtime};
+    --color-success-border: #{$color-success-border-runtime};
+    --color-success-text: #{$color-success-text-runtime};
+    --color-error-bg: #{$color-error-bg-runtime};
+    --color-error-border: #{$color-error-border-runtime};
+    --color-error-text: #{$color-error-text-runtime};
+}

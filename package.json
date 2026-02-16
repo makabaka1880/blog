@@ -19,6 +19,7 @@
         "@nuxt/content": "^3.11.0",
         "@nuxt/icon": "^2.2.1",
         "@nuxt/image": "2.0.0",
+        "@nuxtjs/color-mode": "4.0.0",
         "@nuxtjs/mdc": "^0.20.1",
         "@shikijs/core": "^3.22.0",
         "@vesp/nuxt-fontawesome": "2.0.0",

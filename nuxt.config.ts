@@ -38,7 +38,20 @@ export default defineNuxtConfig({
             }
         }
     },
-    modules: ['@nuxt/content', "@nuxtjs/mdc", '@nuxt/image', '@nuxt/icon', '@vueuse/motion'],
+    modules: [
+      '@nuxt/content',
+      "@nuxtjs/mdc",
+      '@nuxt/image',
+      '@nuxt/icon',
+      '@vueuse/motion',
+      "@nuxtjs/color-mode"
+    ],
+    colorMode: {
+        preference: 'system',
+        fallback: 'light',
+        classPrefix: '',
+        classSuffix: '',
+    },
     plugins: [
         '~/plugins/configVueLibs',
     ],
