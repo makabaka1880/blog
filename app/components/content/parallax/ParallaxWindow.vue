@@ -1,6 +1,6 @@
 <template>
     <span ref="rootElement" class="prose-img-container image-like">
-        <WebGLCanvas v-if="!prefersReducedMotion" ref="webglCanvasRef" class="image-like-content" :width="512"
+        <WebglCanvas v-if="!prefersReducedMotion" ref="webglCanvasRef" class="image-like-content" :width="512"
             :height="512" :fragment-source="shaderSource" :uniforms="uniforms" :auto-render="false" />
         <img v-else class="image-like-content" :src="fallbackImageSrc" :alt="alt" />
         <div v-if="alt" class="prose-img-caption">
@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
-import WebGLCanvas from '~/components/content/utility/WebGLCanvas.vue';
+import WebglCanvas from '~/components/content/utility/WebglCanvas.vue';
 import { resolveAssetSrc } from '~/utils/route-utils';
 
 const props = withDefaults(defineProps<{
@@ -65,7 +65,7 @@ const derivedDepth = computed(() => {
 // Fallback image source (use albedo when reduced motion is enabled)
 const fallbackImageSrc = computed(() => props.src ? resolvePath(props.src) : derivedAlbedo.value);
 
-const webglCanvasRef = ref<InstanceType<typeof WebGLCanvas> | null>(null);
+const webglCanvasRef = ref<InstanceType<typeof WebglCanvas> | null>(null);
 const rootElement = ref<HTMLElement | null>(null);
 const imageAspectRatio = ref<number | null>(null);
 const prefersReducedMotion = ref(false);
