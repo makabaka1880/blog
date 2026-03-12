@@ -23,6 +23,6 @@ As we all know, terror climbs monotonically with symbol size. Therefore, what st
 And whenever anything gets hard, nerds begin to study it. In this case, people have actually found a way to formally and quantitatively prove things not about math, but about what we write about math : **METALOGIC**.
 
 ## Meta and Object
-::Quesbox
+::QABox{type="question"}
 You're faced with two doors: one hides great wealth, the other doom. A cursed guardian stands at each door, and you may ask exactly one question. One guardian always tells the truth; the other always lies. What single question lets you pick the safe door?
 ::

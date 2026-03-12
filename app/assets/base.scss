@@ -1,20 +1,20 @@
-@use './theme' as *;
+@use './theme.scss' as *;
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "JetBrains Mono", monospace;
-    // font-family: "Inconsolata", monospace;
 
     font-optical-sizing: auto;
 }
 
 ::selection {
     color: var(--color-highlight);
-    background-color: var(--color-highlight-bg);
+    background-color: var(--color-highlight-background);
 }
 
 :where(.iconify) {
@@ -40,6 +40,11 @@ a {
     &:hover {
         color: var(--color-link-hover);
         text-decoration: underline;
+    }
+
+    &[data-footnote-ref],
+    &[data-footnote-backref] {
+        scroll-margin-top: var(--anchor-top-offset);
     }
 }
 
@@ -87,7 +92,7 @@ h6 {
     }
 }
 
-p {
+p, li {
     line-height: 1.2rem;
     margin: 0.25rem 0;
 }
@@ -100,15 +105,18 @@ Retrieved 2026-02-16, License - CC BY-SA 3.0
 
 mark {
     display: inline-block;
-    background-color: color-mix(in oklab, var(--color-highlight-bg) 72%, var(--color-highlight-marker) 28%);
-
+    line-height: 0em;
+    padding-bottom: 0.5em;
+    color: var(--color-text); 
+    background-color: var(--color-highlight-marker-thinner);
+    
     &.search-match-content-mark {
-        line-height: 0em;
-        padding-bottom: 0.5em;
     }
-
+    
     &.search-match-title-mark {
-        background-color: var(--color-highlight-marker);
+        background-color: var(--color-highlight-marker-thicker);
+        line-height: inherit;
+        padding-bottom: inherit;
         color: white;
     }
 }
@@ -118,41 +126,17 @@ mark {
     display: block;
     height: 0.25rem;
     border: 0;
-    border-top: 0.0625rem solid var(--color-sep-border);
+    border-top: 0.0625rem solid var(--color-separator-border);
     opacity: .5;
     padding: 0;
     width: 60%;
-}
-
-/* MARK: Table */
-thead {
-    border-top: 0.125rem solid var(--color-card-border);
-    border-bottom: 0.125rem solid var(--color-card-border);
-}
-
-tbody {
-    border-bottom: 0.125rem solid var(--color-card-border);
-}
-
-th,
-td {
-    padding: 0.75rem 1rem;
-    text-align: left;
-}
-
-th {
-    font-weight: 600;
-}
-
-tr {
-    border: none;
 }
 
 div.footer {
     padding-bottom: 0;
     padding: 2rem 10vw;
     width: 100%;
-    background-color: var(--color-footer-bg);
+    background-color: var(--color-footer-background);
 }
 
 :where(.iconify) {

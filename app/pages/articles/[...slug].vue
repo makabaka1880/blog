@@ -10,7 +10,6 @@
         </div>
         <hr class="sep" />
         <div class="article-container">
-            .
             <ContentRenderer v-if="page" :value="page" />
         </div>
         <hr class="sep" />
@@ -124,6 +123,13 @@ const showUpdated = computed(() => {
     margin: var(--section-margin) 0;
 }
 
+
+:deep(iframe) {
+    width: 80%;
+    height: 50vh;
+    display: block;
+    margin: 2rem auto;
+}
 
 :deep(.image-like) {
     margin: 2rem auto;

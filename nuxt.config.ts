@@ -20,25 +20,43 @@ export default defineNuxtConfig({
         { path: "~/components/page/index", prefix: "IndexPage", pathPrefix: false },
         { path: "~/components/blog", prefix: "Blog", pathPrefix: false },
         { path: "~/components/content", pathPrefix: false },
+        { path: "~/components/content/boxes", pathPrefix: false },
+        { path: "~/components/content/utility", pathPrefix: false },
     ],
     css: ["~/assets/main.scss", "~/assets/twikoo.scss"],
     content: {
         build: {
             markdown: {
                 highlight: {
-                    theme: blogConfig.highlight.theme as any,
-                    langs: blogConfig.highlight.languages as any[],
+                    // theme: blogConfig.highlight.theme as any,
+                    langs: blogConfig.highlight.langs as any[],
                 },
                 remarkPlugins: {
                     "remark-math": {},
                 },
                 rehypePlugins: {
-                    "rehype-katex": {}
+                    "rehype-katex": {
+                    }
                 },
             }
         }
     },
-    modules: ['@nuxt/content', "@nuxtjs/mdc", '@nuxt/image', '@nuxt/icon', '@vueuse/motion'],
+    modules: [
+      '@nuxt/content',
+      "@nuxtjs/mdc",
+      '@nuxt/image',
+      '@nuxt/icon',
+      '@vueuse/motion',
+      "@nuxtjs/color-mode",
+      '@bikariya/shiki',
+      "@pinia/nuxt"
+    ],
+    colorMode: {
+        preference: 'system',
+        fallback: 'light',
+        classPrefix: '',
+        classSuffix: '',
+    },
     plugins: [
         '~/plugins/configVueLibs',
     ],
@@ -99,7 +117,7 @@ export default defineNuxtConfig({
                 if (stderr) console.error(stderr)
             } catch (err) {
                 console.error('Python prebuild failed', err)
-    //            process.exit(1) // fail the build
+                //            process.exit(1) // fail the build
             }
         }
     }

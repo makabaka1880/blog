@@ -182,7 +182,7 @@ function highlightMatches(text: string, matches: any[] | undefined, maxLength?: 
 .search-panel {
     width: min(56rem, 100%);
     max-height: calc(100vh - 7rem);
-    background: var(--color-card-bg);
+    background: var(--color-card-background);
     border: 0.0625rem solid var(--color-border);
     border-radius: 0.5rem;
     display: flex;
@@ -215,7 +215,7 @@ function highlightMatches(text: string, matches: any[] | undefined, maxLength?: 
     text-decoration: none;
 
     &:hover {
-        background: var(--color-card-hover-bg);
+        background: var(--color-card-hover-background);
     }
 }
 

@@ -261,8 +261,6 @@ export const parsePGN = (input: String): Line | undefined => {
     const tokens = tokenize(input.toString().trim());
     const { out, rest } = goParse(tokens);
     const lines = rawlineToTurns(out);
-    console.log("PARSEPGN", out)
-    console.log(lines)
 
     return lines
 }

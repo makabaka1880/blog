@@ -12,6 +12,9 @@
             </span>
         </button>
         <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
+        <button class="color-mode-toggle" type="button" @click="cycleColorMode" :aria-label="colorModeLabel" :title="colorModeLabel">
+            <Icon :name="colorModeIcon" />
+        </button>
         <p>
             SITE UNDER DEVELOPMENT. <br /><br />
             COOL EFFECTS ARE REMOVED.<br /><br />
@@ -24,6 +27,29 @@
 import SearchModal from './SearchModal.vue';
 
 const isSearchOpen = ref(false);
+const colorPref = useColorMode();
+
+const colorModeIcon = computed(() => {
+    const pref = colorPref.preference;
+    if (pref === 'light') return 'uil:sun';
+    if (pref === 'dark') return 'uil:moon';
+    return 'uil:desktop';
+});
+
+const colorModeLabel = computed(() => {
+    const pref = colorPref.preference;
+    if (pref === 'light') return 'Light mode';
+    if (pref === 'dark') return 'Dark mode';
+    return 'System preference';
+});
+
+function cycleColorMode() {
+    const modes = ['light', 'system', 'dark'] as const;
+    const currentIndex = modes.indexOf(colorPref.preference as any);
+    const nextIndex = (currentIndex + 1) % modes.length;
+    colorPref.preference = modes[nextIndex]!;
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -54,7 +80,7 @@ const isSearchOpen = ref(false);
         width: 78%;
         margin-top: 1rem;
         border: 0.0625rem solid var(--color-border);
-        background: var(--color-card-bg);
+        background: var(--color-card-background);
         color: var(--color-text);
         border-radius: 0.25rem;
         padding: 0.5rem 0.75rem;
@@ -73,7 +99,49 @@ const isSearchOpen = ref(false);
             width: 100%;
             color: var(--color-link);
             border-color: var(--color-link);
-            background-color: var(--color-card-hover-bg);
+            background-color: var(--color-card-hover-background);
+        }
+    }
+
+    .color-mode-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        margin-top: 1.5rem;
+        border-radius: 12px;
+        border: none;
+        background: none;
+        color: var(--color-text);
+        cursor: pointer;
+        transition: color 0.2s ease-in-out;
+        padding: 0;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            color: currentColor;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        &:hover {
+            color: var(--color-link);
+
+            svg {
+                transform: rotate(20deg);
+            }
+        }
+
+        &:active {
+            svg {
+                transform: rotate(360deg);
+            }
+        }
+
+        &:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
         }
     }
 

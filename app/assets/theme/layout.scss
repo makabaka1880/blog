@@ -1,0 +1,70 @@
+// -----------------------------------------------------------------------------
+// Layout Constants
+// -----------------------------------------------------------------------------
+$section-margin: 5vh 0 10vh 0;
+$critical-width: 50rem;
+
+// Sidebar layout
+$sidebar-width: 20rem;
+$aside-width: 10rem;
+$sidebar-gap: 5rem;
+$sidebar-margin: 4rem;
+$sidebar-top-offset: 5rem;
+
+// Navbar layout
+$navbar-content-height: 2.5rem;
+$navbar-margin-block: 1.5rem;
+$navbar-top-offset: 0rem;
+$navbar-z-index: 10;
+$navbar-padding-inline: 2rem;
+$navbar-link-padding-inline: 1.5rem;
+$navbar-group-gap: 0.5rem;
+$navbar-group-offset: 1rem;
+$navbar-blur-radius: 10px;
+
+// Anchors
+$anchor-top-offset: $navbar-content-height + ($navbar-margin-block * 2) + $navbar-top-offset;
+
+// Border radius
+$border-radius-box: 0.25rem;
+$border-radius-image: .8rem;
+
+:root {
+    --section-margin: #{$section-margin};
+
+    --critical-width: #{$critical-width};
+    --sidebar-width: #{$sidebar-width};
+    --aside-width: #{$aside-width};
+    --sidebar-gap: #{$sidebar-gap};
+    --sidebar-margin: #{$sidebar-margin};
+    --sidebar-top-offset: #{$sidebar-top-offset};
+
+    --navbar-content-height: #{$navbar-content-height};
+    --navbar-margin-block: #{$navbar-margin-block};
+    --navbar-height: calc(var(--navbar-content-height) + (var(--navbar-margin-block) * 2));
+    --navbar-top-offset: #{$navbar-top-offset};
+    --navbar-z-index: #{$navbar-z-index};
+    --navbar-padding-inline: #{$navbar-padding-inline};
+    --navbar-link-padding-inline: #{$navbar-link-padding-inline};
+    --navbar-group-gap: #{$navbar-group-gap};
+    --navbar-group-offset: #{$navbar-group-offset};
+    --navbar-blur-radius: #{$navbar-blur-radius};
+
+    --anchor-top-offset: #{$anchor-top-offset};
+
+    --border-radius-box: #{$border-radius-box};
+    --border-radius-image: #{$border-radius-image};
+}
+
+// Responsive display utility classes
+@media (min-width: $critical-width) {
+    .disp-mobile {
+        display: none;
+    }
+}
+
+@media (max-width: $critical-width) {
+    .disp-wide {
+        display: none;
+    }
+}

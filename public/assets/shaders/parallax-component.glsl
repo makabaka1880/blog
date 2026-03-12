@@ -3,12 +3,8 @@ precision mediump float;
 uniform sampler2D u_texture;
 uniform sampler2D u_depth;
 uniform vec2 u_resolution;// canvas size in pixels
-uniform vec2 u_imageRes;// image size in pixels
 uniform vec2 u_offset;
 uniform vec2 u_sensitivity;
-uniform vec2 u_imageScale;// x = scaleX, y = scaleY
-uniform vec2 u_imageTranslate;
-uniform bool u_reverseDepth;
 uniform float u_viewHeight;
 
 const float layers=16.;

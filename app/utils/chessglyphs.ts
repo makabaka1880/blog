@@ -201,6 +201,24 @@ const glyphToSvg = {
         '#c8c831',
         '<path fill="#fff" d="M22.95 85.7v-5.5l22.5-65.9h9l22.6 66v5.4h-54.1m9.6-7.9h34.6l-12.5-37.2q-3.3-9.9-4.8-16.5-1.3 4.9-2.4 8.9-1.1 4-2.2 7.2l-12.7 37.6"/>',
     ),
+
+    // Black is mated
+    'b#': composeGlyph(
+        '#333',
+        `
+            <path fill="#FFFFFF" d="M50.1609242,23 L47.59,38.615 L56.479,38.615 L59.0498131,23 L64.3831464,23 L61.813,38.615 L73,38.6153846 L73,42.7692308 L61.129,42.769 L58.736,57.307 L70.4444444,57.3076923 L70.4444444,61.4615385 L58.052,61.461 L55.4942575,77 L50.1609242,77 L52.718,61.461 L43.83,61.461 L41.2720353,77 L35.93870194,77 L38.496,61.461 L27,61.4615385 L27,57.3076923 L39.18,57.307 L41.573,42.769 L29.55555556,42.7692308 L29.55555556,38.6153846 L42.257,38.615 L44.8275908,23 L50.1609242,23 Z M55.795,42.769 L46.906,42.769 L44.513,57.307 L53.402,57.307 L55.795,42.769 Z" />
+        `,
+    ),
+
+
+
+    // White is mated
+    'w#': composeGlyph(
+        '#fff',
+        `
+        <path fill="#000" d="M50.1609242,23 L47.59,38.615 L56.479,38.615 L59.0498131,23 L64.3831464,23 L61.813,38.615 L73,38.6153846 L73,42.7692308 L61.129,42.769 L58.736,57.307 L70.4444444,57.3076923 L70.4444444,61.4615385 L58.052,61.461 L55.4942575,77 L50.1609242,77 L52.718,61.461 L43.83,61.461 L41.2720353,77 L35.93870194,77 L38.496,61.461 L27,61.4615385 L27,57.3076923 L39.18,57.307 L41.573,42.769 L29.55555556,42.7692308 L29.55555556,38.6153846 L42.257,38.615 L44.8275908,23 L50.1609242,23 Z M55.795,42.769 L46.906,42.769 L44.513,57.307 L53.402,57.307 L55.795,42.769 Z" />
+        `
+    ),
 };
 
 export const glyphToSvgMap = new Map<string, (stackedNumber: number) => string>([
@@ -245,7 +263,11 @@ export const glyphToSvgMap = new Map<string, (stackedNumber: number) => string>(
     ["whiteBetter", glyphToSvg["±"]],
     ["blackBetter", glyphToSvg["∓"]],
     ["whiteWinning", whiteIsWinning],
+    ["+-", whiteIsWinning],
+    ["+−", whiteIsWinning],
     ["blackWinning", blackIsWinning],
+    ["-+", blackIsWinning],
+    ["−+", blackIsWinning],
 
     // Strategic Concepts
     ["novelty", glyphToSvg["N"]],
@@ -253,5 +275,11 @@ export const glyphToSvgMap = new Map<string, (stackedNumber: number) => string>(
     ["initiative", glyphToSvg["↑"]],
     ["attack", glyphToSvg["→"]],
     ["counterplay", glyphToSvg["⇆"]],
-    ["timeTrouble", glyphToSvg["⊕"]]
+    ["timeTrouble", glyphToSvg["⊕"]],
+
+    // Checkmate
+    ["blackMated", glyphToSvg["b#"]],
+    ["b#", glyphToSvg["b#"]],
+    ["whiteMated", glyphToSvg["w#"]],
+    ["w#", glyphToSvg["w#"]],
 ]);

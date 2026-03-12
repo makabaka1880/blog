@@ -23,7 +23,7 @@ const blogConfig = {
     timezone: 'Asia/Shanghai',
     url: 'https://blog.makabaka1880.xyz', //! TODO Fill in blog URL
     highlight: {
-        languages: ['json', 'js', 'ts', 'html', 'css', 'vue', 'shell', 'mdc', 'md', 'yaml', 'sql', 'swift'],
+        langs: ['json', 'js', 'ts', 'html', 'css', 'vue', 'shell', 'mdc', 'md', 'yaml', 'sql', 'swift', 'c', 'cpp', 'glsl', 'py', 'r'],
         theme: {
             // Default theme (same as single string)
             default: ayuTheme,

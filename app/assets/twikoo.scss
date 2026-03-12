@@ -20,29 +20,29 @@ $text-muted: theme.$color-text-muted;
 $heading: theme.$color-heading;
 $background: theme.$color-background;
 $background-alt: theme.$color-background-alt;
-$section-bg: theme.$color-section-bg;
+$section-bg: theme.$color-section-background;
 $border: theme.$color-border;
 $input-border: theme.$color-input-border;
 $input-focus-border: theme.$color-input-focus-border;
 $input-text: theme.$color-input-text;
-$button-bg: theme.$color-button-bg;
-$button-hover: theme.$color-button-hover;
+$button-bg: theme.$color-button-background;
+$button-hover: theme.$color-button-hover-background;
 $button-text: theme.$color-button-text;
-$error-bg: theme.$color-error-bg;
+$error-bg: theme.$color-error-background;
 $error-text: theme.$color-error-text;
-$success-bg: theme.$color-success-bg;
+$success-bg: theme.$color-success-background;
 $success-text: theme.$color-success-text;
-$warning-bg: theme.$color-warning-bg;
+$warning-bg: theme.$color-warning-background;
 $warning-text: theme.$color-warning-text;
-$card-bg: theme.$color-card-bg;
+$card-bg: theme.$color-card-background;
 $color-primary: theme.$color-primary;
 $color-secondary: theme.$color-secondary;
 $color-accent: theme.$color-accent;
 $color-highlight: theme.$color-highlight;
-$color-highlight-bg: theme.$color-highlight-bg;
+$color-highlight-bg: theme.$color-highlight-background;
 $color-subtle: theme.$color-subtle;
 $color-button-text: theme.$color-button-text;
-$color-card-bg: theme.$color-card-bg;
+$color-card-bg: theme.$color-card-background;
 $color-border: theme.$color-border;
 $color-heading: theme.$color-heading;
 $color-background-alt: theme.$color-background-alt;
@@ -507,7 +507,7 @@ $twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
     position: relative;
     border-radius: .3em;
 
-    > .toolbar {
+    >.toolbar {
         position: absolute;
         right: 4px;
         top: 4px;
@@ -515,17 +515,17 @@ $twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
         font-weight: 500;
         display: flex;
 
-        > .toolbar-item {
+        >.toolbar-item {
             margin-left: .3em;
 
-            > a,
-            > button,
-            > span {
+            >a,
+            >button,
+            >span {
                 padding: 2px 4px;
                 border-radius: .3em;
             }
 
-            > button {
+            >button {
                 border: 1px solid $twikoo-border-light;
 
                 &:hover {
@@ -992,7 +992,7 @@ $twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
     font-size: 14px;
     border-radius: 4px;
 
-    + .el-button {
+    +.el-button {
         margin-left: 10px;
     }
 
@@ -1018,6 +1018,7 @@ $twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
     }
 
     &.is-plain {
+
         &:focus,
         &:hover {
             background: $color-card-bg;
@@ -1259,11 +1260,11 @@ $twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
         clear: both;
     }
 
-    > .el-button {
+    >.el-button {
         float: left;
         position: relative;
 
-        + .el-button {
+        +.el-button {
             margin-left: 0;
         }
 
@@ -1326,7 +1327,7 @@ $twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
         }
     }
 
-    > .el-dropdown > .el-button {
+    >.el-dropdown>.el-button {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
     }
@@ -1580,7 +1581,7 @@ $twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
     border-collapse: separate;
     border-spacing: 0;
 
-    > .el-input__inner {
+    >.el-input__inner {
         vertical-align: middle;
         display: table-cell;
     }
@@ -1981,25 +1982,25 @@ $twikoo-bg-gray-light: color.change(theme.$color-accent, $alpha: 0.063);
 
 // Responsive OwO items
 @media screen and (max-width: 600px) {
-    #twikoo .OwO-items > .OwO-item {
+    #twikoo .OwO-items>.OwO-item {
         width: 16%;
     }
 }
 
 @media screen and (max-width: 460px) {
-    #twikoo .OwO-items > .OwO-item {
+    #twikoo .OwO-items>.OwO-item {
         width: 20%;
     }
 }
 
 @media screen and (max-width: 400px) {
-    #twikoo .OwO-items > .OwO-item {
+    #twikoo .OwO-items>.OwO-item {
         width: 25%;
     }
 }
 
 @media screen and (max-width: 330px) {
-    #twikoo .OwO-items > .OwO-item {
+    #twikoo .OwO-items>.OwO-item {
         width: 33%;
     }
 }
