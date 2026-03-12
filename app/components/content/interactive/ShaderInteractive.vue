@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import type { UniformDTO } from '~/utils/canvas-uniforms'
 import { ref } from 'vue'
-import WebGLCanvas from '~/components/content/utility/WebglCanvas.vue'
+import WebglCanvas from '~/components/content/utility/WebglCanvas.vue'
 
 const props = defineProps<{
     dim?: [number, number]
@@ -29,7 +29,7 @@ const props = defineProps<{
 const width = props.dim?.[0] ?? 512
 const height = props.dim?.[1] ?? 512
 
-const webglCanvas = ref<InstanceType<typeof WebGLCanvas> | null>(null)
+const webglCanvas = ref<InstanceType<typeof WebglCanvas> | null>(null)
 
 const hovering = ref(false)
 const cursor = ref({ x: 0, y: 0 })
