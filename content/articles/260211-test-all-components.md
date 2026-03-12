@@ -99,7 +99,7 @@ This is a tip box component to test custom content rendering.
 ::
 
 ### Question Box
-::Quesbox
+::Qabox
 This is a question box component for FAQ-style content.
 ::
 
@@ -138,10 +138,57 @@ This concludes the comprehensive test of all prose components. If everything loo
 fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"
 coords: true
 ---
-e2-e4
+e2->e4
 ::
 
 ## More Interactive Components
+### WebGL Renderer
+::ShaderInteractive
+---
+dim: [512, 512]
+uniforms: {
+    "u_time": {tag: 'float', value: .5}
+}
+---
+precision mediump float;
+varying vec2 v_uv;
+
+uniform float u_time;
+uniform sampler2D u_noise;
+
+float curve(float x) {
+    return sin(x * 10.0 + u_time) * 5. ; // to be implemented
+}
+
+void main() {
+    float wave = curve(v_uv.x); // Get the curve value
+    vec2 distorted_uv = v_uv + vec2(wave * 0.1, 0.0);
+
+    vec3 color = vec3(distorted_uv.x, distorted_uv.y, sin(u_time));
+    gl_FragColor = vec4(color, 1.0);
+}
+::
+
+```glsl
+precision mediump float;
+varying vec2 v_uv;
+
+uniform float u_time;
+uniform sampler2D u_noise;
+
+float curve(float x) {
+    return sin(x * 10.0 + u_time) * 5. ;
+}
+
+void main() {
+    float wave = curve(v_uv.x);
+    vec2 distorted_uv = v_uv + vec2(wave * 0.1, 0.0);
+
+    vec3 color = vec3(distorted_uv.x, distorted_uv.y, sin(u_time));
+    gl_FragColor = vec4(color, 1.0);
+}
+```
+
 ### Parallax Window
 
 Scrolling Parallax with an angle of $-\frac{\pi}{4}$ and sensitivity of 0.04:
@@ -164,7 +211,7 @@ view-height: 0.8
 ::
 ::ParallaxWindowMousetrack
 ---
-src: "/assets/260211-test-all-components/0.jpg"
+src: "/assets/260211-test-all-components/IMG_3809.png"
 sensitivity-y: 0.01
 sensitivity-x: 0.03
 view-height: 0.8

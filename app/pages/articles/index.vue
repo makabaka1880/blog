@@ -114,7 +114,7 @@ const entriesGrouped = computed(() => {
                     }
 
                     &:hover {
-                        background-color: var(--color-card-hover-bg);
+                        background-color: var(--color-card-hover-background);
                         box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
                         cursor: pointer;
                     }
@@ -168,7 +168,7 @@ const entriesGrouped = computed(() => {
     width: 78%;
     margin-top: 1rem;
     border: 0.0625rem solid var(--color-border);
-    background: var(--color-card-bg);
+    background: var(--color-card-background);
     color: var(--color-text);
     border-radius: 0.25rem;
     padding: 0.5rem 0.75rem;
@@ -177,17 +177,17 @@ const entriesGrouped = computed(() => {
     transition: width 0.1s ease-in-out;
     will-change: width;
 
-    span {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-    }
+    // span {
+    //     display: inline-flex;
+    //     align-items: center;
+    //     gap: 0.375rem;
+    // }
 
     &:hover {
         width: 100%;
         color: var(--color-link);
         border-color: var(--color-link);
-        background-color: var(--color-card-hover-bg);
+        background-color: var(--color-card-hover-background);
     }
 }
 

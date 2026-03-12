@@ -4,6 +4,12 @@ $light-base-hue: 200;
 $light-base-saturation: 40%;
 $light-base-lightness: 50%;
 
+// Extracted hardcoded colors
+$light-card-background: #ffffff;
+$light-button-text: #ffffff;
+$light-tooltip-text: #ffffff;
+$light-separator-border: oklch(0.57 0 0deg);
+
 .light {
     --base-hue: #{$light-base-hue};
     --base-saturation: #{$light-base-saturation};
@@ -13,28 +19,27 @@ $light-base-lightness: 50%;
     $base-saturation: $light-base-saturation;
     $base-lightness: $light-base-lightness;
 
-    $highlight-hue: c.normalize-hue($base-hue + 200) * 1deg;
 
     --color-hue-colormode: #{$base-hue};
-    --color-highlight-hue-colormode: #{$highlight-hue};
 
     --color-primary-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
     --color-secondary-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -20%)};
     --color-accent-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -10%)};
 
-    --color-highlight-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -25%)};
-    --color-highlight-marker-colormode: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 25%, $l-offset: 10%)};
-    --color-highlight-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
-
-    --color-background-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 52%)};
+    --color-highlight-marker-thicker-colormode: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 25%, $l-offset: 10%)};
+    --color-highlight-marker-thinner-colormode: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 0%, $l-offset: 40%)};
+    --color-highlight-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 18%)};
+    
+    --color-background-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 52%)};
+    --color-highlight-colormode: var(--color-background-colormode);
     --color-background-alt-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
     --color-section-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 44%)};
     --color-footer-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 42%)};
-    --color-card-bg-colormode: #ffffff;
+    --color-card-bg-colormode: #{$light-card-background};
     --color-card-hover-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
     --color-hard-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 50%, $l-offset: -40%)};
 
-    --color-card-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -25%, $l-offset: -20%, $alpha: 0.25)};
+    --color-card-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 0%)};
     --color-card-hover-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
     --color-card-title-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
     --color-card-metadata-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
@@ -52,7 +57,7 @@ $light-base-lightness: 50%;
 
     --color-button-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
     --color-button-hover-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
-    --color-button-text-colormode: #ffffff;
+    --color-button-text-colormode: #{$light-button-text};
 
     --color-input-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
     --color-input-text-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
@@ -63,14 +68,10 @@ $light-base-lightness: 50%;
 
     --color-navbar-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 52%, $alpha: 0.8)};
 
-    $color-navlink-special: oklch(0.4354 0.0396 $base-hue * 1deg);
-    $navlink-hover-hue: c.normalize-hue($base-hue - 10) * 1deg;
-    $color-navlink-special-hover: oklch(0.5742 0.0873 $navlink-hover-hue);
-
-    --color-navlink-special-colormode: #{$color-navlink-special};
-    --color-navlink-special-hover-colormode: #{$color-navlink-special-hover};
-    --color-navbar-link-colormode: #{$color-navlink-special};
-    --color-navbar-link-hover-colormode: #{$color-navlink-special-hover};
+    --color-navlink-special-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $l-offset: -6.46%, $s-offset: -23.5%)};
+    --color-navlink-special-hover-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $l-offset: 7.42%, $s-offset: -3.625%)};
+    --color-navbar-link-colormode: var(--color-navlink-special-colormode);
+    --color-navbar-link-hover-colormode: var(--color-navlink-special-hover-colormode);
 
     --color-tag-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
     --color-tag-text-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
@@ -82,13 +83,13 @@ $light-base-lightness: 50%;
     --color-slider-fill-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
 
     --color-tooltip-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
-    --color-tooltip-text-colormode: #ffffff;
+    --color-tooltip-text-colormode: #{$light-tooltip-text};
 
-    --color-code-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
+    --color-code-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 45%)};
     --color-quote-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
     --color-quote-text-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
     --color-table-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
-    --color-sep-border-colormode: oklch(0.57 0 0deg);
+    --color-sep-border-colormode: #{$light-separator-border};
     --color-table-header-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
 
     --color-success-bg-colormode: #{c.utility-color("success", "bg")};
@@ -100,4 +101,12 @@ $light-base-lightness: 50%;
     --color-warning-bg-colormode: #{c.utility-color("warning", "bg")};
     --color-warning-text-colormode: #{c.utility-color("warning", "text")};
     --color-warning-border-colormode: #{c.utility-color("warning", "border")};
+    --color-chat-myself-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 10%)};
+    --color-chat-myself-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 0%)};
+
+    --color-chess-light-square-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 35%)};
+    --color-chess-dark-square-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -5%)};
+    --color-chess-label-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: -5%)};
+
+    --color-box-background-char-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 45%)};
 }

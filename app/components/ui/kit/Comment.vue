@@ -10,7 +10,6 @@
 <script lang="ts" setup>
 const appConfig = useAppConfig()
 
-console.log(appConfig.twikooConfig.envID)
 onMounted(() => {
     window.twikoo?.init({
         envId: appConfig.twikooConfig.envID,

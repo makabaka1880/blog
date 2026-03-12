@@ -126,7 +126,7 @@ export const drawWasFigure = async (
     await drawFigure(ctx, file, rank, name, white, cellSize, 0.55);
 };
 
-export const drawBoard = (el: HTMLCanvasElement, gridSize: number = GRID_SIZE) => {
+export const drawBoard = (el: HTMLCanvasElement, gridWidth: number = GRID_SIZE, gridHeight: number = GRID_SIZE) => {
     const dpr = window.devicePixelRatio || 1;
     const rect = el.getBoundingClientRect();
 
@@ -140,10 +140,10 @@ export const drawBoard = (el: HTMLCanvasElement, gridSize: number = GRID_SIZE) =
     ctx.scale(dpr, dpr);
 
     const colors = getCanvasColors(el);
-    const cellSize = rect.width / gridSize;
+    const cellSize = rect.width / gridWidth;
 
-    for (let y = 0; y < gridSize; y += 1) {
-        for (let x = 0; x < gridSize; x += 1) {
+    for (let y = 0; y < gridHeight; y += 1) {
+        for (let x = 0; x < gridWidth; x += 1) {
             ctx.fillStyle = (x + y) % 2 === 0 ? colors.light : colors.dark;
             ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
         }

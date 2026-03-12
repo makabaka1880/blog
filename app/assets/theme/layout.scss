@@ -2,7 +2,7 @@
 // Layout Constants
 // -----------------------------------------------------------------------------
 $section-margin: 5vh 0 10vh 0;
-$critical-width: 53.75rem;
+$critical-width: 50rem;
 
 // Sidebar layout
 $sidebar-width: 20rem;
@@ -21,6 +21,13 @@ $navbar-link-padding-inline: 1.5rem;
 $navbar-group-gap: 0.5rem;
 $navbar-group-offset: 1rem;
 $navbar-blur-radius: 10px;
+
+// Anchors
+$anchor-top-offset: $navbar-content-height + ($navbar-margin-block * 2) + $navbar-top-offset;
+
+// Border radius
+$border-radius-box: 0.25rem;
+$border-radius-image: .8rem;
 
 :root {
     --section-margin: #{$section-margin};
@@ -42,6 +49,11 @@ $navbar-blur-radius: 10px;
     --navbar-group-gap: #{$navbar-group-gap};
     --navbar-group-offset: #{$navbar-group-offset};
     --navbar-blur-radius: #{$navbar-blur-radius};
+
+    --anchor-top-offset: #{$anchor-top-offset};
+
+    --border-radius-box: #{$border-radius-box};
+    --border-radius-image: #{$border-radius-image};
 }
 
 // Responsive display utility classes
