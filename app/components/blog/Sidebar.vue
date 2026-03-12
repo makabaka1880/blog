@@ -12,9 +12,13 @@
             </span>
         </button>
         <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
-        <button class="color-mode-toggle" type="button" @click="cycleColorMode" :aria-label="colorModeLabel" :title="colorModeLabel">
-            <Icon :name="colorModeIcon" />
-        </button>
+        <ClientOnly>
+            <button class="color-mode-toggle" type="button" @click="cycleColorMode" :aria-label="colorModeLabel"
+                :title="colorModeLabel">
+                <Icon :name="colorModeIcon" />
+            </button>
+        </ClientOnly>
+        
         <p>
             SITE UNDER DEVELOPMENT. <br /><br />
             COOL EFFECTS ARE REMOVED.<br /><br />

@@ -166,7 +166,7 @@ Now, the SIR model tells us that the speed of infection is proportional to the n
 
 ## 2x00. Signed Distance Fields, Water Proximity, and Elephants
 ::Hintbox
-For those of you not familiar with remote sensing, I would recommend checking out [my blog post](/260311-introductory-remote-sensing) on introductory remote sensing. Or else you'll have an headache reading the following section.
+For those of you not familiar with remote sensing, I would recommend checking out [my blog post](/articles/260311-introductory-remote-sensing) on introductory remote sensing. Or else you'll have an headache reading the following section.
 ::
 
 The best part of the model is feature engineering. From Sentinel we extracted four major indices that we utilized: `NDWI` (waterbody), `NDRE` (vegetation), `NDSI` (saline) and `DEM` (altitude). The two features our AHP guy asked me to engineer were **animal density** and **water proximity**. At the time I figured that it'll be pretty fun to do one out of pure hueristics and another pure mathematics, so that's what I did: I trained an XGBoost on occurence data of African Elephants for animal density and used a non-euclidean geodesic SDF to the zero-contour of `NDWI` for water proximity, and surprisingly they worked out very well!
