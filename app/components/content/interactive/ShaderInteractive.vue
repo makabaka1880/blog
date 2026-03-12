@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import type { UniformDTO } from '~/utils/canvas-uniforms'
 import { ref } from 'vue'
-import WebGLCanvas from '~/components/content/utility/WebGLCanvas.vue'
+import WebGLCanvas from '~/components/content/utility/WebglCanvas.vue'
 
 const props = defineProps<{
     dim?: [number, number]
