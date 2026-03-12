@@ -211,7 +211,7 @@ view-height: 0.8
 ::
 ::ParallaxWindowMousetrack
 ---
-src: "/assets/260211-test-all-components/IMG_3809.png"
+src: "/assets/260211-test-all-components/0.jpg"
 sensitivity-y: 0.01
 sensitivity-x: 0.03
 view-height: 0.8
