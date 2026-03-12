@@ -91,7 +91,7 @@ It was unenhanced, poorly declouded, and I hadn't even bothered to rename the va
 
 After some friction we finally settled on the final model architecture: establish a correlation between environmental covariates like NDRE and NDWI and hazardous events like poaching, disease, or wildfire; compute an overall threat score from all those events; then perform some sort of partitioning to allocate patrol ranges for the rangers. I don't really know how they allocated the cameras and did the budget modeling - that was someone else's problem.
 
-Now you ask how do you settle the correlation? Well everyone is too lazy, AHP! How do we compose all those events? AHP! If it wasn't for GBIF, we would've been the first team ever to create a linear model for animal density dependent on spectral indices. AHP alone took up 50% of our previous paper in the national round, which is quite surprising considering that it actually made it up to Mediocore. Again, no one knew, maybe it was an outstanding 🤷
+Now you ask how do you settle the correlation? Well everyone is too lazy, AHP! How do we compose all those events? AHP! If it wasn't for GBIF, we would've been the first team ever to create a linear model for animal density dependent on spectral indices. AHP alone took up 50% of our previous paper in the national round, which is quite surprising considering that it actually made it up to Mediocre. Again, no one knew, maybe it was an outstanding 🤷
 
 > For the record, we *are* apparently the only team I've heard of that made it through the national round on a pure linear model.
 >
@@ -231,7 +231,7 @@ After some researching and LLM torturing we finally did get a decent result usin
 
 :Pic{src="d531e62a-7e9b-4f2e-a76a-66abb0caee89.webp" alt="Even though it seems like nowhere near converging we did got a knee point in RMSE at n=50 so we stopped here"}
 
-And the results were pretty amazing: it correctly predicted high clustering of animals near the waterhole and the western woods, but some false negatives did pop up on the northeastern edge and the salt pan. We suspected it was mostly because of the lack of data for high-salinity terrains.
+And the results were pretty amazing: it correctly predicted high clustering of animals near the waterhole and the western woods, but some false positives did pop up on the northeastern edge and the salt pan. We suspected it was mostly because of the lack of data for high-salinity terrains.
 
 :Pic{src="6d485e94-f382-4b08-bfb5-afef1083c518.webp" alt="Gaussian Smoothed (σ=2) Normalized Population Density, contours at 5 levels"}
 
