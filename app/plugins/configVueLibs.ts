@@ -1,14 +1,21 @@
-import VueRoughNotation from 'vue-rough-notation';
-import { TheChessboard } from 'vue3-chessboard';
-import PowerGlitchPlugin from 'vue-powerglitch'
-import Fen from 'chess-fen'
-import VueDepthViewer from 'vue-depth-viewer'
-import { MotionPlugin } from '@vueuse/motion'
+import { defineNuxtPlugin } from '#app'
 
 export default defineNuxtPlugin((nuxtApp) => {
-    nuxtApp.vueApp.use(VueRoughNotation)
-    nuxtApp.vueApp.component('TheChessboard', TheChessboard)
-    nuxtApp.vueApp.use(PowerGlitchPlugin)
-    nuxtApp.vueApp.component('Fen', Fen)
-    nuxtApp.vueApp.component('VueDepthViewer', VueDepthViewer)
+    if (import.meta.server) return  // 👈 bail out entirely on SSR
+
+    import('vue-rough-notation').then(({ default: VueRoughNotation }) => {
+        nuxtApp.vueApp.use(VueRoughNotation)
+    })
+
+    import('vue3-chessboard').then(({ TheChessboard }) => {
+        nuxtApp.vueApp.component('TheChessboard', TheChessboard)
+    })
+
+    import('vue-powerglitch').then(({ default: PowerGlitchPlugin }) => {
+        nuxtApp.vueApp.use(PowerGlitchPlugin)
+    })
+
+    import('chess-fen').then(({ default: Fen }) => {
+        nuxtApp.vueApp.component('Fen', Fen)
+    })
 })

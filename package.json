@@ -14,6 +14,11 @@
         "new:article": "node scripts/create-article.mjs",
         "assets:genmaps": "node scripts/generate-maps.mjs"
     },
+    "pnpm": {
+        "overrides": {
+            "vue": "^3.5.28"
+        }
+    },
     "dependencies": {
         "@bikariya/shiki": "^0.0.7",
         "@mliebelt/pgn-parser": "^1.4.19",
@@ -45,7 +50,6 @@
         "remark-gfm": "^4.0.1",
         "slugify": "^1.6.6",
         "three": "^0.182.0",
-        "vue-depth-viewer": "^1.2.0",
         "vue-freeze-gif": "^0.1.7",
         "vue-powerglitch": "^1.1.0",
         "vue-rough-notation": "^1.0.4",

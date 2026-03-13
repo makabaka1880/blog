@@ -13,6 +13,20 @@ export default defineNuxtConfig({
             enabled: true,
         },
     },
+    nitro: {
+        rollupConfig: {
+            plugins: [
+                {
+                    name: 'vue-default-export',
+                    transform(code, id) {
+                        if (id.includes('vue/index.mjs')) {
+                            return code + '\nexport { default } from "./index.js";'
+                        }
+                    }
+                }
+            ]
+        }
+    },
     components: [
         // { path: "~/components/foliageUIKit", prefix: "Foliage" },
         { path: "~/components/ui/kit", prefix: "UIKit", pathPrefix: false },
@@ -42,14 +56,13 @@ export default defineNuxtConfig({
         }
     },
     modules: [
-      '@nuxt/content',
-      "@nuxtjs/mdc",
-      '@nuxt/image',
-      '@nuxt/icon',
-      '@vueuse/motion',
-      "@nuxtjs/color-mode",
-      '@bikariya/shiki',
-      "@pinia/nuxt"
+        '@nuxt/content',
+        "@nuxtjs/mdc",
+        '@nuxt/icon',
+        '@vueuse/motion',
+        "@nuxtjs/color-mode",
+        '@bikariya/shiki',
+        "@pinia/nuxt"
     ],
     colorMode: {
         preference: 'system',

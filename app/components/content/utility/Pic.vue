@@ -1,6 +1,6 @@
 <template>
     <span class="prose-img-container image-like">
-        <nuxt-img :src="resolvedSrc" :alt="alt" class="image-like-content" />
+        <img :src="resolvedSrc" :alt="alt" class="image-like-content" />
         <div v-if="alt" class="prose-img-caption">
             <strong>Fig.</strong>
             <span class="caption-text">{{ alt }}</span>
