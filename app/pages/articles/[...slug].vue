@@ -27,10 +27,9 @@ import Comment from '~/components/ui/kit/Comment.vue'
 
 const route = useRoute()
 
-const { data: page } = await useAsyncData(
-    route.path,
-    () => queryCollection('articles').path(route.path).first()
-)
+const { data: page } = await useAsyncData(`article:${route.path}`, () => {
+    return queryCollection('articles').path(route.path).first()
+})
 
 const formatterWithYear = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',

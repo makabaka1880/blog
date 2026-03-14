@@ -7,9 +7,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "JetBrains Mono", monospace;
-
     font-optical-sizing: auto;
+
+    &:not(.katex):not(.katex *) {
+        font-family: "JetBrains Mono", monospace;
+    }
 }
 
 ::selection {
@@ -92,7 +94,8 @@ h6 {
     }
 }
 
-p, li {
+p,
+li {
     line-height: 1.2rem;
     margin: 0.25rem 0;
 }
@@ -107,12 +110,11 @@ mark {
     display: inline-block;
     line-height: 0em;
     padding-bottom: 0.5em;
-    color: var(--color-text); 
+    color: var(--color-text);
     background-color: var(--color-highlight-marker-thinner);
-    
-    &.search-match-content-mark {
-    }
-    
+
+    &.search-match-content-mark {}
+
     &.search-match-title-mark {
         background-color: var(--color-highlight-marker-thicker);
         line-height: inherit;

@@ -69,6 +69,10 @@ $palettes: (
         @return color.change(oklch($lightness $chroma $h-angle), $alpha: 1);
     }
 
+    @if $variant == "overlay" {
+        @return color.change(oklch($lightness $chroma $h-angle), $alpha: 0.3);
+    }
+
     @return color.change(oklch($lightness $chroma $h-angle), $alpha: $alpha);
 }
 
@@ -158,10 +162,12 @@ $color-success-border: utility-color("success", "border");
 $color-success-text: utility-color("success", "text");
 $color-error-background: utility-color("error", "bg");
 $color-error-border: utility-color("error", "border");
+$color-error-overlay: utility-color("error", "overlay");
 $color-error-text: utility-color("error", "text");
 $color-warning-background: utility-color("warning", "bg");
 $color-warning-text: utility-color("warning", "text");
 $color-warning-border: utility-color("warning", "border");
+$color-warning-overlay: utility-color("warning", "overlay");
 $color-chat-myself-background: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: 10%, $l-offset: 5%);
 $color-chat-myself-border: theme-color($default-base-hue, $default-base-saturation, $default-base-lightness, $s-offset: 5%, $l-offset: 0%);
 
@@ -225,10 +231,12 @@ $color-table-header-background-runtime: var(--color-table-header-bg-colormode);
 $color-warning-background-runtime: var(--color-warning-bg-colormode);
 $color-warning-text-runtime: var(--color-warning-text-colormode);
 $color-warning-border-runtime: var(--color-warning-border-colormode);
+$color-warning-overlay-runtime: var(--color-warning-overlay-colormode);
 $color-success-background-runtime: var(--color-success-bg-colormode);
 $color-success-border-runtime: var(--color-success-border-colormode);
 $color-success-text-runtime: var(--color-success-text-colormode);
 $color-error-background-runtime: var(--color-error-bg-colormode);
+$color-error-overlay-runtime: var(--color-error-overlay-colormode);
 $color-error-border-runtime: var(--color-error-border-colormode);
 $color-error-text-runtime: var(--color-error-text-colormode);
 $color-chat-myself-background-runtime: var(--color-chat-myself-bg-colormode);
@@ -297,11 +305,12 @@ $color-box-background-char-runtime: var(--color-box-background-char-colormode);
     --color-table-header-background: #{$color-table-header-background-runtime};
     --color-warning-background: #{$color-warning-background-runtime};
     --color-warning-text: #{$color-warning-text-runtime};
-    --color-warning-border: #{$color-warning-border-runtime};
+    --color-warning-overlay: #{$color-warning-overlay-runtime};
     --color-success-background: #{$color-success-background-runtime};
     --color-success-border: #{$color-success-border-runtime};
     --color-success-text: #{$color-success-text-runtime};
     --color-error-background: #{$color-error-background-runtime};
+    --color-error-overlay: #{$color-error-overlay-runtime};
     --color-error-border: #{$color-error-border-runtime};
     --color-error-text: #{$color-error-text-runtime};
     --color-chat-myself-background: #{$color-chat-myself-background-runtime};

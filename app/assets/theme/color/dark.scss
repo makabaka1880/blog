@@ -96,10 +96,13 @@ $dark-separator-border: oklch(0.57 0 0deg);
     --color-success-text-colormode: #{c.utility-color("success", "text")};
     --color-error-bg-colormode: #{c.utility-color("error", "bg")};
     --color-error-border-colormode: #{c.utility-color("error", "border")};
+    --color-error-overlay-colormode: #{c.utility-color("error", "overlay")};
     --color-error-text-colormode: #{c.utility-color("error", "text")};
     --color-warning-bg-colormode: #{c.utility-color("warning", "bg")};
     --color-warning-text-colormode: #{c.utility-color("warning", "text")};
+    --color-warning-overlay-colormode: #{c.utility-color("warning", "overlay")};
     --color-warning-border-colormode: #{c.utility-color("warning", "border")};
+    
     --color-chat-myself-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 0%)};
     --color-chat-myself-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 0%)};
 

@@ -9,7 +9,14 @@ updateTime: 2026-03-11
 The purpose of computing is insight, not numbers.
 ::
 
+
 Our fantastic team just finished IMMC26 International Round; as the lead coder I was in charge of some pretty interesting simulations and visualizations.
+
+> This is not a technical blog, but rather a general reflection and personal account of our journey. There are hardcore sections; whenever I'm going to dive into mathmematical details I'm going to display a warning for those not interested.
+>
+> All used notation and variables are listed in the [appendix](#appendix).
+>
+> All team members will be refered to with psuedonyms for privacy.
 
 :Pic{src="Screenshot 2026-03-11 at 18.19.39.webp" alt="2125 lines of python in 50 hours"}
 
@@ -22,8 +29,9 @@ But most importantly, we had a great time! In this post, I'll walk through some 
 
 :Pic{src="Screenshot 2026-03-11 at 18.35.21.webp" alt="International Masochastic Modeling Competition™ - Pushing your vitals to the limit"}
 
+
 ## 0x00. Remote Sensing, SDFs and SentinelHub
-Originally, when we first saw the problem, our instinct was to discretize the  map into whatever data structure felt most natural. After some probing, this turned out to be completely infeasible — the discrete nodes would essentially have to sit at the lattice intersections of every covariate we were analyzing, and the resulting data volume would be enormous. We were stuck.
+Originally, when we first saw the problem, our instinct was to discretize the  map into whatever data structure felt most natural. After some probing, this turned out to be completely infeasible -- the discrete nodes would essentially have to sit at the lattice intersections of every covariate we were analyzing, and the resulting data volume would be enormous. We were stuck.
 
 Then, while ordering evening snacks, I accidentally toggled on the satellite view. That's when it hit me: satellite maps *already* discretize terrain into pixels, and each pixel contains exactly the kind of spatially-indexed data we needed. I quickly shared this $\varepsilon\acute{\upsilon}\rho\eta\kappa\alpha!$ moment with the team, and we immediately turned to Google Maps - only to hit another wall.
 
@@ -81,7 +89,7 @@ yeah分季节和分地区
 
 Finally, after two hours of toil, our first satellite image came through.
 
-> At the time I was very unfamiliar with numpy and tensors — it took me five minutes just to work out the indexing logic for stripping the alpha channel. During the national round I had used R for all data processing, so the transition from relational algebra to tensor arithmetic was a genuine headache.
+> At the time I was very unfamiliar with numpy and tensors -- it took me five minutes just to work out the indexing logic for stripping the alpha channel. During the national round I had used R for all data processing, so the transition from relational algebra to tensor arithmetic was a genuine headache.
 
 :Pic{src="Screenshot 2026-03-12 at 00.57.00.webp" alt="Etosha After the Fire, True Color"}
 
@@ -158,7 +166,7 @@ alt: "Utterly Inhuman"
 
 Luckily, I was not in charge of implementing that section.
 
-My high school offers a discrete mathematics course, and given its high correlation with modeling, it's no surprise that most competition participants have taken it. What is perhaps more surprising is that at least half the class plays Riichi Mahjong — earning the course its unofficial title: the "underground casino". The professor, for the record, is the best player in the class. I am one of the very few students not in the casino, but all of my teammates are, and are pretty decent players.
+My high school offers a discrete mathematics course, and given its high correlation with modeling, it's no surprise that most competition participants have taken it. What is perhaps more surprising is that at least half the class plays Riichi Mahjong -- earning the course its unofficial title: the "underground casino". The professor, for the record, is the best player in the class. I am one of the very few students not in the casino, but all of my teammates are, and are pretty decent players.
 
 Now, the SIR model tells us that the speed of infection is proportional to the number of infected individuals. And so, one night, one of my teammates decided to induct me into the casino - starting me off against a very weak computer opponent. This gave me some wholly unwarranted self-confidence, which promptly evaporated in my first human matchup. I never touched the casino again for the rest of the competition. That teammate probably just wanted to boost my productivity.
 
@@ -259,7 +267,7 @@ $$
 $$
 
 ::Hintbox
-Intuitively, $\nabla u$ is the gradient vector of the distance field—it points in the direction of steepest increase in distance, i.e., directly away from the nearest boundary point. The parameter $s$ represents the **local slowness** (the reciprocal of speed) of the distance propagation. While a standard Euclidean distance assumes $s = 1$, where walking one step in the gradient direction increases your distance-to-water by exactly one step, keeping $s$ as a variable allows for significant extensibility. In this context, $s$ acts as a **cost weight** or a "refractive index" for the terrain. A higher value of $s$ effectively "stretches" the accumulated distance $u$ relative to the physical space traveled, allowing us to model regions where movement is more taxing - such as thick vegetation, mud, or steep slopes—without altering the underlying geometry.
+Intuitively, $\nabla u$ is the gradient vector of the distance field -- it points in the direction of steepest increase in distance, i.e., directly away from the nearest boundary point. The parameter $s$ represents the **local slowness** (the reciprocal of speed) of the distance propagation. While a standard Euclidean distance assumes $s = 1$, where walking one step in the gradient direction increases your distance-to-water by exactly one step, keeping $s$ as a variable allows for significant extensibility. In this context, $s$ acts as a **cost weight** or a "refractive index" for the terrain. A higher value of $s$ effectively "stretches" the accumulated distance $u$ relative to the physical space traveled, allowing us to model regions where movement is more taxing - such as thick vegetation, mud, or steep slopes -- without altering the underlying geometry.
 ::
 
 For etosha and other flat terrains, this version is already enough. But in our paper we decided to go a step further, and introduced a geodesic approach to incoporate altitude data. On non-euclidean manifolds the elegant eikonal become slightly more intricate:
@@ -284,6 +292,8 @@ $$
     \left(\frac{u_{i,j} - A}{dl_x}\right)^2 + \left(\frac{u_{i,j} - B}{dl_y}\right)^2 = s^2
 $$
 
+Where $A = u_{i - dx, j}, B = u_{i, j - dy}$.
+
 By substitution and collecting terms, the update rule emerges from the quadratic:
 
 $$
@@ -303,7 +313,7 @@ u_{i,j} = \frac{A + B + \sqrt{2 s^2 dl^2 - (A - B)^2}}{2}
 $$
 ::
 
-However, this 2D update is only valid when the discriminant is non-negative. When the two upwind neighbors $A$ and $B$ are too far apart in accumulated distance — specifically when
+However, this 2D update is only valid when the discriminant is non-negative. When the two upwind neighbors $A$ and $B$ are too far apart in accumulated distance -- specifically when
 
 $$
 |A - B| \ge s \cdot \frac{dl_x \cdot dl_y}{\sqrt{dl_x^2 + dl_y^2}}
@@ -402,7 +412,6 @@ new_mask = fast_sweep(mask.copy(), seed, s=1.0)
 
 and this is what we got:
 
-
 :Pic{src="41aa608b6f2993a2309462a88a3050bf.webp" alt="Water Proximity, Gaussian Smoothed in preprocessing NDWI (σ=5)"}
 
 ### 2x03. Indices and Probabilities
@@ -416,8 +425,6 @@ At this point the pipeline is pretty straightforward: just AHP merge everything 
 | **Poaching** | +1 | -1 | 0 | -1 | 0 |
 | **Human Interv.** | +1 | +1 | -1 | -1 | 0 |
 
-
-
 > We actually did so much AHP we had a template for matrices from of size 1x1 to 6x6. For each variable we just order them from the most important to least and a matrix is ready for the pipeline.
 > :Pic{src="07ebd06a2a9a7b7f717d191a7accbe7a.webp" alt="An AHP matrix someone told me to draw; we never actually used it"}
 
@@ -429,9 +436,8 @@ And this gives us something my team called the "Possibility Index", which correl
 
 It was already about 4 or 5 in the morning, and the other modeler JYZ also made notable progress on personnel allocation -- truely a milestone in progress worth celebrating. It wasn't until we checked against our plan doc that we snapped back to reality: two very serious problems were staring us in the face.
 
-
-1. **<mark>What is this data's dimension?</mark>** What unit is it in? What does pointwise addition do? What about multiplication? What about its gradient? What about other matrix interpretation? What unit is it in? What does pointwise addition mean? What about multiplication, or its gradient, or any other matrix interpretation? The table assigns $+1$ and $-1$ as correlational signs, but these are *ordinal labels*, not quantities — they live in no well-defined vector space. There is no metric, no inner product, no meaningful notion of "twice as much." Treating them as scalars in any downstream arithmetic is, formally, a category error.
-2. **<mark>How in the world can this data be made to encode temporal patterns?</mark>** Right now, many of the model's parameters are normalized from each sample's observed range to $[0, 1]$. This is a critical subtlety: range normalization is *per-snapshot* — the minimum and maximum are computed *within* each timeframe independently, and everything is rescaled relative to those local extremes. This effectively erases any information about the total scale of data, which makes it impossible to compare across timeframes.
+1. **<mark>What is this data's dimension?</mark>** What unit is it in? What does pointwise addition mean? What about multiplication, or its gradient, or any other matrix interpretation? The table assigns $+1$ and $-1$ as correlational signs, but these are *ordinal labels*, not quantities -- they live in no well-defined vector space. There is no metric, no inner product, no meaningful notion of "twice as much." Treating them as scalars in any downstream arithmetic is, formally, a category error.
+2. **<mark>How in the world can this data be made to encode temporal patterns?</mark>** Right now, many of the model's parameters are normalized from each sample's observed range to $[0, 1]$. This is a critical subtlety: range normalization is *per-snapshot* -- the minimum and maximum are computed *within* each timeframe independently, and everything is rescaled relative to those local extremes. This effectively erases any information about the total scale of data, which makes it impossible to compare across timeframes.
 
 <br/>
 
@@ -477,3 +483,125 @@ hrx让你速速请假因为缺了好多东西
 {.LCX}
 
 <img src="/assets/cat-smiling-emoji.webp"/>
+
+::
+
+
+I thought about this for another two or three hours and came up with an elegant solution.
+
+::WarningBox
+More heavy mathematics ahead. If you are having a headache, move on to [the next section](#_3x00-composition-and-the-24h-countdown).
+::
+
+> Let $\tilde{f}$ denote the min-max normalization of $f$ (range 
+normalization). That is, $\tilde{f} = \frac{f - f_{\min}}{f_{\max} - f_{\min}}$
+
+Any scalar field preserves relative ordering under monotone transformation -- and this single observation resolves both problems at once.
+
+**On dimension and arithmetic** -- raw indices like $\rho_V$ or $\zeta$ carry no well-defined unit; the $+1$ and $-1$ correlational signs in the event table are ordinal labels, not quantities, and treating them as scalars in downstream arithmetic is formally a category error. But after min-max 
+normalization, $\tilde{f} \in [0, 1]$ is dimensionless by construction and 
+lives in a well-defined probability space. Pointwise multiplication of two 
+such fields is exactly the joint probability of two independent events -- 
+a perfectly meaningful operation.
+
+**On temporal comparability** -- range normalization is per-snapshot: the minimum and maximum are computed within each timeframe independently, which erases absolute amplitude. But this is a feature, not a bug. $\tilde{\zeta}(p)$ no longer asks "how threatened is $p$?" -- it asks "how threatened is $p$ *relative to the rest of the park right now*?" This relative ordering is stable and meaningful across seasons, even as the absolute scale of threat shifts with environmental conditions.
+
+Both resolutions hinge on the same underlying assumption: that a normalized scalar field can be faithfully interpreted as a pointwise probability. We state this explicitly:
+
+:Pic{src="Screenshot 2026-03-13 at 18.11.29.webp" alt="Assumption of Indices as Probability"}
+
+> We abuse notation and write $P(f) := \tilde{f}$, interpreting $\tilde{f}(p)$ as the probability of the event associated with $f$ occurring at $p$.
+
+This immediately changes everything. Probability theory is a well-studied and well-interpreted subject -- and now that our fields live in it, both problems dissolve and progress could be made once again.
+
+> We abuse notation and write $P(f) := \tilde{f}$, interpreting $\tilde{f}(p)$ as the probability of the event associated with $f$ occurring at $p$.
+
+First, we clarified what a personnel allocation plan is: a fracture of the park $\Omega$ into simply connected submanifolds, with each submanifold $S_i$ representing a contiguous patrol region. Let $N$ denote the total number of rangers deployed. Each patrol region has a geometric centroid $o_i$ (denoted $p_i$ in the paper -- we forgot to explicitly state that, oh no), which we take as the ranger's base of operations. Due to the lack of literature and the dwindling clock, we decided to naively model the coverage of ranger $i$ as a Gaussian field centered on $o_i$, denoted $C_i$:
+
+$$
+    C_i(p) = e^{-\lambda |p - o_i|}, \quad i = 1, \dots, N
+$$
+
+Now here is the elegant part: the probability interpretation comes in. Coverage of a point, we argued, proxies for the probability that a ranger can respond to a threat event at that point within operationally meaningful time. For example, a ranger based at the Okaukuejo waterhole could be dispatched to assist with a poaching case at Okondeka immediately upon report; they could likely reach events deeper in the salt pan with some delay -- but any meaningful assistance with a wildfire in the western woods is operationally out of reach.
+
+Any hazardous event can in principle draw a response from any ranger. Therefore, the total coverage of the park is the aggregation of $\{C_i\}_{i=1}^{N}$ under union probability. Since responses from distinct rangers are mutually independent events:
+
+$$
+C(p) = P\!\left(\bigvee_{i=1}^{N} C_i(p)\right) = 1 - \prod_{i=1}^{N} (1 - C_i(p))
+$$
+
+
+Now that we have $P(C)$, $P(\zeta)$ and the assumption that response and events are independent, we can calculate $P(\neg(\zeta \to C)) = 1 - P(C \mid \zeta)$,  which corresponds to the **residual risk** at each point -- the probability that a threat occurs and goes unresponded to. We call this the **Consolidated Hazard Index**:
+
+$$
+\begin{align*}
+H(p) &= P(\lnot(\zeta \to C)) = P(\zeta \land \lnot C) \\
+&\overset{\perp}{=} P(\zeta) \cdot (1 - C(p))  \\
+&\propto \zeta(p) \cdot (1 - C(p))
+\end{align*}
+$$
+
+At last, we aggregate $H$ over $\Omega$ and normalize to provide an expected probability of a threat event that goes unresponded to.
+
+$$
+\bar H = \frac{1}{|\Omega|} \iint_{\Omega} H \, \mathrm{d}A
+$$
+
+Our pipeline was built in parallel with theoretical derivation -- a series of Jupyter notebooks caching intermediate results into `.npy` dumps, which in retrospect was not the cleanest approach. By the end, the notebooks were thoroughly littered with diagnostic `imshow`s, on-demand `import`s, and one-off transformations that only existed to sanity-check a specific metric at 3am. A proper pipeline with clearly separated preprocessing, feature engineering, and evaluation stages would have saved us considerable pain -- something to fix next time.
+
+> Another headache we had was that after updating a utility method, the whole notebook has to be reloaded to re-import the method.
+
+The cost of running the full pipeline on a new date was high enough that we were very selective. Declouding alone was a manual process -- we never set up a pipeline for fetching the `SCL` scene classification channel, so cloud contamination had to be assessed by eye. Clouds outside the park boundary are harmless, but those sitting over the region of interest corrupt the spectral indices entirely. Automating a cloud density threshold would have been its own rabbit hole, so we simply picked dates we could visually confirm were clean. Since spectral indices are fairly stable within each season in Etosha anyway, two sample dates felt sufficient: 2022-01-24 (rainy season) and 2022-08-24 (dry season).
+
+> A main reason, frankly, was that the NDRE and NDWI simply looked the best on these two dates graphed out in contours.
+
+Our final model achieved $\bar{H} = 9.5\%$ -- meaning on average, roughly 1 in 10 threat events goes unresponded to. To put this in context: the global average staffing for protected areas is approximately one ranger per $72 \mathrm{km}^2$, and Etosha spans over $22{,}000\ \mathrm{km}^2$ -- meaning the baseline situation is already severely stretched. Against that backdrop, $9.5\%$ with only 100 simultaneous patrol staff felt like a satisfying result.
+
+:Pic{src="69a79c72-0854-472f-9baa-fb9badeaa6b1.webp" alt="Optimal coverage for N=100"}
+:Pic{src="dad60d01-3cf8-4969-91d9-515cb002215c.webp" alt="Optimal H for N=100"}
+
+> All visualizations above correspond to the optimal partition produced by the final pipeline, discussed in depth in [the next subsection](#_2x04-binary-search-and-allocation).
+>
+> Note that optimal coverage is not the same as maximum coverage across $\Omega$. Intuitively, this makes sense: coverage should be concentrated in regions of high $\zeta$, reflecting the principle that human resources ought to be allocated where the threat is greatest.
+> It is very unlikely that we'll every do L<sup>1</sup> normalization on $H$ because it is meaningless to consider $H$ as a distribution; threat events does not pick a place to happen on random. So in the paper we use $\bar H$ here to refer to the expectance of $\tilde H$ over $\Omega$.
+
+$\bar{H}$ serves as a natural and interpretable penalty for assessing allocation plans — which made it a principled basis for the iterative relaxation model we develop in the next section, where I also conduct ablation tests on the additional heuristics.
+
+### 2x04. Binary Search and Allocation
+
+But I'm getting ahead of myself - rewind to 6pm, twelve hours earlier. I worked through the night before and accidentally fall asleep for 7 hours straight, so when I got up the team was already ready for the evening meetup.
+
+JYZ proposed a work of his: by filling the bounding box of the park geometry with boxes and doing binary search to optimize their side length, a crude partition is made. 
+
+This is genuinely a good idea, if it wasn't for the fact that this approach is not working at all.
+
+:Pic{src="26504ac81e32bfdb839d4875d3fb70cc.webp" alt="BinSearch fracturing, N=5"}
+
+## 3x00. Composition and the 24H Countdown
+
+## Appendix
+
+Here's a table of all notations used so far:
+
+| Symbol | Description |
+|--------|-------------|
+| $\rho_W$ | NDWI -- Normalized Difference Water Index |
+| $\rho_V$ | NDRE -- Normalized Difference Red Edge (vegetation health) |
+| $\rho_S$ | NDSI -- Normalized Difference Salinity Index |
+| $\vartheta_i$ | Event Threat Index for event $i$ |
+| $u(p)$ | SDF value at point $p$ -- geodesic distance to nearest waterbody boundary |
+| $\partial \Omega$ | Boundary of the waterbody geometry |
+| $g^{ij}$ | Inverse metric tensor (non-Euclidean Eikonal) |
+| $g_{ij}$ | Metric tensor (diagonal under independence assumption) |
+| $g_{\lambda\lambda}, g_{\phi\phi}$ | Diagonal entries of metric tensor in lat/lon coordinates |
+| $g_{\phi\lambda}, g_{\lambda\phi}$ | Off-diagonal entries, assumed zero |
+| $s$ | Local slowness -- cost weight / refractive index of terrain |
+| $dl_x, dl_y$ | Arc-length steps in $x$ and $y$ directions |
+| $A, B$ | Upwind neighbor values in Eikonal solver |
+| $\tilde{f}$ | Min-max normalization of field $f$ |
+| $\hat{f}$ | L$^1$-normalization of field $f$ |
+| $\Omega$ | Park domain |
+| $S_i$ | Simply connected submanifold (A chunk of the park with no holes) |
+| $o_i$ | Geometric centroid of patrol range |
+| $C_i$ | Coverage field for ranger $i$ |
+| $C$ | Aggregated coverage field over $\Omega$ |

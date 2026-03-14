@@ -25,4 +25,8 @@ import BaseBox from './BaseBox.vue'
 :deep(.box-container::before) {
     opacity: 0.15;
 }
+
+.box-container::before {
+    color: var(--color-error-overlay);
+}
 </style>

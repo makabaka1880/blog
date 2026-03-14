@@ -111,6 +111,16 @@ term: "Test Term"
 This is a definition box component. It has a term and its definition.
 ::
 
+### Box
+::WarningBox
+Test
+::
+
+### Box
+::ErrorBox
+Test
+::
+
 ## Mixed Content Test
 
 This paragraph tests **bold** text, *italic* text, and regular text all together. We can also add `inline code` to test that styling.
