@@ -292,7 +292,7 @@ $$
     \left(\frac{u_{i,j} - A}{dl_x}\right)^2 + \left(\frac{u_{i,j} - B}{dl_y}\right)^2 = s^2
 $$
 
-Where $A = u_{i - dx, j}, B = u_{i, j - dy}$.
+Where $A = u_{i - dx, j}, B = u_{i, j - dy}$."
 
 By substitution and collecting terms, the update rule emerges from the quadratic:
 
@@ -563,7 +563,7 @@ Our final model achieved $\bar{H} = 9.5\%$ -- meaning on average, roughly 1 in 1
 > All visualizations above correspond to the optimal partition produced by the final pipeline, discussed in depth in [the next subsection](#_2x04-binary-search-and-allocation).
 >
 > Note that optimal coverage is not the same as maximum coverage across $\Omega$. Intuitively, this makes sense: coverage should be concentrated in regions of high $\zeta$, reflecting the principle that human resources ought to be allocated where the threat is greatest.
-> It is very unlikely that we'll every do L<sup>1</sup> normalization on $H$ because it is meaningless to consider $H$ as a distribution; threat events does not pick a place to happen on random. So in the paper we use $\bar H$ here to refer to the expectance of $\tilde H$ over $\Omega$.
+> It is very unlikely that we'll every do L<sup>1</sup> normalization on $H$ because it is meaningless to consider $H$ as a distribution; threat events does not pick a place to happen on random. So in the paper we use $\bar H$ to refer to the expectance of $\tilde H$ over $\Omega$.
 
 $\bar{H}$ serves as a natural and interpretable penalty for assessing allocation plans — which made it a principled basis for the iterative relaxation model we develop in the next section, where I also conduct ablation tests on the additional heuristics.
 
@@ -601,7 +601,19 @@ Here's a table of all notations used so far:
 | $\tilde{f}$ | Min-max normalization of field $f$ |
 | $\hat{f}$ | L$^1$-normalization of field $f$ |
 | $\Omega$ | Park domain |
-| $S_i$ | Simply connected submanifold (A chunk of the park with no holes) |
-| $o_i$ | Geometric centroid of patrol range |
+| $\zeta$ | Possibility Index (Point Threat Index) |
+| $S_i$ | Simply connected submanifold (a contiguous patrol zone) |
+| $o_i$ | Geometric centroid of patrol zone $S_i$ |
 | $C_i$ | Coverage field for ranger $i$ |
 | $C$ | Aggregated coverage field over $\Omega$ |
+| $H$ | Consolidated Hazard Index |
+| $\bar{H}$ | Expected Hazard -- $\frac{1}{|\Omega|}\iint_\Omega H\,dA$ |
+| $N$ | Total number of rangers deployed |
+| $\Phi$ | Total integrated threat -- $\iint_\Omega \zeta\,dA$ |
+| $\theta$ | Per-staff threat budget -- $\alpha \cdot \Phi / N$ |
+| $\alpha$ | Threat scaling factor |
+| $\eta_{ij}$ | Park coverage ratio of grid cell $G_{ij}$ |
+| $\tau_{ij}$ | Integrated threat of grid cell $G_{ij}$ |
+| $\mathcal{G}$ | Set of active (non-absorbed) grid cells |
+| $\mathcal{A}$ | Set of low-threat absorbed grid cells |
+| $G_{ij}$ | Grid cell at row $i$, column $j$ |
