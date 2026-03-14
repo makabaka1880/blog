@@ -47,6 +47,7 @@ export default defineNuxtConfig({
                     langs: blogConfig.highlight.langs as any[],
                 },
                 remarkPlugins: {
+                    "~/plugins/plugin-mre.mjs": {},
                     "remark-math": {},
                 },
                 rehypePlugins: {
@@ -91,9 +92,17 @@ export default defineNuxtConfig({
             ],
             link: [
                 { rel: "icon", type: "image/x-icon", href: blogConfig.favicon },
+                { rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css"}
             ],
             script: [
-                { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" }
+                { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" },
+                {
+                    src: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS_CHTML-full',
+                    integrity: 'sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=',
+                    crossorigin: 'anonymous',
+                    referrerpolicy: 'no-referrer',
+                },
+                { src: "https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"}
             ]
         },
     },
