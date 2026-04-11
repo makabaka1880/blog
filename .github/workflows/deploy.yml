@@ -37,7 +37,7 @@ jobs:
           version: 9
 
       - name: Install dependencies
-        run: pnpm install; pnpm install better-sqlite3
+        run: pnpm install; pnpm install -w better-sqlite3
 
       - name: Generate site
         run: pnpm run generate
