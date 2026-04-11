@@ -19,6 +19,10 @@
     background-color: var(--color-highlight-background);
 }
 
+*:has(> li) {
+    margin-left: 2rem;
+}
+
 :where(.iconify) {
     display: inline-block;
     flex-shrink: 0;
