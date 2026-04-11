@@ -1,7 +1,7 @@
 <template>
-    <BaseBox :background-char="'\u{2717}'" :box-type="'error'" :box-class="`error-box`">
+    <BaseBox :background-char="''" :box-type="'error'" :box-class="`error-box`">
         <template #header>
-            ERROR
+            FATAL
         </template>
         <slot />
     </BaseBox>
@@ -17,8 +17,7 @@ import BaseBox from './BaseBox.vue'
     border-color: var(--color-error-border);
 }
 
-.error-box .box-header,
-.error-box .box-content {
+:deep(.box-header) {
     color: var(--color-error-text);
 }
 

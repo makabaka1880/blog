@@ -12,7 +12,7 @@ const appConfig = useAppConfig()
 
 onMounted(() => {
     window.twikoo?.init({
-        envId: appConfig.twikooConfig.envID,
+        envId: appConfig.services.twikooConfig.endpoint,
         el: "#tcomment"
     })
 })

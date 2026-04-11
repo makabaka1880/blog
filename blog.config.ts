@@ -35,10 +35,22 @@ const blogConfig = {
     },
     // collections: blogCollections, //! Do not modify
     links: blogLinks, //! Do not modify
-    twikooConfig: {
-        envID: "https://blog-twikoo-one-dun.vercel.app/"
+    birth: "2009-11-17",
+    defaults: {
+        track: {
+            mode: "server" as const,
+            server: "netease" as const,
+            id: "1913745954"
+        }
     },
-    birth: "2009-11-17"
+    services: {
+        twikooConfig: {
+            endpoint: "https://blog-twikoo-one-dun.vercel.app/"
+        },
+        metingConfig: {
+            endpoint: 'https://api.i-meto.com/meting/api'
+        }
+    }
 }
 
 export default blogConfig

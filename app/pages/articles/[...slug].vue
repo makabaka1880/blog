@@ -2,11 +2,14 @@
     <div class="article-view">
         <div class="article-header">
             <div style="margin-bottom: 1.5rem">
-                <h1>{{ page?.title }}</h1>
+                <h1 id="article-top">{{ page?.title }}</h1>
                 <p style="color: var(--color-text-light)"> {{ page?.description }} </p>
             </div>
-            <p v-if="showUpdated">Created {{ createdAt }} · Updated {{ updatedAt }}</p>
-            <p v-else>Created {{ createdAt }}</p>
+            <p>
+                Created {{ createdAt }}
+                <span v-if="showUpdated"> · Updated {{ updatedAt }}</span>
+                <span> · Estimated {{ readingTime }} Read</span>
+            </p>
         </div>
         <hr class="sep" />
         <div class="article-container">
@@ -23,6 +26,7 @@ definePageMeta({
 })
 
 import { useHead, inject, computed } from '#imports'
+import type { MinimarkNode } from '@nuxt/content'
 import Comment from '~/components/ui/kit/Comment.vue'
 
 const route = useRoute()
@@ -108,6 +112,26 @@ const showUpdated = computed(() => {
         created.getDate() !== updated.getDate()
     )
 })
+
+const readingTime = computed(() => {
+    return `${computeReadingTime(page.value?.body.value ?? [])} min`;
+})
+
+const computeReadingTime = (input: MinimarkNode | MinimarkNode[]): number => {
+    const wordCount = (n: MinimarkNode): number => {
+        if (typeof n === 'string') {
+            return n.trim().split(/\s+/).filter(Boolean).length;
+        }
+        const [, , ...children] = n;
+        return children.reduce((acc, child) => acc + wordCount(child), 0);
+    };
+
+    const totalWords = Array.isArray(input) && typeof input[0] !== 'string'
+        ? (input as MinimarkNode[]).reduce((acc, node) => acc + wordCount(node), 0)
+        : wordCount(input as MinimarkNode);
+
+    return Math.ceil(totalWords / 200);
+};
 
 </script>
 

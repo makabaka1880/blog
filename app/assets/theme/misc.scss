@@ -1,5 +1,4 @@
 @use "./layout" as *;
-@use "./color-schemes" as *;
 
 :root {
     --font-size-xs: 0.75rem;
@@ -15,5 +14,5 @@
     --font-size-quote: clamp(3rem, 8vw, 5rem);
 
     // Boxes
-    --color-defbox-background: #{$color-card-background-runtime};
+    --color-defbox-background: var(--color-card-background);
 }

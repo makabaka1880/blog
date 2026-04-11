@@ -6,7 +6,7 @@
         <div class="content">
             <UIKitSafeArea>
                 <template #sidebar>
-                    <BlogSidebar />
+                    <BlogSidebar :toc="page?.body?.toc?.links ?? []" />
                 </template>
                 <template #content>
                     <slot />
@@ -55,13 +55,5 @@ const articles = computed(() => (adjacentArticles as Record<string, any>)[page.v
     position: relative;
     z-index: 1;
 }
-
-:deep(table) {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-    font-size: var(--font-size-md);
-}
-
 
 </style>

@@ -3,58 +3,84 @@
         <div class="sidebar-title-bar">
             <img id="avatar-img" src="/favicon.ico" />
             <div class="sidebar-title-bar-titles">
-                <h2> Welcome </h2>
+                <h2>Welcome</h2>
             </div>
+        </div>
+        <div class="sidebar-controls">
+            <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
+            <ClientOnly>
+                <button class="color-mode-toggle" type="button" @click="cycleColorMode" :aria-label="colorModeLabel"
+                    :title="colorModeLabel">
+                    <Icon :name="colorModeIcon" />
+                </button>
+            </ClientOnly>
         </div>
         <button class="search-button" type="button" @click="isSearchOpen = true">
             <span>
                 <Icon name="uil:search" /> Search
             </span>
         </button>
-        <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
-        <ClientOnly>
-            <button class="color-mode-toggle" type="button" @click="cycleColorMode" :aria-label="colorModeLabel"
-                :title="colorModeLabel">
-                <Icon :name="colorModeIcon" />
-            </button>
-        </ClientOnly>
-        
-        <p>
-            SITE UNDER DEVELOPMENT. <br /><br />
-            COOL EFFECTS ARE REMOVED.<br /><br />
-            COME AGAIN ANOTHER DAY.
-        </p>
+
+        <div v-if="toc" class="toc-section">
+            <p class="toc-title">On This Page <a href="#article-top">
+                    <Icon name="uil:top-arrow-to-top" />
+                </a></p>
+            <div class="toc-list">
+                <BlogToc :toc="toc" />
+                <a href="#twikoo">Comments</a>
+            </div>
+        </div>
+        <div v-else>
+            <h2>Recent Posts</h2>
+            <div class="recent-posts">
+                <NuxtLink v-for="article in recentArticles" :key="article.path" :to="article.path"
+                    class="recent-post-line">
+                    {{ article.title }}
+                </NuxtLink>
+                <NuxtLink to="/articles" class="recent-post-line">
+                    All articles →
+                </NuxtLink>
+            </div>
+        </div>
     </div>
 </template>
 
+
 <script lang="ts" setup>
-import SearchModal from './SearchModal.vue';
+import type { TocLink } from '@nuxtjs/mdc'
+import SearchModal from './SearchModal.vue'
 
-const isSearchOpen = ref(false);
-const colorPref = useColorMode();
+defineProps<{ toc: TocLink[] }>()
 
+const recentArticles = ref<any[]>([]);
+
+const isSearchOpen = ref(false)
+const colorPref = useColorMode()
 const colorModeIcon = computed(() => {
-    const pref = colorPref.preference;
-    if (pref === 'light') return 'uil:sun';
-    if (pref === 'dark') return 'uil:moon';
-    return 'uil:desktop';
-});
-
+    const pref = colorPref.preference
+    if (pref === 'light') return 'uil:sun'
+    if (pref === 'dark') return 'uil:moon'
+    return 'uil:desktop'
+})
 const colorModeLabel = computed(() => {
-    const pref = colorPref.preference;
-    if (pref === 'light') return 'Light mode';
-    if (pref === 'dark') return 'Dark mode';
-    return 'System preference';
-});
-
+    const pref = colorPref.preference
+    if (pref === 'light') return 'Light mode'
+    if (pref === 'dark') return 'Dark mode'
+    return 'System preference'
+})
 function cycleColorMode() {
-    const modes = ['light', 'system', 'dark'] as const;
-    const currentIndex = modes.indexOf(colorPref.preference as any);
-    const nextIndex = (currentIndex + 1) % modes.length;
-    colorPref.preference = modes[nextIndex]!;
+    const modes = ['light', 'system', 'dark'] as const
+    const currentIndex = modes.indexOf(colorPref.preference as any)
+    colorPref.preference = modes[(currentIndex + 1) % modes.length]!
 }
 
+onMounted(async () => {
+    const result = await queryCollection('articles').select('title', 'path').order('createTime', 'DESC');
+    const allArticles = await result.all();
+    recentArticles.value = allArticles.slice(0, 5);
+})
 </script>
+
 
 <style lang="scss" scoped>
 @use "~/assets/theme.scss" as *;
@@ -75,6 +101,11 @@ function cycleColorMode() {
             height: 3rem;
             width: 3rem;
         }
+    }
+
+    .sidebar-controls {
+        display: flex;
+        flex-direction: row;
     }
 
     .search-button {
@@ -151,6 +182,45 @@ function cycleColorMode() {
 
     p {
         margin-top: 5rem; // TODO: REMOVE
+    }
+
+
+    .toc-section {
+        margin-top: 2rem;
+
+        .toc-list {
+            overflow-y: auto;
+            max-height: 40vh;
+            scrollbar-width: none;
+            padding-bottom: 2.5rem;
+            mask-image: linear-gradient(to bottom,
+                    black calc(100% - 3rem),
+                    transparent 100%);
+        }
+
+        .toc-title {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    .recent-posts {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .recent-post-line {
+        display: block;
+        padding: 0.25rem 0;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 </style>

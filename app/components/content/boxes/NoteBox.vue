@@ -1,7 +1,7 @@
 <template>
-    <BaseBox :background-char="''" :box-type="'warning'" :box-class="`warning-box`">
+    <BaseBox :background-char="''" :box-type="'success'" :box-class="`success-box`">
         <template #header>
-            WARNING
+            NOTE
         </template>
         <slot />
     </BaseBox>
@@ -12,13 +12,13 @@ import BaseBox from './BaseBox.vue'
 </script>
 
 <style lang="scss" scoped>
-.warning-box {
-    background-color: var(--color-warning-background);
-    border-color: var(--color-warning-border);
+.success-box {
+    background-color: var(--color-success-background);
+    border-color: var(--color-success-border);
 }
 
 :deep(.box-header) {
-    color: var(--color-warning-text);
+    color: var(--color-success-text);
 }
 
 :deep(.box-container::before) {
@@ -26,6 +26,6 @@ import BaseBox from './BaseBox.vue'
 }
 
 .box-container::before {
-    color: var(--color-warning-overlay);
+    color: var(--color-success-overlay);
 }
 </style>

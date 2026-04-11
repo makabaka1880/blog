@@ -113,8 +113,6 @@ mark {
     color: var(--color-text);
     background-color: var(--color-highlight-marker-thinner);
 
-    &.search-match-content-mark {}
-
     &.search-match-title-mark {
         background-color: var(--color-highlight-marker-thicker);
         line-height: inherit;
@@ -150,21 +148,21 @@ div.footer {
     vertical-align: -0.1em;
 }
 
-/* 自定义滚动条 */
-::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
-}
+// /* 自定义滚动条 */
+// ::-webkit-scrollbar {
+//     width: 0.5rem;
+//     height: 0.5rem;
+// }
 
-::-webkit-scrollbar-track {
-    background: var(--color-background);
-}
+// ::-webkit-scrollbar-track {
+//     background: var(--color-background);
+// }
 
-::-webkit-scrollbar-thumb {
-    background: var(--color-text);
-    border-radius: 0.25rem;
-}
+// ::-webkit-scrollbar-thumb {
+//     background: var(--color-text);
+//     border-radius: 0.25rem;
+// }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-link);
-}
+// ::-webkit-scrollbar-thumb:hover {
+//     background: var(--color-link);
+// }

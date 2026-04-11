@@ -9,6 +9,13 @@ updateTime: 2026-03-11
 The purpose of computing is insight, not numbers.
 ::
 
+::MusicPlayer
+---
+mode: "server"
+server: "netease"
+id: "501468000"
+---
+::
 
 Our fantastic team just finished IMMC26 International Round; as the lead coder I was in charge of some pretty interesting simulations and visualizations.
 
@@ -25,7 +32,7 @@ We collected quite a lot of interesting artifacts, for example among them are 3G
 :Pic{src="Screenshot 2026-03-11 at 18.22.17.webp" alt="Sneak peak at our paper"}
 :Pic{src="6133539aa13b0c2ef181af28c8ec4b66.webp" alt="Our favourite vis"}
 
-But most importantly, we had a great time! In this post, I'll walk through some of our most interesting work, and share an honest reflection on what it was like to live through the exhausting, thrilling, and ultimately unforgettable 50 hours.
+But most importantly, we had a great time! In this post, I'll walk through some of our most interesting work, and share an honest reflection on what it was like to live through the exhausting, thrilling, and ultimately unforgettable 100 hours.
 
 :Pic{src="Screenshot 2026-03-11 at 18.35.21.webp" alt="International Masochastic Modeling Competition™ - Pushing your vitals to the limit"}
 
@@ -166,10 +173,10 @@ alt: "Utterly Inhuman"
 
 Luckily, I was not in charge of implementing that section.
 
-My high school offers a discrete mathematics course, and given its high correlation with modeling, it's no surprise that most competition participants have taken it. What is perhaps more surprising is that at least half the class plays Riichi Mahjong -- earning the course its unofficial title: the "underground casino". The professor, for the record, is the best player in the class. I am one of the very few students not in the casino, but all of my teammates are, and are pretty decent players.
-
-Now, the SIR model tells us that the speed of infection is proportional to the number of infected individuals. And so, one night, one of my teammates decided to induct me into the casino - starting me off against a very weak computer opponent. This gave me some wholly unwarranted self-confidence, which promptly evaporated in my first human matchup. I never touched the casino again for the rest of the competition. That teammate probably just wanted to boost my productivity.
-
+> My high school offers a discrete mathematics course, and given its high correlation with modeling, it's no surprise that most competition participants have taken it. What is perhaps more surprising is that at least half the class plays Riichi Mahjong -- earning the course its unofficial title: the "underground casino". The professor, for the record, is the best player in the class. I am one of the very few students not in the casino, but all of my teammates are, and are pretty decent players.
+>
+> Now, the SIR model tells us that the speed of infection is proportional to the number of infected individuals. And so, one night, one of my teammates decided to induct me into the casino - starting me off against a very weak computer opponent. This gave me some wholly unwarranted self-confidence, which promptly evaporated in my first human matchup. I never touched the casino again for the rest of the competition. That teammate probably just wanted to boost my productivity.
+>
 > He actually got a Junsei Chuuren Poutou and a double yakuman later on and almost literally flied off the table.
 
 ## 2x00. Signed Distance Fields, Water Proximity, and Elephants
@@ -436,8 +443,8 @@ And this gives us something my team called the "Possibility Index", which correl
 
 It was already about 4 or 5 in the morning, and the other modeler JYZ also made notable progress on personnel allocation -- truely a milestone in progress worth celebrating. It wasn't until we checked against our plan doc that we snapped back to reality: two very serious problems were staring us in the face.
 
-1. **<mark>What is this data's dimension?</mark>** What unit is it in? What does pointwise addition mean? What about multiplication, or its gradient, or any other matrix interpretation? The table assigns $+1$ and $-1$ as correlational signs, but these are *ordinal labels*, not quantities -- they live in no well-defined vector space. There is no metric, no inner product, no meaningful notion of "twice as much." Treating them as scalars in any downstream arithmetic is, formally, a category error.
-2. **<mark>How in the world can this data be made to encode temporal patterns?</mark>** Right now, many of the model's parameters are normalized from each sample's observed range to $[0, 1]$. This is a critical subtlety: range normalization is *per-snapshot* -- the minimum and maximum are computed *within* each timeframe independently, and everything is rescaled relative to those local extremes. This effectively erases any information about the total scale of data, which makes it impossible to compare across timeframes.
+1. <mark>**What is this data's dimension?**</mark> What unit is it in? What does pointwise addition mean? What about multiplication, or its gradient, or any other matrix interpretation? The table assigns $+1$ and $-1$ as correlational signs, but these are *ordinal labels*, not quantities -- they live in no well-defined vector space. There is no metric, no inner product, no meaningful notion of "twice as much." Treating them as scalars in any downstream arithmetic is, formally, a category error.
+2. <mark>**How in the world can this data be made to encode temporal patterns?**</mark> Right now, many of the model's parameters are normalized from each sample's observed range to $[0, 1]$. This is a critical subtlety: range normalization is *per-snapshot* -- the minimum and maximum are computed *within* each timeframe independently, and everything is rescaled relative to those local extremes. This effectively erases any information about the total scale of data, which makes it impossible to compare across timeframes.
 
 <br/>
 
@@ -498,11 +505,7 @@ normalization). That is, $\tilde{f} = \frac{f - f_{\min}}{f_{\max} - f_{\min}}$
 
 Any scalar field preserves relative ordering under monotone transformation -- and this single observation resolves both problems at once.
 
-**On dimension and arithmetic** -- raw indices like $\rho_V$ or $\zeta$ carry no well-defined unit; the $+1$ and $-1$ correlational signs in the event table are ordinal labels, not quantities, and treating them as scalars in downstream arithmetic is formally a category error. But after min-max 
-normalization, $\tilde{f} \in [0, 1]$ is dimensionless by construction and 
-lives in a well-defined probability space. Pointwise multiplication of two 
-such fields is exactly the joint probability of two independent events -- 
-a perfectly meaningful operation.
+**On dimension and arithmetic** -- raw indices like $\rho_V$ or $\zeta$ carry no well-defined unit; the $+1$ and $-1$ correlational signs in the event table are ordinal labels, not quantities, and treating them as scalars in downstream arithmetic is formally a category error. But after min-max normalization, $\tilde{f} \in [0, 1]$ is dimensionless by construction and lives in a well-defined probability space. Pointwise multiplication of two such fields is exactly the joint probability of two independent events -- a perfectly meaningful operation.
 
 **On temporal comparability** -- range normalization is per-snapshot: the minimum and maximum are computed within each timeframe independently, which erases absolute amplitude. But this is a feature, not a bug. $\tilde{\zeta}(p)$ no longer asks "how threatened is $p$?" -- it asks "how threatened is $p$ *relative to the rest of the park right now*?" This relative ordering is stable and meaningful across seasons, even as the absolute scale of threat shifts with environmental conditions.
 
@@ -571,13 +574,288 @@ $\bar{H}$ serves as a natural and interpretable penalty for assessing allocation
 
 But I'm getting ahead of myself - rewind to 6pm, twelve hours earlier. I worked through the night before and accidentally fall asleep for 7 hours straight, so when I got up the team was already ready for the evening meetup.
 
-JYZ proposed a work of his: by filling the bounding box of the park geometry with boxes and doing binary search to optimize their side length, a crude partition is made. 
+JYZ proposed a work of his: by filling the bounding box of the park geometry with boxes and doing binary search to optimize their side length, a crude partition is made. Basically, he initialized a box size $n$ to be half the length of the shorter side of the bounding box. Then, he slices the bounding box into boxes of that size, and merges boxes together according to a stack of sophisticated heuristics. After that, we count how much of the area the boxes take up of the park, and use that as a order to do binary search on $n$.
+
+::Folding{title="Listing - Minimal implementation"}
+His original script was more of an engineered monolith; here's the core logic stripped out
+```py
+import numpy as np
+
+def allocate(mask, zeta, m, N, alpha):
+    rows, cols = mask.shape
+    Phi = zeta[mask].sum()
+    theta = alpha * Phi / N
+
+    # partition into m x m cells
+    cells = []
+    for r in range(0, rows, m):
+        for c in range(0, cols, m):
+            patch_mask = mask[r:r+m, c:c+m]
+            patch_zeta = zeta[r:r+m, c:c+m]
+            eta = patch_mask.sum() / patch_mask.size
+            tau = patch_zeta[patch_mask].sum()
+            cells.append({ 'r': r, 'c': c, 'eta': eta, 'tau': tau })
+
+    active = [g for g in cells if not (g['eta'] < 0.5 and g['tau'] < theta / 2)]
+
+    # greedy row merge
+    zones = []
+    row_starts = sorted(set(g['r'] for g in active))
+    for r in row_starts:
+        row = sorted([g for g in active if g['r'] == r], key=lambda g: g['c'])
+        acc, zone = 0, []
+        for g in row:
+            if acc + g['tau'] <= theta:
+                zone.append(g); acc += g['tau']
+            else:
+                if zone: zones.append(zone)
+                zone, acc = [g], g['tau']
+        if zone: zones.append(zone)
+
+    return zones
+
+def binsearch(mask, zeta, N, alpha=1.5):
+    rows = mask.shape[0]
+    lo, hi, best = 1, rows, None
+    while lo <= hi:
+        m = (lo + hi) // 2
+        zones = allocate(mask, zeta, m, N, alpha)
+        if len(zones) <= N:
+            best = zones; lo = m + 1
+        else:
+            hi = m - 1
+    return best
+```
+
+Example Usage:
+```py
+mask = np.load('etosha-mask.npy').astype(bool)
+zeta = np.load('pti.npy')
+zones = binsearch(mask, zeta, N=100)
+print(f'Got {len(zones)} zones')
+```
+::
 
 This is genuinely a good idea, if it wasn't for the fact that this approach is not working at all.
 
 :Pic{src="26504ac81e32bfdb839d4875d3fb70cc.webp" alt="BinSearch fracturing, N=5"}
 
-## 3x00. Composition and the 24H Countdown
+I proposed using Lloyd relaxation on a randomly scattered set of seeds with voronoi partitions. This intuitively was the most straightforward approach, but out of pure *collaboration spirit*, a trust for the legitimacy of a USACO platinum, and the effort JYZ put into it, I decided to give this approach a shot. And after hours of toil nothing worked, but we find an interesting subtlety in one of the variations:
+
+::Chat
+{:3-9 12:17}
+
+{.LCX}
+
+这是两百个点的
+
+{.LCX}
+
+我也跑一个100的试一下
+
+{.LCX}
+
+<img src="/assets/260311-immc-reflection/79e0b8d19f6325a03ab08c4693cab747.webp">
+
+{.LCX}
+
+<img src="/assets/260311-immc-reflection/3d3ac1c900eb0686ddfed7c1e2ba3574.webp">
+
+{.LCX}
+
+斯这个没啥差别反而你的好一个百分点
+
+::
+
+In a certain weighted divide-and-conquer variation, the overall $\bar{H}$ actually surpasses the traditional Voronoi approach. Since Voronoi tessellation is already geometrically optimal in the unweighted sense, any improvement cannot come from superior geometry alone -- it can only come from the seed placement. From everything we read, weighted CVT literature always applies the density weighting during iteration — nobody had thought to bake it into the initialization. As far as we can tell, this is the <mark>**first deterministic seeding strategy**</mark> that uses a scalar weight field to distribute zones before Lloyd ever runs -- and the $\bar{H}$ numbers suggest it genuinely matters. At the time it was developed proposed, not much attention was given and we didn't even give it a proper name:
+
+:Pic{src="Screenshot 2026-04-07 at 00.32.45.webp" alt="P15 on our seeding algorithm"}
+
+Looking back it was really a feat.
+
+> Our algorithm was actually meant for convex geometry. When applying to actual geometry like the park, points get mapped outside the geomtry. We project each point outside the geometry along the normal field of $\Omega$ onto and slightly into the park, and apply a subtle wiggle:
+
+Now we have a good initial seed set -- but that only means we're starting from a favorable position. The actual optimization is still missing. This class of iterative geometric optimization problems has been studied for decades under the general name of **relaxations**.
+
+::Defbox{id="Relaxation"}
+A **relaxation** is an iterative procedure that monotonically reduces some energy functional toward a local minimum. Each iteration moves the current configuration to a strictly better one, until convergence.
+::
+
+The name is apt: rather than solving the optimization directly -- which is intractable for our product-form $\bar{H}$ — we repeatedly *relax* the configuration toward a better state, one iteration at a time. The specific energy we reduce is the quantization energy $E$, which we showed serves as a tractable surrogate for $\bar{H}$.
+
+::NoteBox
+Well $\bar{H}$ is not *exactly* monotonic with $E = \sum_{i=1}^{N} \iint_{V_i} \zeta(x) \|x - p_i\|^2 \, dA$. However we can provide a justification of surrogatability of $\bar H$ for $E$.
+
+$$
+\begin{align}
+    H &= \frac{1}{|\Omega|} \iint_\Omega \zeta (x) (1 - C(x)) \, \mathrm d A \\
+    &= \frac{1}{|\Omega|} \iint_\Omega \zeta (x) \prod_i \left(1 - e^{-\lambda \|x - p_i\|}\right) \mathrm d A \\
+    &= \frac{\lambda^N}{|\Omega|} \iint_\Omega \zeta (x) \prod_i \|x - p_i\| \, \mathrm d A \\
+    &\gtrsim \frac{\lambda^N}{|\Omega|} \sum_i \iint_{V_i} \zeta(x) \|x - p_i\|^2 \, \mathrm d A = \frac{\lambda^N E}{|\Omega|} \propto \boxed{E}
+\end{align}
+$$
+
+In $(2)$ we use a first-order Taylor approximation of each gaussian field at $p_i$. We argue that $(3)$ is pragmatically justified, but thats more of a safe assumption.
+::
+
+There are multiple existing algorithms for relaxation of $E$: among them the most widely employed is the **Lloyd Relaxation**. Basically for each partition $S$ it calculates it's "center of mass" ($\iint_S f p\, \mathrm{d}A$) and moves the centroid there:
+
+:Pic{src="voronoi-relax.gif" alt="10 Epochs of Lloyd Relaxation with boudary avoidance"}
+
+Lloyd was a nice algorithm and has been shown to make $E$ converge with each epoch. The problem is, this does not account for terrain, which may lead to undesired allocation plans. We introduced two heuristics.
+
+1. $\alpha$ controls **terrain repulsion** -- each seed is pushed away from $\partial\Omega \cup \Omega_T$ ($\Omega_T$ is a fuzzy geometry of terrains) by a force inversely proportional to squared distance, keeping patrol bases away from boundary features and impassable terrain. 
+$$
+\mathbf{f}_{\text{terrain}}^{(i)} = \sum_{q \in \partial\Omega \cup \Omega_T,\, \|p_i - q\| < R} \frac{p_i - q}{\|p_i - q\|^2}
+$$
+
+
+2. $\beta$ controls **neighbor repulsion** -- each seed is pushed away from all other seeds by a force inversely proportional to squared distance, compensating for clustering caused by terrain repulssion. This prevents zone collapse and maintains spatial coverage that the Lloyd centroid attraction alone does not guarantee.
+
+$$
+\mathbf{f}_{\text{neighbor}}^{(i)} = \sum_{j \neq i} \frac{p_i - p_j}{\|p_i - p_j\|^2}
+$$
+
+3. $\gamma$ controls the classical **Lloyd attraction**.
+
+$$
+\mathbf{f}_{\text{lloyd}}^{(i)} = \frac{\iint_{V_i} \zeta(x)\, x\, dA}{\iint_{V_i} \zeta(x)\, dA} - p_i
+$$
+
+At each epoch, the three forces are composed additively:
+
+$$
+p_i \leftarrow p_i + \alpha\, \mathbf{f}_{\text{terrain}}^{(i)} 
++ \beta\, \mathbf{f}_{\text{neighbor}}^{(i)} 
++ \gamma\, \mathbf{f}_{\text{lloyd}}^{(i)}
+$$
+followed by a snap-back projection $p_i \leftarrow \arg\min_{q \in \Omega} \|p_i - q\|$ 
+to keep seeds within $\Omega$.
+
+Ablation studies on those heuristics showed that $\alpha$ generally tend to reduce overall coverage quality. This is a necessary tradeoff, considering that hazards might also be somehow correlated to terrain. An interesting extension would be to decompose $\mathbf{f}_{\text{terrain}}$ into separate repulsion and attraction terms over two disjoint fuzzy submanifolds of $\Omega$ -- repelling from impassable areas while attracting toward high-threat accessible terrain.
+
+Combining all of our work together, the final partition yields a $\bar H$ of about $9\%$, a considerable improvement from naïve random seeding + lloyd relaxation. For me this is one of the best results we get in this project.
+
+## 3x00. Composition and the Final Sprint
+
+Submission day was March 9th -- a school day. HRX and I had both taken the day off, but JYZ and LTA hadn't. When they got home at four in the afternoon, we had four hours left before the submission window closed. It was at this moment we realized three of our seven tasks hadn't been started at all. 
+
+Long story short -- we got it done on time but it was sorta rough...?
+
+:Pic{src="Screenshot 2026-04-11 at 22.04.31.webp" alt="90 Million dollars."}
+:Pic{src="Screenshot 2026-04-11 at 22.06.17.webp" alt="Rich Countries Hmmm"}
+
+Im not in charge of budgets so I wont extend on this. 
+
+My teammates chose Abisko National Park (Sweden) and the National Park of American Samoa — and honestly, as contrasting test cases go, they couldn't have picked better ones. The only problem was that by the time both selections were confirmed, I had half an hour to fetch all the data and write the conclusion. So I ended up piling whatever I could think of into a giant paragraph of academic jargon that somehow actually looks like something.
+
+:Pic{src="Screenshot 2026-04-11 at 22.06.49.webp" alt="Stream of consciousness is a widely employed narrative device in modernism and postmodernism literature."}
+
+Whats even worse is that Sentinel did not capture a single image of Samoa. I meant, never, even, *once*.
+
+:Pic{src="Screenshot 2026-04-11 at 22.10.58.webp" alt="Well what could I do? Im the satellites guy."}
+
+The last hour was pretty messy, just everyone scrambling to get the paper done. Our writer LTA gets exceptionally busy.
+
+::Chat
+{:3-9 18:37}
+
+{HRX}
+
+ok
+
+写letter
+
+立刻马上
+
+我去写summary page
+
+@LTA
+
+letter只需要包含etosha park的结果
+
+{LTA}
+
+豪德
+
+{HRX}
+
+也就是不包含model application部分的内容
+
+然后他要求降低技术性
+
+问李哥要随便一个巡逻队的风区图
+
+不要和之前重复的
+
+@LCX @LTA
+
+{.LCX}
+
+彳亍
+
+{LTA}
+
+ok
+::
+
+And she actually did whips out a fantastic letter at 19:30, completing the last task.
+
+::Folding{title="Open for the Letter"}
+
+Date: March 2026 <br>
+To: The International Mathematical Modeling Challenge Committee<br>
+From: Team IMMC26678622<br>
+Subject: A Scalable Data-Driven Framework for Conservation Resource Allocation in Protected Areas<br>
+
+Dear Members of the IMMC Committee,
+
+&emsp; We are deeply honored to have been entrusted with developing a mathematical model to address the urgent conservation challenges facing Namibia’s Etosha National Park, one of Africa’s most ecologically significant protected areas, and to design a scalable resource allocation solution for imperiled natural reserves across the globe. We present a rigorous, adaptable mathematical framework for optimized conservation resource allocation, developed to address the acute, multifaceted threats to Namibia’s Etosha National Park and scalable to protected areas worldwide. Plagued by poaching, human encroachment, wildfires, and wildlife disease, Etosha operates with a critically understaffed workforce and limited targeted technological infrastructure. Our work delivers a robust model that quantifies threat risk, optimizes deployment of existing and supplementary resources, and provides actionable guidance for biodiversity conservation decision-makers. Below is a succinct synthesis of our methodology, core insights, and pragmatic recommendations.
+
+&emsp;Anchored in the principle that conservation resources must align with measurable, spatially explicit threat risk, our four-stage modular process utilizes accessible remote sensing and wildlife data with minimal technical barriers. We categorize four key mitigable threats, quantify their severity via a validated Event Threat Index, map fine-scale park risk through a Point Threat Index integrating satellite and machine learning-derived data, and consolidate findings into a holistic Possibility Index heatmap paired with an Adaptive Grid Partition algorithm to strategically allocate rangers and technology to high-risk hotspots within operational constraints.
+
+&emsp;Our analysis yields three pivotal, globally transferable insights: uniform patrol zoning is inherently inefficient, with existing Etosha ranger reallocation alone reducing unaddressed threats by significant percentage without extra staffing; threat risk stems from interconnected environmental variables, and ignoring these correlations undermines conservation efficacy; human-technological synergy between rangers and low-cost tools such as monitoring cameras and solar-powered fixed-wing UAVs maximizes surveillance coverage and cost-effectiveness.
+
+&emsp;We propose immediate, evidence-based recommendations for Etosha, split into zero-cost workforce reallocation and targeted high-impact technological investment. Adaptive, risk-based patrol zoning and flexible response protocols will achieve full threat coverage. Deploying solar monitoring cameras, solar UAVs for remote patrols, and a centralized data hub will eliminate surveillance gaps and streamline real-time threat response.
+
+&emsp;A core strength of this framework is its universal adaptability, validated across ecologically distinct protected areas including Sweden’s Abisko National Park and the National Park of American Samoa. Only minor context-specific adjustments, such as local threats, regional environmental data, and site-specific resource limits, are required for implementation, with no core structural changes, establishing this as a versatile global conservation tool. Key results of these cross-park applications are as follows:
+
+&emsp;Abisko National Park (Sweden): Located within the Arctic Circle, this park features cold, mountainous terrain with unique naturogenic threats (avalanches, snowstorms) that replace Etosha's wildfire and disease as primary natural risks. We retained the model’s anthropogenic threat categorization (poaching and human intervention remain relevant), Event Threat Index criteria and weights, and environmental covariates (all spectral and engineered indices are generable via satellite remote sensing for this region), with two critical adjustments. We redefined the naturogenic threat set to reflect Arctic-specific hazards, and recalculating Point Threat Index weights via AHP to capture the unique relationships between Abisko's environmental covariates (e.g., high thirstiness index, low plant density) and its new threat set. Given Abisko's small spatial extent, our optimized resource plan prioritizes fixed monitoring cameras (over UAVs, which are inefficient for compact areas) and a smaller patrol force (25 on-duty rangers) due to the park’s lower overall threat density and more accessible terrain.
+
+&emsp;National Park of American Samoa: Situated near the equator, this tropical park features rainforest terrain, high humidity, and unique naturogenic threats (floods, rainstorms) driven by extreme rainfall. As with Abisko, we retained the model’s core components (anthropogenic threats, Event Threat Index, environmental covariates) and adjusted only the naturogenic threat set and Point Threat Index weights to reflect tropical rainforest dynamics. For example, wetness and salinity covariates have amplified impacts on flood and rainstorm risk, and animal density is concentrated in low-elevation areas near water sources. The park’s small spatial extent (similar to Abisko) led us to prioritize fixed cameras over UAVs in the technological resource plan, with an optimal patrol force of 22 on-duty rangers and a dedicated flood response team (integrated into the redundancy staff).
+
+&emsp;For both Abisko and the National Park of American Samoa, located in economically developed nations, our model also accounts for higher budget availability, recommending full technological deployment (cameras, terrain-specific monitoring equipment) to achieve near-perfect threat coverage, a flexible design choice that allows the model to align with varying national budget constraints.
+
+&emsp;In conclusion, this framework proves targeted resource optimization drives effective conservation, with strategic reallocation of existing assets delivering tangible risk reduction for Etosha, and supplementary investments enabling comprehensive long-term protection. Beyond Namibia, this modular model provides a rigorous, practical blueprint for evidence-based protected area governance worldwide. We stand ready to collaborate with the IMMC, relevant authorities, and global conservation stakeholders to deploy and refine this framework across international protected landscapes.
+
+&emsp;Grateful for the opportunity to contribute to this critical global challenge, we remain at your disposal for further discussion.
+
+<p style="text-align: right;">
+Sincerely, <br/>
+Team IMMC26678622
+</p>
+
+::
+
+We were the last group to submit, just stepping on the verge of elimination at 19:59. 
+
+But whatsoever, we've done it. After over 100 hours of hardship and toil, we finally made it to the end. No matter the result, this will be a very this will be a very memorable chapter in my three years of high school life.
+
+## 4x00. Afterword
+We always joke that each COMAP round is really just an elaborate way to learn a subject we never signed up for. Pathfinding robotics (HIMCM25), lattice theory (IMMC26 National Round), and now remote sensing (IMMC26 International Round) -- none of us came in knowing any of it. But more than the academics, these two rounds left something harder to quantify: a clearer sense of how to work, and who to work with.
+
+On the individual level we had a pretty well-matched team. We never had a team leader, but HRX did most of the planning and architectural work; the kind of things a team lead does. JYZ was a USACO Platinum so he was the other core modeler alongside me; I handled most of the implementation and visualization. LTA was our head writer — solid across the sciences, but her English is genuinely on another level compared to the rest of us.
+
+The problem is, our team lacks coordination. This led to very terrible scheduling: everyone is working out of sync with each other. At first this looks reasonable; we work in shifts and we relay our progress to maximize temporal usage. However this is in fact very inefficient. The major reason the seeding algorithm took 4 hours to develop was mainly due to the fact that I did not have the opportunity to ask JYZ about crucial details for his algorithm.
+
+But nevertheless it was a fun and important experience. I learned a lot; both in engineering, mathematical modeling, and the overall methodology for collarboative projects. Sadly our expedition to the finals stopped here, but we are all pretty satisfactory with our results. 
+
+I'd like to thank all my fellow modelers for this extraordinary adventure — HRX for holding the architecture together when everything else was falling apart, JYZ for the binary search idea that, even in failure, led us somewhere better, and LTA for producing a letter in under an hour that the rest of us couldn't have written in a week.
+
+If I had to distill a hundred hours of sleep deprivation and geodesic eikonal solvers into a single lesson, it would be this: the best modeling isn't the most elegant — it's the kind that actually gets submitted. 
+None of it went to plan. The seeding algorithm was an afterthought. The conclusion was written in fifteen minutes. Samoa had no satellite coverage whatsoever. 
+
+And yet, in the way that only sleep-deprived high schoolers under an arbitrary deadline can manage, it came together. IMMC has a strange way of forcing you to become competent at things you never signed up for -- and to trust people you've never quite synced schedules with. Whether or not the judges agree with our 9.5%, we built something real, and I think that's worth more than whatever score comes back.
 
 ## Appendix
 
@@ -607,7 +885,7 @@ Here's a table of all notations used so far:
 | $C_i$ | Coverage field for ranger $i$ |
 | $C$ | Aggregated coverage field over $\Omega$ |
 | $H$ | Consolidated Hazard Index |
-| $\bar{H}$ | Expected Hazard -- $\frac{1}{|\Omega|}\iint_\Omega H\,dA$ |
+| $\bar{H}$ | Expected Hazard -- $\frac{1}{\vert\Omega\vert} \iint_\Omega H\,dA$ |
 | $N$ | Total number of rangers deployed |
 | $\Phi$ | Total integrated threat -- $\iint_\Omega \zeta\,dA$ |
 | $\theta$ | Per-staff threat budget -- $\alpha \cdot \Phi / N$ |

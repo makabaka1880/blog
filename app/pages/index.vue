@@ -2,19 +2,6 @@
     <main class="container">
         <h1>Hi there 👋 </h1>
         <p>Welcome to the Teal Blog.</p>
-
-        <section>
-            <h2>Recent Posts</h2>
-            <div class="recent-posts">
-                <NuxtLink v-for="article in recentArticles" :key="article.path" :to="article.path"
-                    class="recent-post-line">
-                    {{ article.title }}
-                </NuxtLink>
-                <NuxtLink to="/articles" class="recent-post-line">
-                    All articles →
-                </NuxtLink>
-            </div>
-        </section>
         <section class="intro">
             <p>
                 I'm Sean, a high school student in Shanghai. I'm <b>{{ age.toFixed(10) }}</b> years old, and I'm
@@ -65,7 +52,6 @@
 <script setup lang="ts">
 const birth = new Date('2009-12-28T00:00:00');
 const now = ref(Date.now());
-const recentArticles = ref<any[]>([]);
 let ticker: ReturnType<typeof setInterval> | null = null;
 
 const age = computed(() => {
@@ -77,10 +63,6 @@ onMounted(async () => {
     ticker = setInterval(() => {
         now.value = Date.now();
     }, 50);
-
-    const result = await queryCollection('articles').select('title', 'path').order('createTime', 'DESC');
-    const allArticles = await result.all();
-    recentArticles.value = allArticles.slice(0, 5);
 });
 
 onBeforeUnmount(() => {
@@ -123,18 +105,4 @@ a {
     color: var(--color-link);
 }
 
-.recent-posts {
-    display: flex;
-    flex-direction: column;
-}
-
-.recent-post-line {
-    display: block;
-    padding: 0.25rem 0;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
-}
 </style>

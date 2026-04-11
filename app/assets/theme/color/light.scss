@@ -11,105 +11,104 @@ $light-tooltip-text: #ffffff;
 $light-separator-border: oklch(0.57 0 0deg);
 
 .light {
-    --base-hue: #{$light-base-hue};
-    --base-saturation: #{$light-base-saturation};
-    --base-lightness: #{$light-base-lightness};
-
     $base-hue: $light-base-hue;
     $base-saturation: $light-base-saturation;
     $base-lightness: $light-base-lightness;
 
+    --color-hue: #{$base-hue};
 
-    --color-hue-colormode: #{$base-hue};
+    --color-primary: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-secondary: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -20%)};
+    --color-accent: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -10%)};
 
-    --color-primary-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
-    --color-secondary-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -20%)};
-    --color-accent-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -10%)};
+    --color-highlight-marker-thicker: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 25%, $l-offset: 10%)};
+    --color-highlight-marker-thinner: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 0%, $l-offset: 40%)};
+    --color-highlight-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 18%)};
 
-    --color-highlight-marker-thicker-colormode: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 25%, $l-offset: 10%)};
-    --color-highlight-marker-thinner-colormode: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 0%, $l-offset: 40%)};
-    --color-highlight-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 18%)};
-    
-    --color-background-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 52%)};
-    --color-highlight-colormode: var(--color-background-colormode);
-    --color-background-alt-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
-    --color-section-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 44%)};
-    --color-footer-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 42%)};
-    --color-card-bg-colormode: #{$light-card-background};
-    --color-card-hover-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
-    --color-hard-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 50%, $l-offset: -40%)};
+    --color-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 52%)};
+    --color-highlight: var(--color-background);
+    --color-background-alt: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
+    --color-section-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 44%)};
+    --color-footer-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 42%)};
+    --color-card-background: #{$light-card-background};
+    --color-card-hover-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
+    --color-hard-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 50%, $l-offset: -40%)};
 
-    --color-card-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 0%)};
-    --color-card-hover-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
-    --color-card-title-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
-    --color-card-metadata-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
-    --color-modal-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 52%, $alpha: 0.87)};
+    --color-card-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 0%)};
+    --color-card-hover-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
+    --color-card-title: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
+    --color-card-metadata: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
+    --color-modal-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 52%, $alpha: 0.87)};
 
-    --color-text-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -30%)};
-    --color-text-light-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -10%)};
-    --color-text-muted-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -10%)};
-    --color-heading-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -25%)};
+    --color-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -30%)};
+    --color-text-light: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -10%)};
+    --color-text-muted: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -10%)};
+    --color-heading: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -25%)};
 
-    --color-link-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 5%)};
-    --color-link-hover-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -5%)};
-    --color-emphasis-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
-    --color-subtle-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 44%)};
+    --color-link: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 5%)};
+    --color-link-hover: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -5%)};
+    --color-emphasis: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-subtle: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 44%)};
 
-    --color-button-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
-    --color-button-hover-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
-    --color-button-text-colormode: #{$light-button-text};
+    --color-button-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-button-hover-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
+    --color-button-text: #{$light-button-text};
 
-    --color-input-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
-    --color-input-text-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
-    --color-input-focus-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 5%)};
+    --color-input-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-input-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
+    --color-input-focus-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 5%)};
 
-    --color-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -10%, $alpha: 0.35)};
-    --color-shadow-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $alpha: 0.15)};
+    --color-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -10%, $alpha: 0.35)};
+    --color-shadow: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $alpha: 0.15)};
 
-    --color-navbar-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 52%, $alpha: 0.8)};
+    --color-navbar-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 52%, $alpha: 0.8)};
 
-    --color-navlink-special-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $l-offset: -6.46%, $s-offset: -23.5%)};
-    --color-navlink-special-hover-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $l-offset: 7.42%, $s-offset: -3.625%)};
-    --color-navbar-link-colormode: var(--color-navlink-special-colormode);
-    --color-navbar-link-hover-colormode: var(--color-navlink-special-hover-colormode);
+    --color-navlink-special: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $l-offset: -6.46%, $s-offset: -23.5%)};
+    --color-navlink-special-hover: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $l-offset: 7.42%, $s-offset: -3.625%)};
+    --color-navbar-link: var(--color-navlink-special);
+    --color-navbar-link-hover: var(--color-navlink-special-hover);
 
-    --color-tag-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
-    --color-tag-text-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
+    --color-tag-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
+    --color-tag-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
 
-    --color-progress-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 44%)};
-    --color-progress-fill-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-progress-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 44%)};
+    --color-progress-fill: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
 
-    --color-slider-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
-    --color-slider-fill-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-slider-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
+    --color-slider-fill: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
 
-    --color-tooltip-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
-    --color-tooltip-text-colormode: #{$light-tooltip-text};
+    --color-tooltip-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
+    --color-tooltip-text: #{$light-tooltip-text};
 
-    --color-code-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 45%)};
-    --color-quote-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
-    --color-quote-text-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
-    --color-table-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
-    --color-sep-border-colormode: #{$light-separator-border};
-    --color-table-header-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
+    --color-code-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 45%)};
+    --color-quote-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
+    --color-quote-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
+    --color-table-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
+    --color-separator-border: #{$light-separator-border};
+    --color-table-header-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
 
-    --color-success-bg-colormode: #{c.utility-color("success", "bg")};
-    --color-success-border-colormode: #{c.utility-color("success", "border")};
-    --color-success-text-colormode: #{c.utility-color("success", "text")};
-    --color-error-bg-colormode: #{c.utility-color("error", "bg")};
-    --color-error-border-colormode: #{c.utility-color("error", "border")};
-    --color-error-overlay-colormode: #{c.utility-color("error", "overlay")};
-    --color-error-text-colormode: #{c.utility-color("error", "text")};
-    --color-warning-bg-colormode: #{c.utility-color("warning", "bg")};
-    --color-warning-text-colormode: #{c.utility-color("warning", "text")};
-    --color-warning-overlay-colormode: #{c.utility-color("warning", "overlay")};
-    --color-warning-border-colormode: #{c.utility-color("warning", "border")};
+    // Light theme utility colors - optimized for light backgrounds
+    --color-success-background: oklch(0.95 0.03 120deg / 0.8);
+    --color-success-border: oklch(0.65 0.15 120deg);
+    --color-success-overlay: oklch(0.65 0.15 120deg / 0.3);
+    --color-success-text: oklch(0.35 0.12 120deg);
 
-    --color-chat-myself-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 10%)};
-    --color-chat-myself-border-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 0%)};
+    --color-error-background: oklch(0.95 0.03 10deg / 0.8);
+    --color-error-border: oklch(0.60 0.18 10deg);
+    --color-error-overlay: oklch(0.60 0.18 10deg / 0.3);
+    --color-error-text: oklch(0.40 0.16 10deg);
 
-    --color-chess-light-square-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 35%)};
-    --color-chess-dark-square-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -5%)};
-    --color-chess-label-bg-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: -5%)};
+    --color-warning-background: oklch(0.95 0.03 75deg / 0.8);
+    --color-warning-text: oklch(0.50 0.20 75deg);
+    --color-warning-overlay: oklch(0.50 0.20 75deg / 0.3);
+    --color-warning-border: oklch(0.60 0.18 75deg);
 
-    --color-box-background-char-colormode: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 45%)};
+    --color-chat-myself-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 10%)};
+    --color-chat-myself-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 0%)};
+
+    --color-chess-light-square: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 35%)};
+    --color-chess-dark-square: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -5%)};
+    --color-chess-label-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: -5%)};
+
+    --color-box-background-char: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 45%)};
 }

@@ -170,7 +170,7 @@ onBeforeUnmount(() => {
     min-width: 9rem;
     border-radius: 0.5rem;
     border: 0.0625rem solid var(--color-border);
-    background: var(--color-card-bg);
+    background-color: var(--color-background);
     box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.12);
     z-index: 20;
 
