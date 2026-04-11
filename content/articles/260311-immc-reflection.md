@@ -461,11 +461,11 @@ It was already about 4 or 5 in the morning, and the other modeler JYZ also made 
 
 <img src="/assets/hacker-meme.webp"/>
 
-{:HRX went for a nap}
+{:HRX went for a temporary death}
 
 {:3-10 07:14}
 
-{:JYZ is online}
+{:JYZ came back to life}
 
 {JYZ}
 
