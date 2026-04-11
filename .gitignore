@@ -17,13 +17,19 @@ logs
 .DS_Store
 .fleet
 .idea
+.trae
+.history
 
 # Local env files
 .env
 .env.*
 !.env.example
+.venv
 
 pnpm-lock.yaml
 
 features.faiss
 features.meta.json
+__pycache__
+
+models

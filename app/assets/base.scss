@@ -1,23 +1,36 @@
-@use './theme' as *;
+@use './theme.scss' as *;
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+
+    &:not(.katex):not(.katex *) {
+        font-family: "JetBrains Mono", monospace;
+    }
 }
 
 ::selection {
     color: var(--color-highlight);
-    background-color: var(--color-highlight-bg);
+    background-color: var(--color-highlight-background);
+}
+
+:where(.iconify) {
+    display: inline-block;
+    flex-shrink: 0;
+    font-size: var(--font-size-base);
+    vertical-align: sub;
 }
 
 /* 页面 */
 body {
     background-color: var(--color-background);
     color: var(--color-text);
-    font-size: 0.8em;
+    font-size: var(--font-size-sm);
     transition: all 0.2s ease-in-out;
 }
 
@@ -30,16 +43,21 @@ a {
         color: var(--color-link-hover);
         text-decoration: underline;
     }
+
+    &[data-footnote-ref],
+    &[data-footnote-backref] {
+        scroll-margin-top: var(--anchor-top-offset);
+    }
 }
 
 /* 页面标题 */
 $heading-sizes: (
-    h1: 2.5rem,
-    h2: 1.5rem,
-    h3: 1.2rem,
-    h4: 1.1rem,
-    h5: 1rem,
-    h6: 1rem
+    h1: var(--font-size-5xl),
+    h2: var(--font-size-3xl),
+    h3: var(--font-size-xl),
+    h4: var(--font-size-lg),
+    h5: var(--font-size-base),
+    h6: var(--font-size-md)
 );
 
 h1,
@@ -49,7 +67,7 @@ h4,
 h5,
 h6 {
     color: var(--color-heading);
-    font-weight: normal;
+    font-weight: 600;
     margin: 0.5em 0;
 }
 
@@ -76,55 +94,75 @@ h6 {
     }
 }
 
-
-
-/* MARK: Table */
-thead {
-    border-top: 2px solid var(--color-card-border);
-    border-bottom: 1.5px solid var(--color-card-border);
+p,
+li {
+    line-height: 1.2rem;
+    margin: 0.25rem 0;
 }
 
-tbody {
-    border-bottom: 2px solid var(--color-card-border);
+/*
+Source - https://stackoverflow.com/a/43683296
+Posted by caramba, modified by community. See post 'Timeline' for change history
+Retrieved 2026-02-16, License - CC BY-SA 3.0
+*/
+
+mark {
+    display: inline-block;
+    line-height: 0em;
+    padding-bottom: 0.5em;
+    color: var(--color-text);
+    background-color: var(--color-highlight-marker-thinner);
+
+    &.search-match-title-mark {
+        background-color: var(--color-highlight-marker-thicker);
+        line-height: inherit;
+        padding-bottom: inherit;
+        color: white;
+    }
 }
 
-th,
-td {
-    padding: 0.75rem 1rem;
-    text-align: left;
-}
-
-th {
-    font-weight: 600;
-}
-
-tr {
-    border: none;
+.sep {
+    margin: 3rem 1rem;
+    display: block;
+    height: 0.25rem;
+    border: 0;
+    border-top: 0.0625rem solid var(--color-separator-border);
+    opacity: .5;
+    padding: 0;
+    width: 60%;
 }
 
 div.footer {
     padding-bottom: 0;
     padding: 2rem 10vw;
     width: 100%;
-    background-color: var(--color-footer-bg);
+    background-color: var(--color-footer-background);
 }
 
-
-/* 自定义滚动条 */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+:where(.iconify) {
+    display: inline-block;
+    flex-shrink: 0;
+    font-size: var(--font-size-base);
+    line-height: 1.2;
+    overflow: visible;
+    vertical-align: -0.1em;
 }
 
-::-webkit-scrollbar-track {
-    background: var(--color-background);
-}
+// /* 自定义滚动条 */
+// ::-webkit-scrollbar {
+//     width: 0.5rem;
+//     height: 0.5rem;
+// }
 
-::-webkit-scrollbar-thumb {
-    background: var(--color-text);
-    border-radius: 4px;
-}
+// ::-webkit-scrollbar-track {
+//     background: var(--color-background);
+// }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-link);
-}
+// ::-webkit-scrollbar-thumb {
+//     background: var(--color-text);
+//     border-radius: 0.25rem;
+// }
+
+// ::-webkit-scrollbar-thumb:hover {
+//     background: var(--color-link);
+// }

@@ -1,87 +1,108 @@
 <template>
-    <div class="container">
-        <div class="hero">
-            <h1>{{ config.title }}</h1>
-            <p>{{ config.description }}</p>
-        </div>
-        <div class="search-field-container">
-            <UIKitSearchField v-model="searchValue" @search="onSearch" />
-        </div>
-        <h2>Articles</h2>
-        <div class="article-list-wrapper">
-            <div class="article-list">
-                <UIKitArticleList :page="currentPage" :per-page="perPage" @update:total-count="onTotalCountChange" />
-            </div>
-            <div class="pagination-wrapper">
-                <UIKitPaginator :current-page="currentPage" :total-pages="totalPages" @page-change="onPageChange" />
-            </div>
-        </div>
-    </div>
+    <main class="container">
+        <h1>Hi there 👋 </h1>
+        <p>Welcome to the Teal Blog.</p>
+        <section class="intro">
+            <p>
+                I'm Sean, a high school student in Shanghai. I'm <b>{{ age.toFixed(10) }}</b> years old, and I'm
+                interested in software engineering, computer science, and formal mathematics.
+            </p>
+            <p>
+                Outside academics, I enjoy music, chess, and 3D art. This site is where I collect notes, experiments,
+                and personal projects.
+            </p>
+        </section>
+
+        <section>
+            <h2>Tech Stack</h2>
+            <p>
+                I work across frontend and backend systems. On the frontend I mainly use SwiftUI, UIKit, Vue, and
+                Nuxt. On the backend I use Vapor, Express, and PostgreSQL.
+            </p>
+            <p>
+                For research and theory work, I use Haskell, Lean, Python, and R. For miscellaneous projects, I also
+                use Rust, C++, and Elixir. My markup language of choice is Typst.
+            </p>
+            <p>
+                In my free time, I build small utilities and implement ideas from type theory. I also maintain what I
+                believe is the only <a href="https://github.com/makabaka1880/learn-tt">public repository of
+                    solutions</a> to exercises from Nederpelt's
+                <a href="https://research.tue.nl/en/publications/type-theory-and-formal-proof-an-introduction/"
+                    target="_blank" rel="noopener noreferrer">Type Theory and Formal Proof</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>Art & Photography</h2>
+            <p>
+                I create 3D renders in Blender, often using open-source assets. One of my recent pieces recreates a
+                frame from the second scene of my render collection, inspired by poolcore aesthetics.
+            </p>
+            <p>
+                For photography, I use a Sony A7II (ILCE-7M2). I also do VFX and composition work for friends, mainly
+                with DaVinci Resolve and Blender on an M2 MacBook Pro (2022, 13-inch).
+            </p>
+        </section>
+        <hr class="sep"/>
+        <UIKitComment />
+    </main>
+
 </template>
 
 <script setup lang="ts">
-import config from '@@/blog.config';
-import { ref } from 'vue';
+const birth = new Date('2009-12-28T00:00:00');
+const now = ref(Date.now());
+let ticker: ReturnType<typeof setInterval> | null = null;
 
-const currentPage = ref(1);
-const perPage = 2;
-const searchValue = ref('');
-const searchResult = ref('');
-const totalPages = ref(1);
+const age = computed(() => {
+    const diffInYears = (now.value - birth.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+    return diffInYears;
+});
 
-function onPageChange(page: number) {
-    currentPage.value = page;
-}
+onMounted(async () => {
+    ticker = setInterval(() => {
+        now.value = Date.now();
+    }, 50);
+});
 
-function onTotalCountChange(count: number) {
-    totalPages.value = Math.ceil(count / perPage);
-}
-
-function onSearch() {
-    currentPage.value = 1;
-    searchResult.value = searchValue.value;
-}
+onBeforeUnmount(() => {
+    if (!ticker) return;
+    clearInterval(ticker);
+    ticker = null;
+});
 </script>
+
 
 <style lang="scss" scoped>
 .container {
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 0;
 }
 
-.hero {
-    margin: var(--section-margin);
-}
-
-.search-field-container {
-    width: 20vw;
-    min-width: 20rem;
-    max-width: 60rem;
-    height: fit-content;
-    margin-bottom: 5vh;
-}
-
-.article-list-wrapper {
-    flex: 1;
+section {
     display: flex;
     flex-direction: column;
-
+    gap: 0.75rem;
 }
 
-.article-list {
-    flex: 1;
-    overflow-y: auto;
+h1 {
+    margin: 0;
 }
 
-.pagination-wrapper {
-    flex-shrink: 0;
-    padding-top: 1rem;
+h2 {
+    margin: 0;
 }
 
-hr {
-    width: 50%;
-    opacity: 0.2;
+p {
+    margin: 0;
+    line-height: 1.5;
 }
+
+a {
+    color: var(--color-link);
+}
+
 </style>

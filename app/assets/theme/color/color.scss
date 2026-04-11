@@ -1,0 +1,47 @@
+@use "sass:math";
+@use "sass:color";
+@use "sass:map";
+
+// -----------------------------------------------------------------------------
+// Shared color math helpers
+// -----------------------------------------------------------------------------
+@function clamp-value($value, $min, $max) {
+    @if $value < $min {
+        @return $min;
+    }
+    @if $value > $max {
+        @return $max;
+    }
+    @return $value;
+}
+
+@function normalize-hue($hue) {
+    $normalized: $hue % 360;
+    @if $normalized < 0 {
+        @return $normalized + 360;
+    }
+    @return $normalized;
+}
+
+@function saturation-to-chroma($saturation) {
+    $safe-saturation: clamp-value($saturation, 0%, 100%);
+    @return math.div($safe-saturation, 100%) * 0.24;
+}
+
+@function theme-color($base-hue, $base-saturation, $base-lightness, $h-offset: 0, $s-offset: 0%, $l-offset: 0%, $alpha: 1) {
+    $hue-angle: normalize-hue($base-hue + $h-offset) * 1deg;
+    $lightness: math.div(clamp-value($base-lightness + $l-offset, 0%, 100%), 100%);
+    $chroma: saturation-to-chroma($base-saturation + $s-offset);
+
+    @return color.change(oklch($lightness $chroma $hue-angle), $alpha: $alpha);
+}
+
+@function secondary-color($base-hue, $base-saturation, $base-lightness, $h-offset: 0deg, $s-offset: 0%, $l-offset: 0%, $alpha: 1) {
+    $highlight-hue: normalize-hue($base-hue + 200) * 1deg;
+    $hue-angle: $highlight-hue + $h-offset;
+    $lightness: math.div(clamp-value($base-lightness + $l-offset, 0%, 100%), 100%);
+    $chroma: saturation-to-chroma($base-saturation + $s-offset);
+
+    @return color.change(oklch($lightness $chroma $hue-angle), $alpha: $alpha);
+}
+

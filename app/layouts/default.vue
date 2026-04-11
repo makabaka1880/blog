@@ -5,7 +5,12 @@
         </div>
         <div class="content">
             <UIKitSafeArea>
-                <slot />
+                <template #sidebar>
+                    <BlogSidebar />
+                </template>
+                <template #content>
+                    <slot />
+                </template>
             </UIKitSafeArea>
         </div>
         <div class="footer">
@@ -28,15 +33,14 @@ import config from '@@/blog.config';
 
 .nav-bar {
     width: 100%;
-    height: 3rem;
+    height: var(--navbar-height);
     position: sticky;
-    top: 0;
-    z-index: 10;
+    top: var(--navbar-top-offset);
+    z-index: var(--navbar-z-index);
 }
 
 .content {
     flex: 1 1 auto;
     width: 100%;
 }
-
 </style>

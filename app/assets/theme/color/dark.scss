@@ -1,0 +1,113 @@
+@use "./color" as c;
+
+$dark-base-hue: 200;
+$dark-base-saturation: 30%;
+$dark-base-lightness: 45%;
+
+// Extracted hardcoded colors
+$dark-button-text: oklch(1 0 0deg);
+$dark-tooltip-text: oklch(1 0 0deg);
+$dark-separator-border: oklch(71.547% 0.00008 271.152);
+
+.dark {
+    $base-hue: $dark-base-hue;
+    $base-saturation: $dark-base-saturation;
+    $base-lightness: $dark-base-lightness;
+
+    --color-hue: #{$base-hue};
+
+    --color-primary: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-secondary: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -20%)};
+    --color-accent: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: -10%)};
+
+    --color-highlight: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -25%)};
+    --color-highlight-marker-thicker: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 25%, $l-offset: 10%)};
+    --color-highlight-marker-thinner: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 25%, $l-offset: 10%)};
+    --color-highlight-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
+
+    --color-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -25%, $l-offset: -15%)};
+    --color-background-alt: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -30%)};
+    --color-section-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: -25%)};
+    --color-footer-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: -30%)};
+    --color-card-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: -30%)};
+    --color-card-hover-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -25%)};
+    --color-hard-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 50%, $l-offset: -40%)};
+
+    --color-card-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -25%, $l-offset: 20%, $alpha: 1)};
+    --color-card-hover-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
+    --color-card-title: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 45%)};
+    --color-card-metadata: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 15%)};
+    --color-modal-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: -30%, $alpha: 0.87)};
+
+    --color-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 45%)};
+    --color-text-light: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 50%)};
+    --color-text-muted: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: 15%)};
+    --color-heading: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: 50%)};
+
+    --color-link: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 25%)};
+    --color-link-hover: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 35%)};
+    --color-emphasis: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-subtle: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: -25%)};
+
+    --color-button-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-button-hover-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
+    --color-button-text: #{$dark-button-text};
+
+    --color-input-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+    --color-input-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 45%)};
+    --color-input-focus-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 5%)};
+
+    --color-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 15%, $alpha: 0.55)};
+    --color-shadow: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $alpha: 0.15)};
+
+    --color-navbar-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: -35%, $alpha: 0.8)};
+
+    --color-navlink-special: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $l-offset: 15%, $s-offset: 10%)};
+    --color-navlink-special-hover: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $l-offset: 5%, $s-offset: 0%)};
+    --color-navbar-link: var(--color-navlink-special);
+    --color-navbar-link-hover: var(--color-navlink-special-hover);
+
+    --color-tag-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -30%)};
+    --color-tag-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 45%)};
+
+    --color-progress-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: -25%)};
+    --color-progress-fill: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+
+    --color-slider-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -30%)};
+    --color-slider-fill: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
+
+    --color-tooltip-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
+    --color-tooltip-text: #{$dark-tooltip-text};
+
+    --color-code-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -20%)};
+    --color-quote-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 15%)};
+    --color-quote-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 45%)};
+    --color-table-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 15%)};
+    --color-separator-border: #{$dark-separator-border};
+    --color-table-header-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 15%)};
+
+    // Dark theme utility colors - optimized for dark backgrounds
+    --color-success-background: oklch(0.30 0.08 120deg / 0.8);
+    --color-success-border: oklch(0.65 0.15 120deg);
+    --color-success-text: oklch(0.80 0.12 120deg);
+    --color-success-overlay: oklch(0.65 0.15 120deg / 0.3);
+
+    --color-error-background: oklch(0.25 0.08 10deg / 0.8);
+    --color-error-border: oklch(0.65 0.18 10deg);
+    --color-error-text: oklch(0.85 0.16 10deg);
+    --color-error-overlay: oklch(0.65 0.18 10deg / 0.3);
+
+    --color-warning-background: oklch(0.35 0.12 75deg / 0.8);
+    --color-warning-text: oklch(0.90 0.20 75deg);
+    --color-warning-overlay: oklch(0.90 0.20 75deg / 0.3);
+    --color-warning-border: oklch(0.75 0.18 75deg);
+
+    --color-chat-myself-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 0%)};
+    --color-chat-myself-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 0%)};
+
+    --color-chess-light-square: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 35%)};
+    --color-chess-dark-square: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -5%)};
+    --color-chess-label-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: -5%)};
+
+    --color-box-background-char: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -15%)};
+}

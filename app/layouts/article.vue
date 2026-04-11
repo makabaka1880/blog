@@ -5,7 +5,12 @@
         </div>
         <div class="content">
             <UIKitSafeArea>
-                <slot />
+                <template #sidebar>
+                    <BlogSidebar :toc="page?.body?.toc?.links ?? []" />
+                </template>
+                <template #content>
+                    <slot />
+                </template>
             </UIKitSafeArea>
         </div>
         <div class="footer">
@@ -21,8 +26,8 @@ const route = useRoute()
 const { data: page } = await useAsyncData(route.path, () => {
     return queryCollection('articles').path(route.path).first()
 })
-import adjacentPosts from '~/static/adjacency.json'
-const posts = computed(() => (adjacentPosts as Record<string, any>)[page.value?.path ?? ''] ?? [])
+import adjacentArticles from '~/static/adjacency.json'
+const articles = computed(() => (adjacentArticles as Record<string, any>)[page.value?.path ?? ''] ?? [])
 </script>
 
 <style lang="scss" scoped>
@@ -34,10 +39,10 @@ const posts = computed(() => (adjacentPosts as Record<string, any>)[page.value?.
 
 .nav-bar {
     width: 100%;
-    height: 3rem;
+    height: var(--navbar-height);
     position: sticky;
-    top: 0;
-    z-index: 10;
+    top: var(--navbar-top-offset);
+    z-index: var(--navbar-z-index);
 }
 
 .footer {
@@ -49,17 +54,6 @@ const posts = computed(() => (adjacentPosts as Record<string, any>)[page.value?.
     width: 100%;
     position: relative;
     z-index: 1;
-}
-
-:deep(table) {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-    font-size: 0.95rem;
-}
-
-:deep(p) {
-    margin-bottom: 0.5rem;
 }
 
 </style>
