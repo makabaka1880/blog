@@ -9,6 +9,12 @@ updateTime: 2026-04-11
 Computer science is no more about computers than astronomy is about telescopes.
 ::
 
+::NoteBox
+Cheat sheets (logic laws, Reference Sheet, etc..) see [Appendix ->](#appendix-cheatsheets).
+
+I wont recommend reading this on a mobile device because you definitely will need the table of contents for navigation.
+::
+
 AP Computer Science A can feel overwhelming with its blend of object-oriented programming, data structures, and algorithm analysis. This crash course distills the essential concepts and common pitfalls to help you review efficiently before the exam. Whether you're brushing up on inheritance hierarchies, tracing recursive methods, or decoding GridWorld legacy questions, this guide aims to clarify the key ideas you'll need to succeed.
 
 > OK That intro was written by claude. But you get the idea.
@@ -54,7 +60,7 @@ Similarly, a Java compiler checking syntax only verifies that your code follows 
 
 Syntax checking is just the first layer of validation -- it ensures you're speaking Java's "grammar" correctly, not that you're saying something sensible.
 
-[Click here for a cheatsheet of other exceptions in APCSA](#apdx-errors) in the appendix.
+[Click here for a cheatsheet of other exceptions in APCSA](#Exceptions) in the appendix.
 ::
 
 
@@ -189,7 +195,7 @@ Therefore, this call to the `getSize()` getter yields `0`.
 
 ### 0x03. Type Coercion, Type Promotion, and Others
 
-> I'll be writing a blog entry on actual type theory. Here's an [entry from my last blog](https://makabaka1880.xyz/CS/theoretical/type-theory/type-systems/strong-and-weak-systems.html) on the basics of type systems, but its still quite basic.
+> Maybe later I'll write a blog entry on actual dependent type theory. Here's an [entry from my last blog](https://makabaka1880.xyz/CS/theoretical/type-theory/type-systems/strong-and-weak-systems.html) on the basics of type systems, but its still quite basic.
 
 Java is a strongly typed language. This meant that the declaration of variables destinates the variable's type; in fact, Java declares variables exactly by preceding a type name before an identifier.
 
@@ -246,7 +252,7 @@ So just remember:
 
 Another import thing to remember is adding anything with a string is considered a promotion, because basically anything that has implemented `toString` can be represented by a string. So `a + any string` results in a string.
 
-[Click here for a cheatsheet](#apdx-expr-type) for the type of common arithmetic expressions in the appendix.
+[Click here for a cheatsheet](#expression-types) for the type of common arithmetic expressions in the appendix.
 
 ### 0x04. Object and Reference
 There are two main ways of passing information: pass by value and pass by reference. To understand what actually happens when those two passing methods are invoked, we first need to understand the von-neumann computer archeticture.
@@ -265,6 +271,8 @@ The problem with this approach is that it is pretty hard to pass values. The dif
 
 Similarly, Java uses the address of where the data is stored in the heap. Variables that store these addresses are known as **references**. However, when you pass a reference to a method, Java doesn't actually "pass-by-reference" in the traditional sense. Instead, it takes the value of the address and copies it into the new local variable. In this sense, Java is strictly pass-by-value: you aren't passing the apartment itself, or even the original key, but a photocopy of the key's bit pattern.
 
+In Java, memory allocation is marked by the usage of the keyword `new`. Whenever you use `new`, Java takes the value on the right hand side and extracts its address. Whenever you see a variable declared with or mutate to a value constructed using `new`, it means the variable is a reference to something that has just been created on the heap.
+
 ::NoteBox
 The most important fact to remember is that the variable that contains the address and the object behind the address is not coupled. If you update the variable to another object, the original object don't just get replaced by the new object -- its only that the reference is pointing to a new object. Under the apartment analogy, if someone replaces your key with a new one, your apartment dont just get wiped off the map and gets replaced by the new one; its just that you're holding a new key.
 ::
@@ -274,6 +282,8 @@ In Java, **ANY VARIABLE OF OBJECT TYPE IS A REFERENCE.** Any `String`, any `Arra
 ::HintBox
 If you are not sure, see if an inhabitant of the type could be `null`. If it is, then it is an object type. Also, any type that can call a method on it (ex, `ArrayList`'s `size()`) is an object type.
 ::
+
+To make sense of how reference types work, you can create a similar stack to the ones we used in [the previous section](#_0x02-variables-types-and-scopes), but instead of writing declarations in each box, draw an arrow out to point seperate entities that represents object in the heap.
 
 Let's see a concrete example in how reference passing works.
 
@@ -316,7 +326,7 @@ What will be printed when the `main` method is executed?
 3. `10 20`
 4. `5 20`
 ::
-Let's track down the execution line by line (here no shadowing occurs, so i wont maintain a whole stack of declarations for clarity.)
+Let's track down the execution line by line (here no shadowing occurs, so instead of maintaining a whole stack of declarations I will directly write the identifiers next to the object for clarity.)
 
 :Pic{src="heap-1.webp" alt="Initially"}
 
@@ -338,8 +348,6 @@ Notice that we are now back in the main scope, and `b` maintains the value witho
 2. `10 5`.
 ::
 
-::Quabox
-
 ### 0x05. Boolean Algebra and Rewritting Logics
 Consider this expression:
 ```java
@@ -360,8 +368,7 @@ A better way is to reduce this predicate to a **disjunctive normal form**, which
 
 > I didn't recall Kumo teaching this in class but nevertheless its a good method.
 
-
-For example, `a || b && c || !d` is in DNF. However, `(a || b) && c` is not. A better way to understand DNFs is to convert an expression into an algebraic expression, where you swap `&&`s for multiplication, `||` for addition, and `!` for inverses. If the resulting expression is a rational polynomial in standard form (a sum of monomials), then the corresponding expression is in DNF. Our last two expressions can thus be expressed as
+For example, `a || b && c || !d` is in DNF. However, `(a || b) && c` is not. A better way to understand DNFs is to convert an expression into an algebraic expression, where you swap `&&`s for multiplication, `||` for addition, and `!` for inverses. If the resulting expression is a polynomial in standard form (a sum of monomials), then the corresponding expression is in DNF. This way of expression boolean clauses and the study of disjunction and conjunction is known as **Boolean Algebra**, and this specific way to reducing expressions is known as a **Rewriting Sysmem**. Our last two expressions can thus be expressed as
 $$
 a + bc + (1 - d)
 $$
@@ -372,10 +379,14 @@ $$
 (a + b)c
 $$
 
-At immediate glance we noticed that the second one is not canonical or strongly normalized.
+At immediate glance we noticed that the second one is not canonical or strongly normalized (Note that the negation of a single atom like $1 - d$ *is not* a redux. That is, you cannot reduce it further. However in our case we require the expression to be **strongly normalized**, which simply put, requires you to absorb all redundent terms and so.)
+
+For example, `!(a && b) || c` is **not** in DNF. Expanding, `!a || !b || c` is in DNF.
+
+Another example is `(a && !a) || b`. This is in DNF, however it just not strongly normalized since `(a && !a)` is a redux that can be reduced to `false`. This should be `b` after strong normalization.
 
 ::Defbox{id="DNF"}
-A boolean expression is in **Disjunctive Normal Form** if it is a disjunction (OR, `||` or $\vee$) of one or more conjunctions (AND, `&&` or $\wedge$) of literals, where a **literal** is either a variable or its negation.
+A boolean expression is in **Disjunctive Normal Form** if it is a disjunction (OR, `||` or $\vee$) of one or more conjunctions (AND, `&&` or $\wedge$) of literals, where a **literal** is either a variable or its negation. Under strong normalization, we require some a Negation Normal Form (NNF) property that negations cannot be further reduced.
 
 Formally, a DNF expression has the shape:
 
@@ -385,6 +396,7 @@ $$
 
 Where each $l_{ij}$ is either a variable $x$ or its negation $\neg x$.
 ::
+
 ::WarningBox
 After reduction, **ALWAYS** check for disparities with the original clause, especially in computations with side effects takes upon an important role. Take this example:
 ```java
@@ -439,15 +451,15 @@ For any term $a$:
 ::
 
 
-At last is an important set of colloraries: De Morgan's laws. They help accelerate in expanding negations rather then manually justifying using the absoption laws.
+At last is an important set of corollaries: De Morgan's laws. They help accelerate in expanding negations rather than manually justifying using the absorption laws.
 
 ::NoteBox
-There isn't quite a algebraic equivalence to De Morgan's laws, but you can memorize them like this:
+There isn't quite an algebraic equivalence to De Morgan's laws, but you can memorize them like this:
 
-> If not a or b happens, it meant that neither a nor b happens.
-> If not both a and b happens, it must meant a didn't happen or b didn't happen.
+> If not (a or b) happens, it means that neither a nor b happens.
+> If not both a and b happen, it must mean a didn't happen or b didn't happen.
 
-In fact, the english `neither ... nor ...` directly utilized de morgans' laws.
+In fact, the English phrase `neither ... nor ...` directly utilizes De Morgan's laws.
 
 $$
 \lnot(A \vee B) = \lnot A \wedge \lnot B \\
@@ -536,21 +548,787 @@ Prompt: `a && c || !b && c`
 Therefore, 1 and 3 are isomorphic to the prompt.
 ::
 
-[Click here for a cheatsheet of all formulae](#apdx-logic) used here.
+[Click here for a cheatsheet of all formulae](#logical-rewrites) used here.
 
 ## 1x00. Essential APIs
 In this section I'll walk over the most commonly used APIs in APCSA.
+[Click here for the APCSA API Reference Sheet](#apcsa-api-reference-sheet)
 
-### 1x01. `String` Class
+### 1x01. Arrays
+
+> [Click here for all the constructors](#array-constructors) for arrays listed in the appendix.
+
+When you define a normal primitive variable, you simply push the data into the stack. However, most of the time we want a way to define multiple values in a collection and query them based on their location. Arrays are interfaces built for this; they are fixed-sized containers that take up a block of contagious memory in the heap.
+
+To access the an element of an array, use `a[i]`, where `0 <= i && i < a.length`. This is called 0-indexing. Im not sure if this will be tested, but there is also a convention known as 1-indexing, where the first element correponds to the index `1`.
+
+When indexing an array with `i` out of `[0, a.length)` bounds, the JVM runtime throws an error `ArrayIndexOutOfBoundsException`
+
+::WarningBox
+`ArrayIndexOutOfBoundsException` and `IndexOutOfBoundsException` are **NOT** the same exception. One applies to arrays and the other applies to `ArrayList`s.
+::
+
+In other languages arrays are considered primitive types and are allocated on the stack. HOWEVER IN JAVA, <mark>ARRAYS ARE OBJECTS, CONSTRUCTED USING `new`, PASSED BY REFERENCE, AND ALLOCATED ON THE HEAP</mark>. By indexing an array, you get a variable of the same scope as the array. Generally you don't need to worry about shadowing because Java does not allow identifiers with names like `a[i]`, but arrays can shadow each other, which is worth knowing. Apart from that, just treat indexed arrays as normal variables and you can apply all previously discussed analysis on them.
+
+> Arrays can and can only hold references to objects. Even though arrays are on the heap, it does not mean that allocating an array of objects allows you to actually store the objects in the array.
+
+The idiom for iterating over an array is using a for loop. I wont delve deep into what a for loop is because its just too basic.
+
+```java
+for (int i = 0; i < a.length; i++) // And now access a[i]
+```
+
+In mordern Java, we allow a syntatic sugar called the **Enhanced For Loop**. Introduced in Java 5, it was designed to eliminate the clutter of manual iteration (handling counters or `Iterator` objects) when you simply need to process every element in a collection or array from start to finish.
+
+```java
+for (int n : a) // And now access n
+```
+
+Just beware: `i` is an index and `n` is a value. If you want to *mutate* the array, the enhanced for loop wont do because `n` is just a new variables scoped within the loop that has nothing to do with the original array.
+
+```java
+int[] a = {1, 2, 3};
+for (int n : a) n++;
+System.out.println(a[0]) // Prints 1
+
+for (int i = 0; i < a.length; i++) a[i]++;
+System.out.println(a[0]) // Prints 2
+```
+
+### 1x02. `String` Class
 
 > The String class represents character strings. All string literals in Java programs, such as "abc", are implemented as instances of this class.
 > -- Oracle
 
-A `String`
+A `String` is an abstraction of an array of characters(`char[]`). You can use the enhanced for loop to loop through a string, but you **cannot** index a string using the brackets notation. To get the character at a specific index, use `charAt(n)`. If you want a string representation of that `char`, use `substring(n, n + 1)`.
+
+> You cannot set the character at a specific index. This is because strings in java are immutable by default, meaning that you can only allocate a new string each time you do manipulation on a string.
+
+`String`s can also be represented using a construct known as a string literal. Whenever you enclose text in <mark>straight double quotation marks</mark>, you create a new string. However, string literals can only span a single line and cannot contain quotation marks within them. To work around this limitation, Java provides a special syntax called **escaping**. An **escape sequence** in Java is a two-character construct where the first character is a backslash `\`. By following the backslash with different characters, you can represent special characters that are not otherwise supported. Common escape sequences include `\"` for double quotation marks and `\n` for newline. 
+
+[Click here for a complete cheatsheet](#string-literal-escape-sequences) of all Java escape sequences in the appendix.
+
+```java
+String a = "Humpty \"Dumpty\" sat on a wall\nHumpty \"Dumpty\" had a great fall";
+System.out.println(a);
+```
+Will print
+```stdout
+Humpty "Dumpty" sat on a wall
+Humpty "Dumpty" had a great fall
+```
+
+String constructed using literals are stored in a special area in the heap memory known as the **String Constant Pool**.
+
+One benefit of the SCP is that string constructed using literals often show up many times in a program. If a string is in the SCP, then constructing with a literal directly give you a reference to that prior object in the constant pool without wasting extra memory.
+
+> Note that this meant that strings inside the SCP is unique. There does not exist a case where two strings `a` and `b` in the SCP satisfies `a.equals(b)` but not `a == b`.
+
+```java
+String a = new String("apple");
+String b = new String("apple");
+a == b // false
+
+String c = "apple";
+String d = "apple";
+c == d // true
+```
+
+> Remember: `String`s are objects. This meant that when you compare them using `==`, it compares the underlaying address. Therefore, `a == b` returns whether if `a` and `b` are the same object, not just the same string. Simply put, `a == b` implies `a.equals(b)` but not necessarily the converse.
+
+::Qabox{type=question}
+```java
+String a = "coffee";
+String b = "coffee";
+String c = new String("coffee");
+String d = c;
+
+System.out.print((a == b) + " ");
+System.out.print((a == c) + " ");
+System.out.print((c == d) + " ");
+System.out.print(a.equals(c));
+```
+What is printed as a result of executing the code segment?
+
+1. `true false true true`
+2. `true true true true`
+3. `false false true true`
+4. `true false false true`
+::
+
+Lets walk through this problem using the same approach from previous problems. Firstly, `a` is constructed using a literal, so it is store in the SCP.
+
+:Pic{src="scp-1.webp" alt="Here I seperated SCP and the heap because the signifance of SCP as a subset of the heap isn't that useful in AP."}
+
+`b` is constructed with the same literal, so the JVM found the reference to `"coffee"` in the SCP and gave it to `b`. Now, `a == b` already holds so we can rule out (3).
+
+:Pic{src="scp-2.webp"}
+
+Now, `c` is constructed with a regular `new` constructor. This instantiates a new string in the heap.
+
+:Pic{src="scp-3.webp" alt="Now objects in the heap are **not** guaranteed unique. You can totally have multiple objects with the exact same data in the heap."}
+
+And the last line assigns `d` to `c`, which makes the two reference the same string.
+
+:Pic{src="scp-4.webp"}
+
+::Qabox{type=answer}
+1. `true false true true`
+
+`a.equals(c)` is trivial. 
+::
+
+[Click here for the string section](#string-class) of the AP reference sheet.
+
+### 1x03. `ArrayList` Class Family
+
+An `ArrayList` is a primary example of a **generic type**. Although the APCSA exam does not cover the formal theory of generics, it is essentially a method of parameterizing type variables to make one type dependent on another. For instance, an `ArrayList<Integer>` is dependent on the `Integer` type, whereas an `ArrayList<String>` is dependent on the `String` type. Within the APCSA reference sheet, the capital `E` serves as a placeholder for the specific type passed in at construction time.
+
+::Folding{title="Extension - Parametric Polymorphism"}
+In regular type theory, a function (constructor) could only take on a specific type. This quickly became a big problem. Let's take a simple example; we want to construct a simple function that takes a value and spits it right out. We first implement an instance for integers:
+$$
+\text{identity}_\mathbb{Z} := \lambda x : \mathbb{Z}. x \\
+\mathbb{Z}: * \vdash \text{identity}_\mathbb{Z} : \mathbb{Z}. x
+$$
+Then for floating points:
+$$
+\text{identity}_\mathbb{R} := \lambda x : \mathbb{Z}. x \\
+\mathbb{R}: * \vdash \text{identity}_\mathbb{R} : \mathbb{R}. x
+$$
+Then for strings:
+$$
+\text{identity}_{\Sigma^*} := \lambda x : \mathbb{Z}. x \\
+\Sigma^*: * \vdash \text{identity}_{\Sigma^*} : \Sigma^*. x
+$$
+And so on.
+
+the above in Java would be written as
+```java
+// For integers (using Integer wrapper)
+public Integer identity(Integer x) {
+    return x;
+}
+
+// For floating points (using Double wrapper)
+public Double identity(Double x) {
+    return x;
+}
+
+// For strings
+public String identity(String x) {
+    return x;
+}
+...
+```
+
+But just writing out our function for every single type is not going to work. We developers are human, and we make mistakes. Can you automate this repetition into some sort of pattern?
+
+The same problem popped up in 1974 when Jean-Yves Girard (and independently John C. Reynolds in 1974) developed **System F**, also known as the **Polymorphic Lambda Calculus**. To cope with the explosion of redundant code, Girard and Reynolds introduced **universal quantification** over the type universe (which is just a fancy name for providing a placeholder for a type).
+
+In System F, instead of defining a new function for every type, we define a "type-abstraction" using the uppercase Lambda ($\Lambda$). This allows the function to work across the entire universe of types by abstracting the type itself into a variable:
+
+$$
+\text{id} := \Lambda \alpha. \lambda x : \alpha. x \\
+\emptyset \vdash \text{id} : \forall \alpha. \alpha \to \alpha
+$$
+
+Here, $\forall \alpha$ (read as "for all alpha") signifies that the function is now a **generalized template**. 
+
+In **Java**, this System F concept is implemented as **Generics**. We use angle brackets `< >` to denote the universal quantification of a type variable (usually denoted as `E` for Element or `T` for Type).
+
+```java
+public <T> T identity(T x) {
+    return x;
+}
+```
+The same concept is utilized here with `ArrayList`. If Oracle were to implement a separate `ArrayList` for every type then it would have been a nightmare of manual overloading and access breach.
+::
+
+The `ArrayList` provides an abstraction for a general container. It is not fixed-sized like arrays, and provides ergonomic interfaces for structural mutation like inserting and removing elements. Because of its polymorphic nature, you'll need to explicitly provide which type it contains at construction time.
+
+```java
+ArrayList<String> names = new ArrayList<String>();
+ArrayList<String> names = new ArrayList<>(); // Since Java 7, you can omit the type on the RHS using the diamond operator <>.
+
+ArrayList<Integer> scores = new ArrayList<>(50); // You can also provide an initial capacity.
+ArrayList<String> listFromSet = new ArrayList<>(existingSet); // Or construct using an array or other collections. This is not covered in the AP Subset but legal to use.
+```
+> Note that the initial capacity parameter **does not fill the arraylist up with that much data**. It just reserves that much space in the heap to avoid needing to resize later. You could buy 50 apartment rooms in a building, but if you didn't furnish them you cannot live in any of these. Other than optimization, `ArrayList`s constructed with this constructor behave exactly like the default construct. 
+> 
+> You can use this constructor to make yourself look smart but since it's not covered in the AP Subset, I wouldn't recommend risking your score for this.
+> 
+> ```java
+> ArrayList<Integer> scores = new ArrayList<>(50);
+> scores.set(0, 100); // Exception java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+> ```
+
+By default, the `add` method appends the element to the back of the list (bigger index). You can also provide an index to put the element in and shift everything backwards.
+
+The `set` method is different from `insert` in the sense that `set` does not account for any elemnets already occuring in the target index; it just overwrites everything.
+
+`ArrayList` also support the enhanced for loop. 
+
+::WarningBox
+Just remember **NOT** to mutate the `ArrayList` while you are looping over it, or else Java gets really angry and throws an error not covered in the AP Subset. Even in the AP Subset, mutating during iteration is very non-idiomatic code and carries a high risk of losing points.
+
+```java
+ArrayList<String> tasks = new ArrayList<>();
+tasks.add("Buy milk");
+tasks.add("Urgent: Fix the leak");
+tasks.add("Call mom");
+
+for (String task : tasks) {
+    if (task.contains("Urgent")) {
+        tasks.remove(task); // ConcurrentModificationException
+    }
+}
+```
+::
+
+### 1x04. `Scanner` and `File` Class
+
+> [Click here for a complete cheatsheet of Scanner methods](#scanner-class) in the appendix.
+
+There is not much to the `File` class. It is just a container that contains the path to the file, so it does not throw anything upon construction.
+
+On the other hand, actually using the `File` class might throw all sorts of errors. For example, constructing a `Scanner` class throws `IOException`s.
+
+Just remember to include `throws` in your method header. 
+
+```java
+public static void main(String[] args) throws IOException {
+    String fileName = "example_log.txt";
+    File myFile = new File(fileName);
+}
+
+```
+> Error throwing is contagious under the call chain. The AP Subset does not cover `try` `catch` `finally`, so there is virtually no way of breaking this chain. Just remember, if you call any method that `throws`, mark the current method as `throws` too.
+> ```java
+> public class FileWrapper {
+>     private Scanner reader;
+>     public void loadfile(String fileName) throws IOException {
+>         File myFile = new File(fileName);
+>         this.reader = new Scanner(myFile);
+>     }
+> 
+>     public FileWrapper(String path) {
+>         this.loadfile(path);    // unreported exception java.io.IOException; must be caught or declared to be thrown
+>     }
+> }
+> ```
+> A correct version would be
+> ```java
+> public class FileWrapper {
+>     private Scanner reader;
+>     public void loadfile(String fileName) throws IOException {
+>         File myFile = new File(fileName);
+>         this.reader = new Scanner(myFile);
+>     }
+> 
+>     public FileWrapper(String path) throws IOException {
+>         this.loadfile(path);    // unreported exception java.io.IOException; must be caught or declared to be thrown
+>     }
+> }
+> ```
+
+The `Scanner` class is an **$LL(1)$ top-down parser** with regular parsing power. In computer science terms, this means it follows a specific set of rules to process data:
+
+1.  **Linear Scanning:** It scans the input stream sequentially from start to finish. It is a "one-way" street; it cannot backtrack to a previous token once it has been consumed.
+2.  **Lookahead ($LL(1)$):** It can "look ahead" by exactly **one** token. Using the `hasNext...()` methods (like `hasNextInt()`), the `Scanner` can peek at the next piece of data to check its type without actually moving the cursor.
+3.  **Regex Matching:** It uses **Regular Expressions** to identify tokens. For the AP Exam, just remember that `Scanner` uses **delimiters** (whitespace and newlines by default) to decide where one token ends and the next begins.
+
+
+::NoteBox
+Remeber that `next...()` methods **consume**, and `hasNext...()` only takes a look. For example, the following never terminates:
+```java
+while (sn.hasNextInt()) System.out.println("Has Int!");
+```
+
+The following is correct and halts when hitting the first non-integer token.
+```java
+while (sn.hasNextInt()) System.out.println("Has Int " + sn.nextInt());
+```
+::
+
+To trace what a scanner does is pretty easy. Just simply write out the text, and imagine yourself being the parser.
+
+::Qabox{type=question}
+Consider the following program.
+```java
+while (sn.hasNext()) {
+    if (sn.hasNextAlpha()) {
+        String name = sn.next();
+        
+        if (sn.hasNextInt()) {
+            int age = sn.nextInt();
+            
+            if (sn.hasNextDouble()) {
+                double gpa = sn.nextDouble();
+                System.out.println(name + " (" + age + ") GPA: " + gpa);
+            }
+        }
+    }
+}
+```
+Given the input string
+```
+Alice 17 3.8 Bob 18 3.9
+```
+What does it print?
+::
+
+> Here I'll denote the cursor as `|` and wrap the next token in parenthesis.
+
+Let's start with line 1. It checks if the next token is present, which absolutely does:
+```
+|(Alice) 17 3.8 Bob 18 3.9
+```
+
+So we go into the loop. Now, the next check is if the next token is alphanumeric, which `Alice` obviously satisfies, so we move on.
+
+We call `String name = sn.next();` which consumes `Alice` and moves the cursor:
+
+```
+Alice |(17) 3.8 Bob 18 3.9
+```
+
+Now `sn.hasNextInt()` returns `true` because `17` is an integer, so we enter the inner if block. We call `int age = sn.nextInt();` to consume the integer:
+
+```
+Alice 17 |(3.8) Bob 18 3.9
+```
+
+Next, `sn.hasNextDouble()` returns `true` because `3.8` is a double, so we enter the innermost block. We call `double gpa = sn.nextDouble();`:
+
+```
+Alice 17 3.8 |(Bob) 18 3.9
+```
+
+Now we print: `Alice (17) GPA: 3.8`.
+
+The loop continues because `sn.hasNext()` still returns `true` (there's `Bob` ahead). We repeat the process:
+
+- `sn.hasNextAlpha()` returns `true` for `Bob`
+- `sn.next()` consumes `Bob`:
+```
+Alice 17 3.8 Bob |(18) 3.9
+```
+- `sn.hasNextInt()` returns `true` for `18`
+- `sn.nextInt()` consumes `18`:
+```
+Alice 17 3.8 Bob 18 |(3.9)
+```
+- `sn.hasNextDouble()` returns `true` for `3.9`
+- `sn.nextDouble()` consumes `3.9`:
+```
+Alice 17 3.8 Bob 18 3.9 |
+```
+- Print: `Bob (18) GPA: 3.9`
+
+Now `sn.hasNext()` returns `false`, so the loop terminates.
+
+::Qabox{type=answer}
+```
+Alice (17) GPA: 3.8
+Bob (18) GPA: 3.9
+```
+::
+
+## 2x00. Algorithms 101
+
+Algorithms is a substantial section of APCSA. You can't just understand algorithms overnight, but I'll do my best to give a brief overview and a few excercises for each big section of algorithm design.
+
+### 2x01. Iteration
+Iteration refers to the practice of sequentially computing over an ordered collection of things. It generally is comprised of one or more nested loops. They could accumulate computation, aggregate arrays, or employ more complex operations like searching or sorting a collection.
+
+We can utilize the `for` loop's abstraction of termination conditions and looping control to write efficient and clean code.  The most idiomatic way to use `for` loop is to maintain an index variables `i` to keep track of the loop count and also to control termination.
+
+::Qabox{type=question}
+Given positive integer $n$, print integers 0 up to $n$ delimited by newlines.
+::
+
+::Qabox{type=answer}
+```java
+void printIntegers(int n) {
+    for (int i = 0; i <= n; i++) {
+        System.out.println(i);
+    }
+}
+```
+::
+
+The operational semantics of the `for` loop does not restrict the termination predicate and update statement to be about our loop index. It could be anything.
+
+::Qabox{type=question}
+Given positive integer $n$ and $k$, compute the sum of its digits under base $k$ expansion.
+::
+
+::Qabox{type=answer}
+```java
+int sumOfDigits(int n, int k) {
+    int sum;
+    for (sum = 0; n > 0; n /= k) {
+        sum += n % k;
+    }
+    return sum;
+}
+```
+::
+
+There is another type of linear for-loop called **Triangular Iteration**, where the inner loop is dependent on the outer loop.
+```java
+void printTriangle(int n) {
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++) System.out.print("*");
+        System.out.println();
+    }
+}
+```
+
+
+Iterative problems are generally pretty easy, and the hard part is usually off-by-one errors.
+
+::NoteBox
+Everyone has learned about the tree planting problem before. Assume that we have 4 buildings and we want to plant trees between each of those buildings. The correct count of trees is 3, not 4. Humans are actually really prone to writing those simple offsets of indices because of all sorts of rounding errors. I myself have frankly never figured out a good way to get around it, so I generally just simulate the algorithm and add random offsets to index variables wherever off-by-ones could occur. It is not a good method, nevertheless it works.
+
+The recommended way to avoid such errors is to formalize your algorithm, but it's pretty hard for iterative programs. Later on we will go over recursive algorithms, which I recommend over iterative programs since they are easily formalizable at high school level mathematics.
+::
+
+
+### 2x02. Recursion
+
+Recursive algorithms are a bit hard to wrap your head around at first, but become much easier to understand once you develop an intuition for them. 
+
+::DefBox{id=Recursion}
+Recursion is a method of problem-solving where a function calls itself, directly or indirectly, to solve smaller instances of the same problem. It relies on the principle of self-similarity, breaking a complex task into a base case (the simplest possible version that can be solved immediately) and a recursive step (the process of reducing the problem toward the base case).
+::
+
+A simple recursive algorithm is the factorial:
+
+$$
+\begin{align*}
+\Gamma(n) &= n \times \Gamma(n - 1) \\
+\Gamma(0) &= 1
+\end{align*}
+$$
+
+The $\Gamma(0) = 1$ case is called the **base case**. The $\Gamma(n)$ case is called the **recursive case / step**.
+
+In Java, this translates to:
+
+```java
+public static int factorial(int n) {
+    if (n == 0) {           // base case
+        return 1;
+    } else {                // recursive case
+        return n * factorial(n - 1);
+    }
+}
+```
+
+To see how it works, plug a value in:
+
+$$
+\begin{align*}
+\Gamma(5) &= 5 \times \Gamma(4) \\
+&= 5 \times 4 \times \Gamma(3) \\
+&= 5 \times 4 \times 3 \times \Gamma(2) \\
+&= 5 \times 4 \times 3 \times 2 \times \Gamma(1) \\
+&= 5 \times 4 \times 3 \times 2 \times 1 \times \Gamma(0) \\
+&= 5 \times 4 \times 3 \times 2 \times 1 \times 1 \\
+&= 120
+\end{align*}
+$$
+
+In order to make a recursive algorithm work, the function must satisfy **strict positivity**. This is not something that can be explained in one blog entry, but basically you need to descend "into" the data rather than build higher and higher on top of the input. For example:
+$$
+\begin{align*}
+f(n) = 2f(n + 1) \\
+f(1) = 1
+\end{align*}
+$$
+If you plug in any value other than $1$, the algorithm just explodes to infinity. If you look at the parameter to each call of a method, it increases rather than decreases, and because you cannot reach the end of integers by increasing, the function never stops.
+
+In Java, executing such program will likely result in a `StackOverflowError`.
+
+::NoteBox
+Note that this exception is not caused by the incorrectness of the program: it is simply that function calls are nested so deep that they reach the maximum allowed depth for the JVM. In theory, you could write a recursive program that terminates theoretically and give it a large enough input to trigger the `StackOverflowError`. But in practice this is nearly impossible.
+::
+
+The key to writing recursive programs is to construct your data in a structured way. For example, to define factorial, we view natural numbers as
+```haskell
+Numbers := 0 | Numbers + 1
+```
+
+And define what happens for each case:
+
+1. **Base case (0)**: `factorial(0) = 1`
+2. **Recursive case (n + 1)**: `factorial(n + 1) = (n + 1) × factorial(n)`
+
+The power of this approach comes from **structural induction**. When we write `factorial(n)`, we can assume—as our *inductive hypothesis*—that `factorial(n - 1)` already works correctly for the smaller natural number. This assumption is justified because `n - 1` is structurally smaller than `n` in our definition `Numbers := 0 | Numbers + 1`.
+
+In programming terms: when `factorial(n)` calls `factorial(n - 1)`, we are **trusting** that the recursive call will handle the smaller subproblem correctly. This "leap of faith" is exactly the inductive hypothesis in action. The base case ensures the chain of recursive calls eventually terminates.
+
+Let's see another classical recursive problem. Recursive reversion. Here, we define the string to be
+```haskell
+String := "" | Char + String
+```
+
+::Folding{title="Formal Definition of Reversion"}
+$$
+(a w)^R = w^R a \\
+\lambda^R = \lambda
+$$
+```haskell
+reversion :: String -> String
+reversion (a:w) = w ++ [a]
+reversion [] = []
+```
+::
+
+
+```java
+String reverse(String n) {
+    if (n.length() > 0) return reverse(n.substring(1)) + n.substring(0, 1);
+    else return n;
+}
+```
+
+> I encourage you to write recursive algorithms. They are much easier to analyze formally by structural induction on those algorithms, in contrast to imperative programs (loops, states) which require a much deeper technique called operational semantics that I don't think we can handle in a single exam.
+
+### 2x03. Sorting
+In APCSA, there are basically just 4 types of sorting:
+1. Bubble sort ($O(n^2)$)
+2. Insertion sort ($O(n^2)$)
+3. Selection sort ($O(n^2)$)
+4. Merge sort ($O(n log n)$)
+
+Let's walk through them one by one.
+
+#### Bubble Sort
+Bubble sort is the simplest algorithm of them all: we just scan from the beginning to the end of the list and for every adjacent pair, swap them if they are out of order. This process repeats until no more swaps are needed, with larger elements "bubbling up" to the end of the list.
+
+::Folding{title="Proof of Correctness"}
+**Invariant:** After each complete pass through the array, the largest unsorted element "bubbles up" to its correct final position.
+
+**Base:** Initially, no elements are in correct sorted positions.
+
+**Step:** Each pass compares adjacent pairs. If they're out of order, they swap. This ensures the largest element in the unsorted portion moves toward the end. After a full pass, the largest element reaches its final position.
+
+**Termination:** When a complete pass makes no swaps, the array is sorted (all adjacent pairs are in order).
+::
+
+The implementation is also the easiest.
+
+```java
+public static void bubbleSort(int[] arr) {
+    boolean swapped;
+    do {
+        swapped = false;
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] > arr[i + 1]) {
+                // Swap adjacent elements
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                swapped = true;
+            }
+        }
+    } while (swapped);
+}
+```
+
+#### Insertion Sort
+Insertion sort builds the final sorted array one element at a time. It takes each element from the input and inserts it into its correct position within the already-sorted portion of the array. Think of it like sorting a hand of playing cards.
+
+::Folding{title="Proof of Correctness"}
+**Invariant:** After processing the first $i$ elements, they form a sorted array.
+
+**Base:** The first element alone is trivially sorted.
+
+**Step:** For each new element, we shift larger elements right to make space, then insert the new element. This preserves the sorted order of the first $i+1$ elements.
+
+**Termination:** After processing all $n$ elements, the entire array is sorted.
+::
+
+```java
+public static void insertionSort(int[] arr) {
+    for (int i = 1; i < arr.length; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        
+        // Shift elements greater than key to the right
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key; // Insert key at correct position
+    }
+}
+```
+
+#### Selection Sort
+Selection sort repeatedly finds the minimum element from the unsorted portion and places it at the beginning of the sorted portion. It maintains two subarrays: one sorted and one unsorted. Each iteration expands the sorted subarray by one element.
+
+::Folding{title="Proof of Correctness"}
+**Invariant:** The first $i$ elements are sorted and are the $i$ smallest elements of the array.
+
+**Base:** When $i=0$, the invariant holds trivially.
+
+**Step:** We find the minimum element in the unsorted portion and swap it with the element at position $i$. This element is now the $(i+1)$-th smallest and belongs at position $i$ in sorted order.
+
+**Termination:** After $n$ iterations, the first $n$ elements are sorted and contain all elements.
+::
+
+```java
+public static void selectionSort(int[] arr) {
+    for (int i = 0; i < arr.length - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < arr.length; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        // Swap
+        int temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+    }
+}
+```
+
+#### Merge Sort
+Merge sort uses a divide-and-conquer approach: it recursively splits the array in half until reaching single elements, then merges the sorted halves back together. The merge operation combines two sorted arrays into one sorted array. This algorithm has $O(n \log n)$ time complexity but requires additional memory for the merging step.
+
+::Folding{title="Proof of Correctness"}
+**Base Case:** An array of size 0 or 1 is already sorted.
+
+**Inductive Hypothesis:** Assume merge sort correctly sorts arrays of size $< n$.
+
+**Inductive Step:** For an array of size $n$, we split it into two halves of size $\lfloor n/2 \rfloor$ and $\lceil n/2 \rceil$. By the inductive hypothesis, both halves are sorted correctly. The merge operation then combines two sorted arrays into one sorted array.
+
+**Termination:** Recursion terminates when arrays reach size 0 or 1.
+::
+
+```java
+public static void mergeSort(int[] arr) {
+    if (arr.length <= 1) return;
+    int mid = arr.length / 2;
+    int[] left = new int[mid];
+    int[] right = new int[arr.length - mid];
+    // Copy elements
+    for (int i = 0; i < mid; i++) left[i] = arr[i];
+    for (int i = mid; i < arr.length; i++) right[i - mid] = arr[i];
+    
+    mergeSort(left);
+    mergeSort(right);
+    merge(arr, left, right);
+}
+
+private static void merge(int[] result, int[] left, int[] right) {
+    int i = 0, j = 0, k = 0;
+    while (i < left.length && j < right.length) {
+        if (left[i] <= right[j]) {
+            result[k++] = left[i++];
+        } else {
+            result[k++] = right[j++];
+        }
+    }
+    while (i < left.length) result[k++] = left[i++];
+    while (j < right.length) result[k++] = right[j++];
+}
+```
+Sometimes merging is taken out on its on as a seperate algorithm.
+
+### 2x04. Searching
+
+#### Linear Search
+Linear search sequentially checks each element of an array until it finds the target value or reaches the end of the array. This is the simplest search algorithm but has $O(n)$ time complexity in the worst case.
+
+::Folding{title="Proof of Correctness"}
+**Invariant:** After checking the first $i$ elements, the target is not present in positions $0$ through $i-1$.
+
+**Base:** Before any elements are checked ($i=0$), the invariant holds trivially.
+
+**Step:** At each iteration, we check if the current element equals the target. If yes, we return the index. If not, we continue to the next element, maintaining the invariant.
+
+**Termination:** The algorithm terminates when either the target is found or all elements have been checked. In the first case, it returns the correct index; in the second, it correctly returns $-1$.
+::
+
+```java
+public static int linearSearch(int[] arr, int target) {
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+```
+
+#### Binary Search
+Binary search requires a sorted array and uses a divide-and-conquer approach. It repeatedly compares the target with the middle element, eliminating half of the remaining search space each time. This gives $O(\log n)$ time complexity.
+
+::Folding{title="Proof of Correctness"}
+**Invariant:** If the target is present in the array, its index must be within the range `[low, high]` (inclusive).
+
+**Base:** Initially, `low = 0` and `high = arr.length - 1`, so the invariant holds.
+
+**Step:** At each iteration, we examine the middle element `mid`. If `arr[mid] == target`, we return `mid`. If `arr[mid] < target`, the target must be in the right half (`low = mid + 1`). If `arr[mid] > target`, the target must be in the left half (`high = mid - 1`). The invariant is preserved.
+
+**Termination:** The loop terminates when `low > high`. At this point, the search space is empty, and the target is not in the array.
+::
+
+```java
+public static int binarySearch(int[] arr, int target) {
+    int low = 0;
+    int high = arr.length - 1;
+    
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+```
+
+### 2x05. Miscellaneous Algorithms
+
+#### Extrema Searching
+Given a collection and a total order over it, find the maxima / minima of the collection. Always initialize with the first element (or `Integer.MIN_VALUE`/`Integer.MAX_VALUE` for empty array handling).
+
+```java
+public static int findMax(int[] arr) {
+    if (arr.length == 0) throw new IllegalArgumentException("Array is empty");
+    int max = arr[0];
+    for (int i = 1; i < arr.length; i++) {
+        if (arr[i] > max) max = arr[i];
+    }
+    return max;
+}
+
+public static int findMin(int[] arr) {
+    if (arr.length == 0) throw new IllegalArgumentException("Array is empty");
+    int min = arr[0];
+    for (int i = 1; i < arr.length; i++) {
+        if (arr[i] < min) min = arr[i];
+    }
+    return min;
+}
+```
+
+<!-- ## 3x00. Writing Classes -->
+
 
 ## Appendix / Cheatsheets
 
-<h3 id="apdx-errors">Exceptions</h3>
+### Exceptions
 
 | Exception | Thrown When |
 |---|---|
@@ -564,7 +1342,7 @@ A `String`
 | `IndexOutOfBoundsException` | Accessing an invalid index on an `ArrayList` |
 
 
-<h3 id="apdx-expr-type">Expression Types</h3>
+### Expression Types
 
 | Expression | Type |
 |---|---|
@@ -601,9 +1379,7 @@ Where `T` $\in$ `{ int, long, float, double }` for the polymorphic ones.
 
 Polymorphic means that whatever goes in comes out with the same type. `Math.abs(int) : int`, `Math.abs(double) : double`.
 
-<h3 id="apdx-logic">
-Logical Rewrites
-</h3>
+### Logical Rewrites
 
 | Java | Boolean Algebra | Logical Formula |
 |---|---|---|
@@ -620,7 +1396,54 @@ Logical Rewrites
 | `!(a \|\| b) == !a && !b` | $(1 - (a + b)) = (1-a)(1-b)$ | $\lnot(a \lor b) \equiv \lnot a \land \lnot b$ |
 | `!(a && b) == !a \|\| !b` | $(1 - ab) = (1-a) + (1-b)$ | $\lnot(a \land b) \equiv \lnot a \lor \lnot b$ |
 
-<h3 id="apdx-ref-sheet">APCSA API Reference Sheet</h3>
+### Array Constructors
+
+```java
+int[] numbers = new int[5]; // constructors with fixed-length
+int[] numbers = {10, 20, 30, 40, 50}; // literal constructing. Note that this syntax can only be used in declarations.
+numbers = new int[]{100, 200}; // Literal construction
+int[][] matrix = new int[3][3]; // 2D arrays
+
+numbers = {100, 200, 300}; // illegal start of expression
+```
+
+Default values for different types:
+
+| Data Type | Default Value |
+| :--- | :--- |
+| `byte`, `short`, `int`, `long` | `0` |
+| `float`, `double` | `0.0` |
+| `char` | `\u0000` (null character) |
+| `boolean` | `false` |
+| `Object` (String, Custom classes) | `null` |
+
+### String Literal Escape Sequences
+
+| Escape Sequence | Meaning |
+| :--- | :--- |
+| `\"` | Double quotation mark |
+| `\'` | Single quotation mark |
+| `\\` | Backslash |
+| `\n` | Newline (line feed) |
+| `\r` | Carriage return |
+| `\t` | Horizontal tab |
+| `\b` | Backspace |
+| `\f` | Form feed |
+| `\0` | Null character |
+| `\uXXXX` | Unicode character (where XXXX is a 4-digit hexadecimal code) |
+
+### APCSA API Reference Sheet
+
+::LinkCard
+---
+url: "https://apcentral.collegeboard.org/media/pdf/ap-computer-science-a-java-quick-reference.pdf"
+title: "AP® Computer Science A | 2026 EXAM REFERENCE INFORMATION"
+details: "Thousands of Advanced Placement teachers have contributed to the principles articulated here. These principles are not new; they are, rather, a reminder of how AP already works in classrooms nationwide. The following principles are designed to ensure that teachers’ expertise is respected, required course content is understood, and that students are academically challenged and free to make up their own minds."
+image: "CB.webp"
+---
+::
+
+
 
 #### `String` Class
 | Constructor / Method | Explanation |
