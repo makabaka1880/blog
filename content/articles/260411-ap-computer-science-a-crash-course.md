@@ -72,6 +72,15 @@ A common point of confusion is the placement of Scope and Access. The AP curricu
 A label to a container that holds a value.
 ::
 
+::Defbox{id="Contents}
+A label to a container that guarantees non-mutability. In java, this is denoted by the keyword `final`.
+
+```java
+final int a = 10;
+a = 1; //  error: cannot assign a value to final variable a
+```
+::
+
 ::Defbox{id="Type"}
 A collection of variables that contain similar values.
 ::
@@ -1323,7 +1332,264 @@ public static int findMin(int[] arr) {
 }
 ```
 
-<!-- ## 3x00. Writing Classes -->
+## 3x00. Writing Classes
+
+::Defbox{id=Class}
+In programming, a **class** is a syntactic entity structure used to create objects.
+::
+
+Simply put, a class is a template for create objects, which are just the coupling of various other data. For example, a point in a cartesian plane is just the cartesian product of the $X$ axis and the $Y$ axis, which is a quantity that could be expressed with two instance variables `double X` and `double Y`. A class, thus, is a standarized way to implement this kind of coupling and inject semantic meaning to it, and provide convenient method that acts upon them.
+
+### 3x01. Anatomy of a Class
+
+Any class declaration starts with the keywords
+
+```java
+public class SomeClass {
+    // Declares things..
+}
+```
+
+A class is made up of two parts
+1. The instance variables
+2. The methods.
+
+Instance variables are just regular variables that are scoped withint the curly brackets of the class definition
+```java
+public class Person {
+    String name;
+    int age;
+}
+```
+
+Sometimes we define a class not merely for the coupled storage of data, but to encapsulate **behavior**. In such cases, the instance variables serve as an internal state -- a hidden engine that drives the class's logic -- rather than data meant to be freely read or written by outside code. Exposing this state carelessly invites misuse and error.
+
+Consider how we interact with a computer. Nobody operates a computer by reaching inside the chassis and toggling logic gates by hand -- not only is the hardware shielded behind a physical casing, but doing so would completely defeat the purpose of having a convenient, well-designed interface in the first place. The keyboard and mouse are the only intended points of contact; everything beneath them is deliberately hidden and protected.
+
+The same principle governs class design. A class may maintain internal state that is critical to its correct behavior -- state that, if tampered with directly, could corrupt the logic entirely. Ideally, we want to expose only a clean, controlled interface to the outside world, while keeping the internal mechanics strictly off-limits.
+
+Luckily, Java provides a feature known as **visibility modifiers** -- keywords that let us explicitly declare who is and isn't allowed to access a given variable or method. The two most fundamental ones are `public` and `private`.
+
+```java
+public class Person {
+    private final int yearBorn;   // The year someone is born in should be kept constant and nonaccessible.
+    private String name;        // Only the person themself should be responsible for changing their names.
+}
+```
+
+Defining methods is similar to defining instance variables. We can define `public` or `private` methods.
+
+```java
+public class Person public class Person {
+    private final int yearBorn;   // The year someone is born in should be kept constant and nonaccessible.
+    private String name;        // Only the person themself should be responsible for changing their names.
+
+    // Maybe this is a shy person who don't like to share their thoughts so much
+    private boolean satisfiedWithName(String newName);
+
+    public void changeName(String newName) {
+        if (this.satisfiedWithName(newName)) {
+            this.name = newName;
+        }
+    }
+}
+```
+
+These are called **instance variables and methods** because for each object that used the class as a template, they obtain those variables and methods of their own. Instances don't effect each other.
+
+There is a special keyword called `static`. This declares **class variables and methods** and defines attributes tied to the class itself.
+
+Unlike instance variables, which each object owns a separate copy of, a `static` variable is shared across every object of that class — there is only ever one copy of it, belonging to the class itself.
+
+```java
+public class Person {
+    private static int population = 0;  // Shared across all Person objects
+    private final int yearBorn;
+    private String name;
+
+    public static int getPopulation() {
+        return Person.population;
+    }
+}
+```
+
+Notice that `static` methods are called on the **class**, not on any particular object — `Person.getPopulation()` rather than `somePerson.getPopulation()`. In fact, because a `static` method belongs to the class rather than any instance, it cannot access instance variables or use `this` — there is no "current object" to refer to.
+
+Every class also needs a way to initialize its instance variables when a new object is created. This is handled by a special method called a **constructor** — it shares the exact name of the class and has no return type.
+
+```java
+public class Person {
+    private static int population = 0;
+    private final int yearBorn;
+    private String name;
+
+    public Person(String name, int yearBorn) {
+        this.name = name;
+        this.yearBorn = yearBorn;
+        Person.population++;        // Every new Person increments the shared count
+    }
+
+    public static int getPopulation() { return Person.population; }
+    public String getName()           { return this.name; }
+}
+```
+
+The keyword `this` refers to the current object (which is `self` in many other languages) — useful here to disambiguate between the parameter `name` and the instance variable `this.name`. 
+
+::WarningBox
+Just as discussed in the [first section](#_0x02-variables-types-and-scopes), variable shadowing is a common problem when writing constructors. If you defined parameters with the same name as your instance variables, the `this.` directory is mandatory. Or else you are just mutating the parameters which just does nothing.
+```java
+// ⚠️ this.name and this.yearBorn is not initialized
+public Person(String name, int yearBorn) {
+    name = name;
+    yearBorn = yearBorn;
+    Person.population++;
+}
+```
+::
+
+
+Putting it all together, a fully structured class therefore looks like this:
+
+```java
+public class SomeClass {
+    // 1. Static (class) variables
+    // 2. Instance variables
+    // 3. Constructor(s)
+    // 4. Private helper methods
+    // 5. Public methods
+}
+```
+
+This ordering is a convention, not a rule enforced by the compiler — but following it keeps classes readable and predictable.
+
+### 3x02. Writing Functional Classes
+
+Let's look at a real problem.
+
+::Qabox{type=question}
+A `TrafficLight` models a simple three-phase traffic light that cycles through **green → yellow → red → green → ...**. Each light also belongs to an **intersection** (a `String` given at construction) that never changes. The city tracks how many `TrafficLight` objects have been created in total.
+
+Each light starts on **green**. Advancing the light moves it to the next phase in the cycle. A light can also be **manually overridden** via `setPhase(String phase)`, which forces it to any phase directly, bypassing the normal cycle. A light that has ever been manually overridden is considered **dangerous**. Any light that has gone through 10000 cycles is considered degraded, and thus also **dangerous**.
+
+Write the complete `TrafficLight` class.
+
+| Code | STDOUT | Notes |
+|---|---|---|
+| `TrafficLight t1 = new TrafficLight("Main & 1st");` | *(none)* | First object created |
+| `TrafficLight t2 = new TrafficLight("Oak & 5th");` | *(none)* | Second object created |
+| `System.out.println(TrafficLight.getCount());` | `2` | Static; reflects both objects |
+| `System.out.println(t1.getIntersection());` | `Main & 1st` | Never changes |
+| `System.out.println(t1.getPhase());` | `green` | Starts on green |
+| `t1.advance();` | *(none)* | green → yellow |
+| `t1.advance();` | *(none)* | yellow → red |
+| `System.out.println(t1.getPhase());` | `red` | |
+| `t1.advance();` | *(none)* | red → green |
+| `System.out.println(t1.getPhase());` | `green` | Cycles back |
+| `System.out.println(t1.isDangerous());` | `false` | Never overridden |
+| `System.out.println(t2.getPhase());` | `green` | `t2` is unaffected by `t1` |
+| `t2.setPhase("red");` | *(none)* | Manual override |
+| `System.out.println(t2.getPhase());` | `red` | Phase was forced |
+| `System.out.println(t2.isDangerous());` | `true` | Was manually overridden |
+| `System.out.println(t1.isDangerous());` | `false` | `t1` unaffected by `t2`'s override |
+| `System.out.println(t1.toString());` | `TrafficLight[Main & 1st, green, advances: 3]` | |
+| `t1.setIntersection("Broadway & 2nd");` | *(none)* | Should do **nothing** — intersection is final |
+| `System.out.println(t1.getIntersection());` | `Main & 1st` | Confirms immutability |
+::
+
+A nice way to start planing about those problems is to identify all the methods required and draw an **UML diagram**.
+
+::Defbox{id="UML Diagrams"}
+**Universal Modeling Language** is a standardized visual language for describing the structure and behavior of a system. In the context of classes, a UML class diagram summarizes everything a class declares -- its name, instance variables, and methods -- in a compact, language-agnostic box.
+For example: 
+```java
+public class BankAccount {
+    private static int totalAccounts = 0;
+    private double balance;
+    private String owner;
+
+    public BankAccount(String owner, double initialBalance) {
+        this.owner = owner;
+        this.balance = initialBalance;
+        totalAccounts++;
+    }
+
+    private boolean hasSufficientFunds(double amount) {
+        return this.balance >= amount;
+    }
+
+    public void withdraw(double amount) {
+        if (this.hasSufficientFunds(amount)) this.balance -= amount;
+    }
+
+    public double getBalance()          { return this.balance; }
+    public static int getTotalAccounts() { return totalAccounts; }
+}
+```
+Could be drawn in UML as:
+
+:Pic{src="UML-1.webp"}
+
+| Keyword / Visibility | UML Representation |
+| - | - |
+| `private` | Minus sign |
+| `public` | Positive sign |
+| `static` | Underline |
+::
+
+Try drawing the UML for TrafficLight, and you'll get this:
+
+:Pic{src="UML-2.webp" alt="Here I've already populated some private instance variables to model the state correctly."}
+
+> The biggest benefit of UML is that it is a **visual language**. You can sketch it anywhere -- on paper, on a whiteboard, in the margins of an exam -- and it gives you an immediate, at-a-glance reference while you code. Rather than re-reading a lengthy, noisy problem prompt every time you need to recall a method signature, the UML diagram puts everything in one compact, structured place.
+
+Let's implement the constructor first.
+```java
+public TrafficLight(String intersection) {
+    this.intersection = intersection;
+    this.phase = "green";       // .. each light starts on green...
+    this.advanceCount = 0;      // The light is new.
+    this.hasBeenOverriden = false; // New light, ever overriden.
+    TrafficLight.count++;       // One more traffic light is erected.
+}
+```
+
+The constructor is pretty trivial since the prompt told us explicitly what to do. Getter methods are also pretty trivial:
+
+```java
+public String getIntersection() {
+    return this.intersection;
+}
+
+public String getPhase() {
+    return this.phase;
+}
+```
+
+Getter methods is a way of implementing ad-hoc read-only accessibility in Java. Therefore those methods are all basically of the same form.
+
+Next up is the method `advance()`. This is a method that returns `void` (denoted by `()` in UML) and its significance is by executing **side effects**, such as mutating variables or logging to streams. In this case, the method updates the traffic light's state:
+
+```java
+public void advance() {
+    if (this.phase == "green") {
+        this.phase = "yellow";
+    } else if (this.phase == "yellow") {
+        this.phase = "red";
+    } else if (this.phase == "red") {
+        this.phase = "green";
+        this.advanceCount++;
+    }
+}
+```
+
+And now the important method: `isDangerous()`.
+
+```java
+public boolean isDangerous() {
+    return this.advanceCount > 10
+}
+```
 
 
 ## Appendix / Cheatsheets
