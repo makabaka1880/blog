@@ -68,7 +68,7 @@ Similarly, a Java compiler checking syntax only verifies that your code follows 
 
 Syntax checking is just the first layer of validation -- it ensures you're speaking Java's "grammar" correctly, not that you're saying something sensible.
 
-[Click here for a cheatsheet of other exceptions in APCSA](#Exceptions) in the appendix.
+[Click here for a cheatsheet of other exceptions in APCSA](#exceptions) in the appendix.
 ::
 
 
