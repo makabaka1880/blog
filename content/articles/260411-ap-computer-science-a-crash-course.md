@@ -5,6 +5,14 @@ createTime: 2026-04-11
 updateTime: 2026-04-11
 ---
 
+
+::WarningBox
+To be fair, this guide does not cover everything from APCSA. I didn't cover datasets, ethics, or wrapper classes. I only picked out what I assumed to be the sections that require emphasis during review. 
+
+**IF YOU WOULD LIKE ME TO ELABORATE ON ANY SECTION ON THE EXAM THAT I DIDN'T, SCROLL TO THE BOTTOM AND LEAVE A COMMENT TO LET ME KNOW.**
+::
+
+
 ::QuoteBox{source="Edsger W. Dijkstra"}
 Computer science is no more about computers than astronomy is about telescopes.
 ::
@@ -1543,6 +1551,10 @@ Try drawing the UML for TrafficLight, and you'll get this:
 
 > The biggest benefit of UML is that it is a **visual language**. You can sketch it anywhere -- on paper, on a whiteboard, in the margins of an exam -- and it gives you an immediate, at-a-glance reference while you code. Rather than re-reading a lengthy, noisy problem prompt every time you need to recall a method signature, the UML diagram puts everything in one compact, structured place.
 
+Note that here we utilized a public static constant `DEGRADE_CYCLE_CNT`. In UML convention, all caps correspond to immutable quantities or constants. The significance of this variable is that it abstracts the actual cycle threshold behind a named class constant rather than scattering a raw literal like 10000 throughout the code.
+
+> This is a practice known as avoiding **magic numbers** -- unnamed literals buried in logic that carry no inherent meaning to the reader. If the threshold ever needs to change, a magic number forces you to hunt down every occurrence and update them individually, risking an inconsistency if even one is missed. A named constant, by contrast, requires exactly one change in exactly one place, and every reference updates automatically.
+
 Let's implement the constructor first.
 ```java
 public TrafficLight(String intersection) {
@@ -1554,7 +1566,17 @@ public TrafficLight(String intersection) {
 }
 ```
 
-The constructor is pretty trivial since the prompt told us explicitly what to do. Getter methods are also pretty trivial:
+The constructor is pretty trivial since the prompt told us explicitly what to do. The next method is `setPhase()`. This is a method that returns `void` (denoted by `()` in UML) and its significance is by executing **side effects**, such as mutating variables or logging to streams. In this case, the method updates the traffic light's inner state:
+
+```java
+public void setPhase(String phase) {
+    this.phase = phase;
+    this.hasBeenOverriden = true;
+}
+```
+
+
+Getter methods are also pretty trivial:
 
 ```java
 public String getIntersection() {
@@ -1568,7 +1590,7 @@ public String getPhase() {
 
 Getter methods is a way of implementing ad-hoc read-only accessibility in Java. Therefore those methods are all basically of the same form.
 
-Next up is the method `advance()`. This is a method that returns `void` (denoted by `()` in UML) and its significance is by executing **side effects**, such as mutating variables or logging to streams. In this case, the method updates the traffic light's state:
+Next up is the method `advance()`. This is also a method for side effect.
 
 ```java
 public void advance() {
@@ -1583,14 +1605,89 @@ public void advance() {
 }
 ```
 
-And now the important method: `isDangerous()`.
+After clearifying all conditions and semantics of instance variables, `isDangerous()` becomes much easier to implement.
 
 ```java
 public boolean isDangerous() {
-    return this.advanceCount > 10
+    return this.advanceCount > TrafficLight.DEGRADE_CYCLE_CNT || this.hasBeenOverriden;
 }
 ```
 
+`toString` is also very principled string concatenation:
+
+```java
+public String toString() {
+    return "TrafficLight[" + this.intersection + ", " + this.phase  + ", advances: " + this.advanceCount + "]";
+}
+```
+
+Beware! `getCount` is a static method; it fetches the total count of traffic lights erected so it should be dispatched to the class itself. This can also be seen in the listing given in the prompt.
+
+```java
+public static int getCount() {
+    return TrafficLight.count;
+}
+```
+
+And we're done! Just remember to correctly implement the variables, and we're good to go.
+
+::Qabox{type=answer}
+
+```java
+public class TrafficLight {
+    private String intersection;
+    private String phase;
+    private int advanceCount;
+    private boolean hasBeenOverriden;
+    private static int count;
+
+    public static final int DEGRADE_CYCLE_CNT = 10000;
+
+    public TrafficLight(String intersection) {
+        this.intersection = intersection;
+        this.phase = "green";
+        this.advanceCount = 0;
+        this.hasBeenOverriden = false;
+        TrafficLight.count++;
+    } 
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+        this.hasBeenOverriden = true;
+    }
+
+    public String getIntersection() {
+        return this.intersection;
+    }
+
+    public String getPhase() {
+        return this.phase;
+    }
+
+    public void advance() {
+        if (this.phase == "green") {
+            this.phase = "yellow";
+        } else if (this.phase == "yellow") {
+            this.phase = "red";
+        } else if (this.phase == "red") {
+            this.phase = "green";
+            this.advanceCount++;
+        }
+    }
+
+    public boolean isDangerous() {
+        return this.advanceCount > TrafficLight.DEGRADE_CYCLE_CNT || this.hasBeenOverriden;
+    }
+    
+    public String toString() {
+        return "TrafficLight[" + this.intersection + ", " + this.phase  + ", advances: " + this.advanceCount + "]";
+    }
+    public static int getCount() {
+        return TrafficLight.count;
+    }
+}
+```
+::
 
 ## Appendix / Cheatsheets
 
