@@ -114,7 +114,7 @@ int x = 5;
 
 void main() {
     System.out.println(x);  // 5
-    {
+    if (x > 0) {
         String x = "hello";
         System.out.println(x);  // hello
     }
