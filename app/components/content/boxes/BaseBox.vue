@@ -32,6 +32,8 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/theme/layout.scss' as *;
+
 .box-container {
     position: relative;
     width: 80%;
@@ -91,5 +93,13 @@ const props = withDefaults(defineProps<Props>(), {
 /* Allow box-specific overrides */
 :slotted(*) {
     color: var(--color-text);
+}
+
+@media (max-width: $critical-width) {
+    .box-container {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
 </style>
