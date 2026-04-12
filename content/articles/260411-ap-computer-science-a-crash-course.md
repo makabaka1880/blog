@@ -80,7 +80,7 @@ A common point of confusion is the placement of Scope and Access. The AP curricu
 A label to a container that holds a value.
 ::
 
-::Defbox{id="Contents}
+::Defbox{id="Contents"}
 A label to a container that guarantees non-mutability. In java, this is denoted by the keyword `final`.
 
 ```java
