@@ -786,3 +786,112 @@ $$
 
 Note that $\binom{n}{n_1, n_2, n_3}$ and $\frac{n!}{n_1! \cdot n_2! \cdot n_3!}$ are equivalent notations for the multinomial coefficient, so both options 1 and 3 are correct.
 ::
+
+### 2x04. Repetition
+
+Up to now we have assumed completely unique elements in our discussion. But what if the collection can contain multiple equivalent objects?
+
+There is an abstraction in mathematics known as **multisets**.
+
+::DefBox{id="Multiset"}
+A **multiset** $M = (S, \chi)$ is a set $M$ equipped with a projection mapping $\chi : S \to \mathbb{N}$ each element to a natural number called its **multiplicity**. This projection mapping $\chi$ is known as the **multiplicity function**.
+::
+
+Since multiset is based on a base set, we wish to derive some notion of cardinality for them.
+
+Understood. To match your preferred format exactly, we treat the multiset $M$ as the set of all "indexed" occurrences.
+
+::LemmaBox{id="Cardinality of Multisets"}
+Given multiset $M = (S, \chi)$, if $S$ is countable, then $M$ is countable. Furthermore, the cardinality of $M$ is
+$$
+|M| = \sum_{x \in S} \chi(x)
+$$
+::Folding{title="Proof"}
+Define the set of all instances $M = \{ (x, i) : x \in S, 1 \le i \le \chi(x) \}$. We use the indicator function $\mathbb{1}_M(x, i)$ to sum over the product space $S \times \mathbb{N}$:
+
+$$
+\begin{align*}
+|M| &= \sum_{x \in S} \sum_{i \in \mathbb{N}} \mathbb{1}_M(x, i) \\
+&= \sum_{x \in S} \chi(x)
+\end{align*}
+$$
+
+Since $M \subseteq S \times \mathbb{N}$ and the Cartesian product of two countable sets is countable, $M$ is **countable**.
+::
+::
+
+::ExampleBox
+To represent a collection with one $A$, two $B$'s and three $C$'s, we construct a base set $S = \{A, B, C\}$ and the multiplicity projections
+| $x \in S$ | $\chi(x)$ |
+| - | - |
+| $A$ | $1$ |
+| $B$ | $2$ |
+| $C$ | $3$ |
+
+In shorthand, we often write out the base set and juxtapose each elements' multiplicity in front of the element.
+$$
+(S, \chi) = \{1A, 2B, 3C\}
+$$
+::
+
+To discuss counting problems with multisets as subjects, a common method is to treat the multiset $(S, \chi)$ initially as a regular set with cardinality $\sum_{x \in S} \chi(x)$. After completing the counting problem with this regular set, we divide $P^{\chi(n)}_{\chi(n)} = \chi(n)!$ to account for the fact that permutation inside each collection of $\chi(n)$ identical elements don't matter.
+
+::ExampleBox
+Let's say we want to find all unique permutations of the word `BANANA`. We can model the character pool using the multiset $(S, \chi) = \{1B, 2N, 3A\}$, and first treat it as a normal set and compute the count of all its permutations
+$$
+|(S, \chi)|! = 6! = 720
+$$
+Next, we account for all extra counting from the permutations of identical characters. We do this by dividing our previous answer by $\chi(B)!$, $\chi(N)!$ and $\chi(A)!$. If you have noticed sth, familiar, that's right: this is just the multinomial coefficient.
+$$
+\begin{align*}
+\binom{|(S, \chi)|}{\chi(B), \chi(N), \chi(A)}
+=& \frac{6!}{\chi(B)! \times \chi(N)! \times \chi(A)! }\\
+=& \frac{6!}{3! \times 2! \times 1!} = \boxed {60}
+\end{align*}
+$$
+::
+
+Therefore we came to a general conclusion:
+
+::LemmaBox{id="Permutations of a Multiset"}
+Given multiset $(S, \chi)$ where $|S| = n$, the cardinality of permutations unique up to equality is
+$$
+\binom{n}{\chi(x_1), \chi(x_2), ..., \chi(x_n)} = \frac{n!}{\prod^n_{i = 1}(\chi(x_i)!)}
+$$
+::
+::Mcq
+---
+options:
+    - "1. $\\frac{7!}{3! \\times 2! \\times 1! \\times 1!} = 420$"
+    - "2. $\\frac{7!}{3! + 2! + 1! + 1!} = 560$"
+    - "3. $\\frac{7!}{3! \\times 2!} = 420$"
+    - "4. $7! = 5,040$"
+correct: 1
+---
+#prompt
+Calculate the number of unique permutations of the multiset representing the letters in the word `SUCCESS`. 
+
+$$
+(S, \chi) = \{3S, 2C, 1U, 1E\}
+$$
+
+#explanation
+To find the unique permutations, we identify the total number of elements $n = 7$ and the multiplicities of each unique element:
+- $\chi(S) = 3$
+- $\chi(C) = 2$
+- $\chi(U) = 1$
+- $\chi(E) = 1$
+
+Using the **Permutations of a Multiset** lemma:
+$$
+\begin{align*}
+\frac{n!}{\prod \chi(x_i)!} &= \frac{7!}{3! \times 2! \times 1! \times 1!} \\
+&= \frac{5040}{6 \times 2 \times 1 \times 1} = \frac{5040}{12} = \boxed{420}
+\end{align*}
+$$
+
+3 is algebraicly correct but methodologically incorrect.
+::
+
+
+
