@@ -31,5 +31,9 @@ a {
     display: block;
     padding: 0.2rem 0;
     padding-left: calc(v-bind(depth) * 0.75rem);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>

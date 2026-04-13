@@ -528,23 +528,23 @@ Each clause is now a conjunction of literals or inversions of literals -- ready 
 By applying them on the expressions we have here, we get
 
 $$
-\begin{align}
+\begin{align*}
 & (1 - (a \times (1 - b))) + ca(1 - ((1 - c) + b)) + cd(1 - ((1 - c) + b)) \\
 = & (1 - a) + (1 - (1 - b)) + ca(1 - ((1 - c) + b)) + cd(1 - ((1 - c) + b)) \\
 = & (1 - a) + b + ca(1 - (1 - c)) + ca(1 - b) + cd(1 - ((1 - c) + b)) \\
 = & (1 - a) + b + cac + ca(1 - b) + cd(1 - (1 - c)) + cd(1 - b) \\
 = & (1 - a) + b + cac + ca(1 - b) + cdc + cd(1 - b) \\
-\end{align}
+\end{align*}
 $$
 
 After absorption, this yields
 
 $$
-\begin{align}
+\begin{align*}
 & (1 - a) + b + cac + ca(1 - b) + cdc + cd(1 - b) \\
 = & (1 - a) + b + ac + ac(1 - b) + cd + cd(1 - b) \\
 = & (1 - a) + b + ac + cd
-\end{align}
+\end{align*}
 $$
 
 Which is

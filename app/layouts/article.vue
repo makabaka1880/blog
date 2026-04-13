@@ -50,10 +50,8 @@ const articles = computed(() => (adjacentArticles as Record<string, any>)[page.v
 }
 
 .content {
-    flex: 1;
+    flex: 1 1 auto;
     width: 100%;
-    position: relative;
-    z-index: 1;
 }
 
 </style>

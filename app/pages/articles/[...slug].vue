@@ -26,6 +26,7 @@
         <Comment />
         <Teleport to="body">
             <div v-if="popoverOpen" class="hover-popover">
+                <h3>Table of Contents</h3>
                 <BlogToc :toc="page!.body.toc!.links" :top="false" />
             </div>
         </Teleport>
@@ -178,9 +179,9 @@ const togglePopover = () => popoverOpen.value = !popoverOpen.value
 
 
 .hover-button {
-    position: sticky;
-    left: 0;
-    bottom: 1rem;
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
 
     background-color: var(--color-card-background);
     padding: 1rem;
@@ -199,15 +200,18 @@ const togglePopover = () => popoverOpen.value = !popoverOpen.value
 
 .hover-popover {
     position: fixed;
-    bottom: calc(5rem);
-    left: 1rem;
+    bottom: 7.5rem;
+    left: 2rem;
 
     background-color: var(--color-card-background);
     border-radius: 0.4rem;
+    max-height: 50vh;
+    overflow-y: scroll;
     box-shadow: 0 0 10px 1px var(--color-shadow);
     padding: 1rem;
     z-index: 10;
 }
+
 .hover-popover-backdrop {
     position: fixed;
     background-color: #00000033;

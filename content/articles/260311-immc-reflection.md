@@ -687,12 +687,12 @@ The name is apt: rather than solving the optimization directly -- which is intra
 Well $\bar{H}$ is not *exactly* monotonic with $E = \sum_{i=1}^{N} \iint_{V_i} \zeta(x) \|x - p_i\|^2 \, dA$. However we can provide a justification of surrogatability of $\bar H$ for $E$.
 
 $$
-\begin{align}
+\begin{align*}
     H &= \frac{1}{|\Omega|} \iint_\Omega \zeta (x) (1 - C(x)) \, \mathrm d A \\
     &= \frac{1}{|\Omega|} \iint_\Omega \zeta (x) \prod_i \left(1 - e^{-\lambda \|x - p_i\|}\right) \mathrm d A \\
     &= \frac{\lambda^N}{|\Omega|} \iint_\Omega \zeta (x) \prod_i \|x - p_i\| \, \mathrm d A \\
     &\gtrsim \frac{\lambda^N}{|\Omega|} \sum_i \iint_{V_i} \zeta(x) \|x - p_i\|^2 \, \mathrm d A = \frac{\lambda^N E}{|\Omega|} \propto \boxed{E}
-\end{align}
+\end{align*}
 $$
 
 In $(2)$ we use a first-order Taylor approximation of each gaussian field at $p_i$. We argue that $(3)$ is pragmatically justified, but thats more of a safe assumption.

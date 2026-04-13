@@ -38,6 +38,9 @@ import config from '@@/blog.config';
     top: var(--navbar-top-offset);
     z-index: var(--navbar-z-index);
 }
+.footer {
+    width: 100%;
+}
 
 .content {
     flex: 1 1 auto;
