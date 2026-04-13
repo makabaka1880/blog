@@ -11,6 +11,8 @@ $sidebar-gap: 5rem;
 $sidebar-margin: 4rem;
 $sidebar-top-offset: 5rem;
 
+$screen-transition-width: $critical-width + $sidebar-margin * 2;
+
 // Navbar layout
 $navbar-content-height: 2.5rem;
 $navbar-margin-block: 1.5rem;

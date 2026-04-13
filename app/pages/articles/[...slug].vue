@@ -14,9 +14,20 @@
         <hr class="sep" />
         <div class="article-container">
             <ContentRenderer v-if="page" :value="page" />
+            <div class="hover-button" @click="togglePopover">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                        d="M3 7h18a1 1 0 0 0 0-2H3a1 1 0 0 0 0 2m0 4h14a1 1 0 0 0 0-2H3a1 1 0 0 0 0 2m18 2H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2m-4 4H3a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2" />
+                </svg>
+            </div>
         </div>
         <hr class="sep" />
         <Comment />
+        <Teleport to="body">
+            <div v-if="popoverOpen" class="hover-popover">
+                <BlogToc :toc="page!.body.toc!.links" :top="false" />
+            </div>
+        </Teleport>
     </div>
 </template>
 
@@ -133,9 +144,14 @@ const computeReadingTime = (input: MinimarkNode | MinimarkNode[]): number => {
     return Math.ceil(totalWords / 200);
 };
 
+const popoverOpen = ref(false)
+const togglePopover = () => popoverOpen.value = !popoverOpen.value
+
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/theme/layout.scss' as *;
+
 .article-view {
     height: 100%;
     color: var(--color-text);
@@ -157,5 +173,38 @@ const computeReadingTime = (input: MinimarkNode | MinimarkNode[]): number => {
 
 :deep(.image-like) {
     margin: 2rem auto;
+}
+
+
+.hover-button {
+    position: sticky;
+    left: 0;
+    bottom: 1rem;
+
+    background-color: var(--color-card-background);
+    padding: 1rem;
+    width: min-content;
+    border-radius: 0.4rem;
+    box-shadow: 0 0 10px 1px var(--color-shadow);
+    margin-bottom: 1rem;
+    z-index: 10;
+}
+
+@media (min-width: $screen-transition-width) {
+    .hover-button {
+        display: none;
+    }
+}
+
+.hover-popover {
+    position: fixed;
+    bottom: calc(1rem + 24px + 2rem);
+    left: 1rem;
+
+    background-color: var(--color-card-background);
+    border-radius: 0.4rem;
+    box-shadow: 0 0 10px 1px var(--color-shadow);
+    padding: 1rem;
+    z-index: 10;
 }
 </style>
