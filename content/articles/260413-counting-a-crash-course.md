@@ -124,11 +124,11 @@ The key insight is that binary numbers and bit strings are almost the same thing
 The key is prepending a 1 to every bit string. 
 
 $$
-\lambda \mapsto \textcolor{blue}{1} \\
-0 \mapsto \textcolor{blue}{1}0 \\
-1 \mapsto \textcolor{blue}{1}1 \\
-00 \mapsto \textcolor{blue}{1}00 \\
-01 \mapsto \textcolor{blue}{1}01 \\
+\lambda \mapsto \textcolor{green}{1} \\
+0 \mapsto \textcolor{green}{1}0 \\
+1 \mapsto \textcolor{green}{1}1 \\
+00 \mapsto \textcolor{green}{1}00 \\
+01 \mapsto \textcolor{green}{1}01 \\
 ...
 $$
 
@@ -437,5 +437,4 @@ def R():
 
 R(3, 2)
 ```
-::
 ::

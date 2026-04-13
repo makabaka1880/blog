@@ -171,11 +171,11 @@ div.footer {
 //     background: var(--color-link);
 // }
 
-.katex-display {
+.katex-html {
 
-    overflow-y: visible;
-    width: 100%;
-
+    overflow-y:hidden;
     overflow-x: scroll;
-    height: 100%;
+
+    width: 100%;
+    height: max-content;
 }
