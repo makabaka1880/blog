@@ -1,4 +1,5 @@
 <template>
+    <div class="hover-popover-backdrop" v-if="popoverOpen" @click="popoverOpen = false" />
     <div class="article-view">
         <div class="article-header">
             <div style="margin-bottom: 1.5rem">
@@ -198,7 +199,7 @@ const togglePopover = () => popoverOpen.value = !popoverOpen.value
 
 .hover-popover {
     position: fixed;
-    bottom: calc(1rem + 24px + 2rem);
+    bottom: calc(5rem);
     left: 1rem;
 
     background-color: var(--color-card-background);
@@ -206,5 +207,11 @@ const togglePopover = () => popoverOpen.value = !popoverOpen.value
     box-shadow: 0 0 10px 1px var(--color-shadow);
     padding: 1rem;
     z-index: 10;
+}
+.hover-popover-backdrop {
+    position: fixed;
+    background-color: #00000033;
+    inset: 0;
+    z-index: 9; // just below popover
 }
 </style>
