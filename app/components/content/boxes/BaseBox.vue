@@ -60,7 +60,9 @@ const props = withDefaults(defineProps<Props>(), {
     font-size: 8em;
     line-height: 1;
 
-    color: var(--color-box-background-char);
+    color: var(--box-bg-char-color, var(--color-box-background-char));
+    opacity: var(--box-bg-char-opacity, 15%);
+    filter: var(--box-bg-char-filter, none);
 
     pointer-events: none;
     user-select: none;
@@ -82,12 +84,17 @@ const props = withDefaults(defineProps<Props>(), {
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 1rem;
-    color: var(--color-text);
+    color: var(--box-header-color, var(--color-text));
 }
 
 /* Content styling */
 .box-content {
     color: var(--color-text);
+}
+
+.box-content strong {
+    text-decoration: var(--box-content-strong-text-decoration, none);
+    text-decoration-style: var(--box-content-strong-text-decoration-style, solid);
 }
 
 /* Allow box-specific overrides */

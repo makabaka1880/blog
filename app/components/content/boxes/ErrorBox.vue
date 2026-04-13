@@ -15,17 +15,8 @@ import BaseBox from './BaseBox.vue'
 .error-box {
     background-color: var(--color-error-background);
     border-color: var(--color-error-border);
-}
-
-:deep(.box-header) {
-    color: var(--color-error-text);
-}
-
-:deep(.box-container::before) {
-    opacity: 0.15;
-}
-
-.box-container::before {
-    color: var(--color-error-overlay);
+    --box-header-color: var(--color-error-text);
+    --box-bg-char-color: var(--color-error-overlay);
+    --box-bg-char-opacity: 0.15;
 }
 </style>

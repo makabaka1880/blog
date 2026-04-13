@@ -26,7 +26,9 @@
                                 <small>H{{ result.titles.length + 1 }}</small>
                             </div>
                             <p class="path">{{ result.id }}</p>
-                            <p class="preview" v-html="highlightMatches(result.content, result.matches, 200, 'search-match-content-mark')"></p>
+                            <p class="preview"
+                                v-html="highlightMatches(result.content, result.matches, 200, 'search-match-content-mark')">
+                            </p>
                         </NuxtLink>
 
                         <p v-if="searchResult.length === 0" class="helper-text">
@@ -97,12 +99,19 @@ async function ensureIndex() {
     const sections = await queryCollectionSearchSections('articles');
     indexedSections.value = sections as SearchSection[];
     fuse = new Fuse(indexedSections.value, {
-        keys: ['title', 'description', 'content'],
-        isCaseSensitive: true,
+        keys: [
+            { name: 'title', weight: 0.5 },
+            { name: 'description', weight: 0.3 },
+            { name: 'content', weight: 0.2 },
+        ],
+        isCaseSensitive: false,
         ignoreLocation: true,
-        minMatchCharLength: 2,
         includeScore: true,
         includeMatches: true,
+        minMatchCharLength: 2,
+        threshold: 0.2,   // tighter — junk fuzzy matches get cut
+        useExtendedSearch: true,
+        findAllMatches: true,  // don't stop at first match per field
     });
 }
 

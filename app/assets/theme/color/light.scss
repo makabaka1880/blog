@@ -103,6 +103,19 @@ $light-separator-border: oklch(0.57 0 0deg);
     --color-warning-overlay: oklch(0.50 0.20 75deg / 0.3);
     --color-warning-border: oklch(0.60 0.18 75deg);
 
+    --color-spoiler-background: oklch(0.95 0.03 280deg / 0.8);
+    --color-spoiler-text: oklch(0.50 0.20 280deg);
+    --color-spoiler-overlay: oklch(0.50 0.20 280deg / 0.3);
+    --color-spoiler-border: oklch(0.60 0.18 280deg);
+    --color-golden-background: oklch(0.95 0.03 50deg / 0.8);
+    --color-golden-border: oklch(0.60 0.18 50deg);
+    --color-golden-overlay: oklch(0.60 0.18 50deg / 0.3);
+    --color-golden-text: oklch(0.35 0.12 50deg);
+    --color-blue-background: oklch(95.055% 0.02284 242.02 / 0.8);
+    --color-blue-border: var(--color-blue-text);
+    --color-blue-text: oklch(40% 0.12077 250deg);
+    --color-blue-overlay: oklch(40% 0.12077 250deg / 0.3);
+
     --color-chat-myself-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 10%)};
     --color-chat-myself-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 0%)};
 
@@ -110,5 +123,5 @@ $light-separator-border: oklch(0.57 0 0deg);
     --color-chess-dark-square: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -5%)};
     --color-chess-label-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: -5%)};
 
-    --color-box-background-char: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: 45%)};
+    --color-box-background-char: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: 25%)};
 }

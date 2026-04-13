@@ -180,7 +180,7 @@ Luckily, I was not in charge of implementing that section.
 > He actually got a Junsei Chuuren Poutou and a double yakuman later on and almost literally flied off the table.
 
 ## 2x00. Signed Distance Fields, Water Proximity, and Elephants
-::Hintbox
+::HintBox
 For those of you not familiar with remote sensing, I would recommend checking out [my blog post](/articles/260311-introductory-remote-sensing) on introductory remote sensing. Or else you'll have an headache reading the following section.
 ::
 
@@ -273,7 +273,7 @@ $$
     |\nabla u| = s
 $$
 
-::Hintbox
+::HintBox
 Intuitively, $\nabla u$ is the gradient vector of the distance field -- it points in the direction of steepest increase in distance, i.e., directly away from the nearest boundary point. The parameter $s$ represents the **local slowness** (the reciprocal of speed) of the distance propagation. While a standard Euclidean distance assumes $s = 1$, where walking one step in the gradient direction increases your distance-to-water by exactly one step, keeping $s$ as a variable allows for significant extensibility. In this context, $s$ acts as a **cost weight** or a "refractive index" for the terrain. A higher value of $s$ effectively "stretches" the accumulated distance $u$ relative to the physical space traveled, allowing us to model regions where movement is more taxing - such as thick vegetation, mud, or steep slopes -- without altering the underlying geometry.
 ::
 
@@ -313,7 +313,7 @@ $$
 u_{i,j} = \frac{dl_y^2 A + dl_x^2 B + dl_x \cdot dl_y \sqrt{s^2(dl_x^2 + dl_y^2) - (A - B)^2}}{dl_x^2 + dl_y^2}
 $$
 
-::Hintbox
+::HintBox
 As a sanity check: when $dl_x = dl_y = dl$, this cleanly reduces to the classical isotropic Euclidean update:
 $$
 u_{i,j} = \frac{A + B + \sqrt{2 s^2 dl^2 - (A - B)^2}}{2}
@@ -677,7 +677,7 @@ Looking back it was really a feat.
 
 Now we have a good initial seed set -- but that only means we're starting from a favorable position. The actual optimization is still missing. This class of iterative geometric optimization problems has been studied for decades under the general name of **relaxations**.
 
-::Defbox{id="Relaxation"}
+::DefBox{id="Relaxation"}
 A **relaxation** is an iterative procedure that monotonically reduces some energy functional toward a local minimum. Each iteration moves the current configuration to a strictly better one, until convergence.
 ::
 

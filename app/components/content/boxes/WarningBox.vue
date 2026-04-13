@@ -15,17 +15,8 @@ import BaseBox from './BaseBox.vue'
 .warning-box {
     background-color: var(--color-warning-background);
     border-color: var(--color-warning-border);
-}
-
-:deep(.box-header) {
-    color: var(--color-warning-text);
-}
-
-:deep(.box-container::before) {
-    opacity: 0.15;
-}
-
-.box-container::before {
-    color: var(--color-warning-overlay);
+    --box-header-color: var(--color-warning-text);
+    --box-bg-char-color: var(--color-warning-overlay);
+    --box-bg-char-opacity: 0.15;
 }
 </style>

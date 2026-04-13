@@ -58,6 +58,7 @@
         font-size: var(--font-size-quote);
         font-weight: 700;
         color: var(--color-box-background-char);
+        opacity: 15%;
         z-index: 0;
         pointer-events: none;
         user-select: none;

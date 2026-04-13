@@ -13,8 +13,8 @@ import BaseBox from './BaseBox.vue'
 </script>
 
 <style lang="scss" scoped>
-.box-container::before {
-    opacity: 0.15;
-    filter: saturate(0);
+.hint-box {
+    --box-bg-char-opacity: 0.15;
+    --box-bg-char-filter: saturate(0);
 }
 </style>

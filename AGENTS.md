@@ -367,7 +367,7 @@ UIKitNav, UIKitFooter, UIKitSafeArea, UIKitComment
 BlogSidebar, BlogSearchModal
 
 # 内容组件
-Chat, Chessboard, ChessDisplay, Defbox, DrinkAnimation,
+Chat, Chessboard, ChessDisplay, DefBox, DrinkAnimation,
 EmojiClock, Folding, MusicPlayer, ParallaxWindow, Pic,
 ProseBlockquote, ProseH1-H6, ProseHr, ProsePre, QABox, Tip
 

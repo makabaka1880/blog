@@ -17,7 +17,7 @@ Before we even start writing the shader, we need to have an intuition of what ev
 
 In primary school we've all learned about something known as a <mark>function graph</mark>. There, we employ the *definition of a function as a set of pairs*:
 
-::Defbox{id="Function"}
+::DefBox{id="Function"}
 A **function** $f : A \to B$ is formally defined as a set of ordered pairs $$f \subseteq A \times B$$ such that for every $a \in A$, there exists a **unique** $b \in B$ with $(a, b) \in f$.
 We write $f(a) = b$ as shorthand for $(a, b) \in f$.
 ::
@@ -28,7 +28,7 @@ For real functions $f : \mathbb{R} \to \mathbb{R}$, the **graph** of $f$ is exac
 
 Domain coloring is the name for a family of shading methods:
 
-::Defbox{id="Domain Coloring"}
+::DefBox{id="Domain Coloring"}
 **Domain Coloring** is a visualization technique that maps complex function values to colors, allowing us to see the behavior of complex functions in two dimensions. Each point in the complex plane is colored according to the value of the function at that point, typically using hue to represent argument (phase) and brightness or saturation to represent magnitude.[^1]
 :Pic{src="diagram1.webp"}
 ::

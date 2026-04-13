@@ -38,7 +38,7 @@ Our normal camera shoots images in Red (~665 nm), Green (~560 nm) and Blue (~490
 
 In remote sensing, we use the word **band** over *channel* to avoid ambiguity with its software counterpart.
 
-::Defbox{id="Multispectral Data"}
+::DefBox{id="Multispectral Data"}
 **Multispectral data** refers to imagery captured across multiple discrete bands of the electromagnetic spectrum — not just visible light, but also near-infrared (NIR), red-edge, and shortwave infrared (SWIR). Each band captures how strongly a surface reflects or emits energy at that wavelength, revealing properties invisible to the naked eye — vegetation health, water content, soil salinity, and more.
 ::
 

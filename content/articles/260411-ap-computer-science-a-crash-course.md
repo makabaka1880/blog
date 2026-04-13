@@ -43,13 +43,13 @@ But I reckon no one would like to review using this. So I wrote this entry, wher
 ## 0x00. Foundations: Compiler, Programming, and Algorithms
 
 ### 0x01. Compilers
-::Defbox{id="Compiler"}
+::DefBox{id="Compiler"}
 Something that turns your code into what machine can read called a **binary**.
 ::
 
-::Hintbox
+::HintBox
 This is not in the AP subset but worth knowing.
-::Defbox{id="Interpreter"}
+::DefBox{id="Interpreter"}
 Something that reads your code and runs it. In a sense, languages that do not compile to a binary can only be run by an interpreter because the CPU simply doesn't read the code you write directly.
 ::
 The Java compiler is a special compiler. It compiles code into **JVM Machine Code**, which is then read and executed by a *virtual* computer called the JVM (Java Virtual Machine). In a sense, `javac` is a translator that converts code into a format that the JVM can interpret.
@@ -76,11 +76,11 @@ Syntax checking is just the first layer of validation -- it ensures you're speak
 
 A common point of confusion is the placement of Scope and Access. The AP curriculum places it under Class Creation (Unit 3), but in this guide, it is covered alongside Variables and Types -- which reflects how the concept is actually classified in theoretical computer science research.
 
-::Defbox{id="Variable"}
+::DefBox{id="Variable"}
 A label to a container that holds a value.
 ::
 
-::Defbox{id="Contents"}
+::DefBox{id="Contents"}
 A label to a container that guarantees non-mutability. In java, this is denoted by the keyword `final`.
 
 ```java
@@ -89,11 +89,11 @@ a = 1; //  error: cannot assign a value to final variable a
 ```
 ::
 
-::Defbox{id="Type"}
+::DefBox{id="Type"}
 A collection of variables that contain similar values.
 ::
 
-::Defbox{id="Scope"}
+::DefBox{id="Scope"}
 A context / environment that labels variables to container of values.
 ::
 
@@ -101,7 +101,7 @@ In Java, a scope is created wherever you see a pair of curly braces `{}`. If a s
 
 A nice way to visualize this is to draw a stack of variables. Whenever you look down you see everything you've defined, and whenever you look up you see where you're going into. This sounds pretty abstract.
 
-::Defbox{id="Stack"}
+::DefBox{id="Stack"}
 A data structure where the last object goes in comes out first. Think of it as a pile of files where you always put things on top and take things on top, or an elevator where the people nearest to the doors are always the ones coming in last but they always get to go out first.
 
 **BEWARE** This is not the same *stack* we're talking about in the computer memory.
@@ -144,7 +144,7 @@ Note that something interesting happens here: we declared a new variable named `
 
 When we carry out our previous procedure of scanning from the top to the bottom, we first encountered the `string` declaration. Therefore, that is what we print. This overriding of previous declarations is called **shadowing**, and is generally discouraged by a doctrine called the **Barendregt Convention** (Even though AP does ask you to analyze those weird listings).
 
-::Hintbox
+::HintBox
 The Barendregt Convention is not something that you'll get tested on in the APCSA exam, but its considered good style and will ensure you write good code in FRQs. Simply put, just **DON'T DECLARE DIFFERENT VARIABLES WITH THE SAME NAME**.
 ::
 
@@ -280,7 +280,7 @@ The computer memory is a continuum of cells that could each store data of a fixe
 
 The only problem with this is that the data we store must have a fixed size. For example, it is not practical to store a list of data in the stack since we need to guaranteed a contiguous non-terminating vacuum of space for the list to dwell in, erasing any possibility of storing other data. Therefore, computer engineerers invented **The Heap**. The heap also lives in the stack, but deep inside it, and does not following the strict last-in-first-out rules of a stack. The operating system gives a full access to a segment of the stack to administrative algorithms called *memory allocators*, and their job is to do allocation.
 
-::Defbox{id="Malloc"}
+::DefBox{id="Malloc"}
 Short for memory allocation, is the action of searching through the heap until the allocater finds a big enough continuous space to store data.
 ::
 
@@ -402,7 +402,7 @@ For example, `!(a && b) || c` is **not** in DNF. Expanding, `!a || !b || c` is i
 
 Another example is `(a && !a) || b`. This is in DNF, however it just not strongly normalized since `(a && !a)` is a redux that can be reduced to `false`. This should be `b` after strong normalization.
 
-::Defbox{id="DNF"}
+::DefBox{id="DNF"}
 A boolean expression is in **Disjunctive Normal Form** if it is a disjunction (OR, `||` or $\vee$) of one or more conjunctions (AND, `&&` or $\wedge$) of literals, where a **literal** is either a variable or its negation. Under strong normalization, we require some a Negation Normal Form (NNF) property that negations cannot be further reduced.
 
 Formally, a DNF expression has the shape:
@@ -1342,7 +1342,7 @@ public static int findMin(int[] arr) {
 
 ## 3x00. Writing Classes
 
-::Defbox{id=Class}
+::DefBox{id=Class}
 In programming, a **class** is a syntactic entity structure used to create objects.
 ::
 
@@ -1507,7 +1507,7 @@ Write the complete `TrafficLight` class.
 
 A nice way to start planing about those problems is to identify all the methods required and draw an **UML diagram**.
 
-::Defbox{id="UML Diagrams"}
+::DefBox{id="UML Diagrams"}
 **Universal Modeling Language** is a standardized visual language for describing the structure and behavior of a system. In the context of classes, a UML class diagram summarizes everything a class declares -- its name, instance variables, and methods -- in a compact, language-agnostic box.
 For example: 
 ```java

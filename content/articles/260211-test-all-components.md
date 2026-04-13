@@ -104,7 +104,7 @@ This is a question box component for FAQ-style content.
 ::
 
 ### Definition Box
-::Defbox
+::DefBox
 ---
 term: "Test Term"
 ---

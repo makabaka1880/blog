@@ -15,17 +15,8 @@ import BaseBox from './BaseBox.vue'
 .success-box {
     background-color: var(--color-success-background);
     border-color: var(--color-success-border);
-}
-
-:deep(.box-header) {
-    color: var(--color-success-text);
-}
-
-:deep(.box-container::before) {
-    opacity: 0.15;
-}
-
-.box-container::before {
-    color: var(--color-success-overlay);
+    --box-header-color: var(--color-success-text);
+    --box-bg-char-color: var(--color-success-overlay);
+    --box-bg-char-opacity: 0.15;
 }
 </style>

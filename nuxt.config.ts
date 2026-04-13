@@ -2,6 +2,9 @@ import blogConfig from "./blog.config";
 import type { LanguageRegistration } from '@shikijs/core'
 import { execFile } from 'node:child_process'
 import { existsSync } from 'node:fs'
+import { execSync } from 'child_process'
+
+const commitHash = execSync('git rev-parse --short HEAD').toString().trim()
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -91,9 +94,12 @@ export default defineNuxtConfig({
             ],
             link: [
                 { rel: "icon", type: "image/x-icon", href: blogConfig.favicon },
+                { rel: "stylesheet", href: 'https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css' }
             ],
             script: [
-                { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" }
+                { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" },
+                { src: "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js" },
+                { src: "https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js" }
             ]
         },
     },
@@ -107,6 +113,11 @@ export default defineNuxtConfig({
                 height: 512,
             }
         ]
+    },
+    runtimeConfig: {
+        public: {
+            commitHash,
+        }
     },
     hooks: {
         'build:before': () => {

@@ -1,6 +1,7 @@
 <template>
     <main class="container">
         <h1>Hi there 👋 </h1>
+        <CommitBadge :hash="commitHash" />
         <p>Welcome to the Teal Blog.</p>
         <section class="intro">
             <p>
@@ -50,14 +51,23 @@
 </template>
 
 <script setup lang="ts">
+import CommitBadge from '~/components/blog/CommitBadge.vue';
+
 const birth = new Date('2009-12-28T00:00:00');
 const now = ref(Date.now());
+const runtimeConfig = useRuntimeConfig();
+
 let ticker: ReturnType<typeof setInterval> | null = null;
 
 const age = computed(() => {
     const diffInYears = (now.value - birth.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
     return diffInYears;
 });
+
+
+const commitHash = computed(() => {
+    return runtimeConfig.public.commitHash;
+})
 
 onMounted(async () => {
     ticker = setInterval(() => {

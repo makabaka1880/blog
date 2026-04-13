@@ -8,7 +8,7 @@ updateTime: 2026-02-18
 ## 0x01. Induction
 
 If you majored in mathematics you've probably heard of Russel's Paradox:
-::Defbox
+::DefBox
 **Russel's Paradox** States that the set of all sets that does not contain themselves cannot be constructed, thus proving inconsistency of naïve set theory (NST).
 ::FlagDeriv{center=true}
 #flag 

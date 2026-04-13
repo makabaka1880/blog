@@ -21,11 +21,7 @@ const title = computed(() => props.id || '')
 /* Definition box specific styles */
 .def-box {
     // Any definition-specific styles would go here
-}
-
-// Specific styling for strong elements in definition box
-:deep(.box-content strong) {
-    text-decoration: underline;
-    text-decoration-style: dashed;
+    --box-content-strong-text-decoration: underline;
+    --box-content-strong-text-decoration-style: dashed;
 }
 </style>

@@ -172,6 +172,10 @@ div.footer {
 // }
 
 .katex-display {
-    overflow-x: scroll;
+
+    overflow-y: visible;
     width: 100%;
+
+    overflow-x: scroll;
+    height: 100%;
 }
