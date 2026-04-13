@@ -19,9 +19,8 @@ const title = computed(() => props.id || '')
 
 <style lang="scss" scoped>
 /* Definition box specific styles */
-.def-box {
-    // Any definition-specific styles would go here
-    --box-content-strong-text-decoration: underline;
-    --box-content-strong-text-decoration-style: dashed;
+.def-box :deep(strong) {
+    text-decoration: underline;
+    text-decoration-style: dashed;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <ProseBlockquote>
-        <strong><slot /></strong>
+        <p><slot /></p>
         <div style="text-align: right;">
             <i>{{ props.source }}</i>
         </div>

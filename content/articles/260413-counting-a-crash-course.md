@@ -7,7 +7,26 @@ updateTime: 2026-04-13
 
 We had a tough half-semester in Discrete Mathematics. Here's a compilation of everything we learned — sets, maps, cardinality, and the surprisingly deep rabbit holes that come with them. Grab a coffee, and let's get through this together.
 
-> OK That introduction is written by claude but you get the idea. The <strike>end</strike> midterms is near, and I hope this guide at least help you in one way or another.
+> OK That introduction is written by claude but you get the idea. The <strike>end</strike> midterms is near, and I hope this guide at least help you in one way or another. I included problems midways to help you with reviewing.
+
+## 0x00. Notation and Nomenclature
+
+**Class** is just a fancy word for collection of objects. The reason we didn't use sets is because sets are strictly formalized objects that has too many nuances that it is pretty annoying to simply use them as a collection of object.
+
+**Families** are often used to describe a collection of collections because a class of class or a set of set sounds pretty wierd and semantically accurate in most of our cases. They are often in cursive font.
+
+**A family indexed by xxx** is just a function. For example, the grade cohort is just a family of homerooms indexed by their room number, which could also be expressed as a bijection between the space of room numbers and homerooms. The reason we don't use function here is because they emphasize structure and interpretation and preserve identity, not just mapping.
+
+**Identity map** is a function $\lambda x. x$ that maps everything to itself. Over the real numbers, its the linear function $f(x) = x$.
+
+
+I'll be defining functions with various syntaxes through the text.
+
+| Syntax | Example ($\mathbb{R} \to \mathbb{R}^+_0$) |
+| - | - |
+| Standard |  $f(x) = x^2$ |
+| Lambda Calculus | $f := \lambda x : \mathbb{R}. x^2$
+| Mapsto | $f := x \mapsto x^2$ |
 
 ## 1x00. Basics to Counting
 ### 1x01. Maps
@@ -221,7 +240,7 @@ correct:
 ---
 
 #prompt
-Let $\mathrm{id}_N : N \leftrightarrow N$ be the identity map such that $\mathrm{id}_N(n) = n$ for all $n \in N$.
+Let $\mathrm{id}_N : N \leftrightarrow N$ be the identity bijection map such that $\mathrm{id}_N(n) = n$ for all $n \in N$.
 
 Let $f: M \to N$ and $g: N \to M$ be functions between finite sets with $|M| = |N| = n$. Suppose $g \circ f = \text{id}_M$. Which is true?
 
@@ -364,10 +383,39 @@ The **Ramsey Number** $R(a, b)$ is the smallest integer $n$ such that for all po
 
 Ramsey theory could be used to prove things that are pretty interesting.
 
-::Folding{title="Extension - Naïve Ramsey Search"}
+::Folding{title="Extension - A Naïve Ramsey Search Algorithm"}
 Calculation of the ramsey number has been a notoriously hard problem in combinatorics. The only known way to calculate it is by brute-force search, which is pretty much impossible for large $a$ and $b$. For example, $R(4, 4)$ is the biggest Ramsey number in the form $R(a, a)$ that has been calculated, and it is already $18$. To understand why it is so hard, let's derive the brute force approach's asymptotic behaviour.
 
 A complete graph of $n$ vertices has $n^2$ edges. Since each edge can be colored in 2 ways, there are $2^{n^2}$ possible 2-colorings of $K_n$. For each coloring, we need to check if there is a monochromatic clique of size $a$ for either color. There are $\binom{n}{a}$ subsets of vertices of size $a$. Therefore, the total time complexity of the brute-force approach is $O(\binom{n}{a} \times 2^{n^2}) = O(2^{n^2})$, which is astronomically large even for small values of $n$. 
+
+Here's a simple implementation
+
+```haskell
+import Data.List (subsequences)
+
+isClique :: [(Int, Int)] -> [Int] -> Bool
+isClique edges nodes = 
+    all (`elem` edges) [(u, v) | u <- nodes, v <- nodes, u < v]
+
+isIndependent :: [(Int, Int)] -> [Int] -> Bool
+isIndependent edges nodes = 
+    not (any (`elem` edges) [(u, v) | u <- nodes, v <- nodes, u < v])
+
+hasProperty :: Int -> Int -> Int -> Bool
+hasProperty n r s = all containsStructure allPossibleEdges
+    where
+        nodes = [1..n]
+        completeEdges = [(u, v) | u <- nodes, v <- nodes, u < v]
+        allPossibleEdges = subsequences completeEdges
+        subsetsR = [sub | sub <- subsequences nodes, length sub == r]
+        subsetsS = [sub | sub <- subsequences nodes, length sub == s]
+        
+        containsStructure edges = 
+            any (isClique edges) subsetsR || any (isIndependent edges) subsetsS
+
+R :: Int -> Int -> Int
+R r s = head [n | n <- [1..], hasProperty n r s]
+```
 ::
 
 ::Mcq
@@ -377,64 +425,364 @@ options:
     - "2. 3"
     - "3. 5"
     - "4. 7"
-correct: 3
+correct: 2
 ---
 
 #prompt
 Assume a party where everyone are either friends or enemies. What is the minimum number of people required to guarantee that there are either 3 mutual friends or 2 mutual enemies?
 
 #explanation
+::
 This is asking for $R(3, 2)$, the smallest $n$ such that any 2-coloring of $K_n$ contains either a red clique of size 3 or a blue clique of size 2. Direct computation shows $R(3, 2) = 3$.
 
-::Folding{title="Extension - Naïve Ramsey Search Implementation"}
-```py
-from itertools import combinations
+::NoteBox
+Using the naïve algorithm given above would take millions of years only to calculate $R(3, 5)$. Statistician Erdös had famously stated that 
 
-def has_monochromatic_clique(edges, color, size):
-    vertices = set()
-    for u, v in edges:
-        vertices.add(u)
-        vertices.add(v)
-    
-    for subset in combinations(vertices, size):
-        is_clique = True
-        for u, v in combinations(subset, 2):
-            edge = tuple(sorted([u, v]))
-            if edges.get(edge) != color:
-                is_clique = False
-                break
-        if is_clique:
-            return True
-    return False
+::QuoteBox{source="Paul Erdös"}
+Suppose aliens invade the earth and threaten to obliterate it in a year's time unless human beings can find the Ramsey number $R(5,5)$. We could marshal the world's best minds and fastest computers, and within a year we could probably find the value.
 
-def check_coloring(n, coloring):
-    edges = {}
-    for i in range(n):
-        for j in range(i + 1, n):
-            edge_idx = i * n + j
-            edges[tuple(sorted([i, j]))] = coloring[edge_idx]
-    
-    has_red_3 = has_monochromatic_clique(edges, 0, 3)       # 0 = Red
-    has_blue_2 = has_monochromatic_clique(edges, 1, 2)      # 1 = Blue
-    
-    return has_red_3 or has_blue_2
+But if the aliens demanded the Ramsey number $R(6,6)$, we would have no choice but to strike first.
+::
 
-def R():
-    for n in range(2, 10):
-        num_edges = n * (n - 1) // 2
-        found_counterexample = False
-        
-        for coloring_bits in range(2 ** num_edges):
-            coloring = [(coloring_bits >> i) & 1 for i in range(num_edges)]
-            if not check_coloring(n, coloring):
-                found_counterexample = True
-                break
-        
-        if not found_counterexample:
-            return n
-    
-    return None
+Here's a lookup table for common $R$ numbers.
 
-R(3, 2)
-```
+| a\b | 3 | 4 | 5 | 6 | 7 |
+|-----|---|---|---|---|---|
+| 3 | 6 | 9 | 14 | 18 | 23 |
+| 4 | 9 | 18 | 25 | 35 - 41 | 49 - 61 |
+| 5 | 14 | 25 | 43 - 48 | 58 - 87 | 80 - 143 |
+::
+
+## 2x00. Combinatorics
+
+Combinatorics is a branch of mathematics built on top of counting. It is the study of how to count and enumerate combinatorial objects, such as permutations, combinations, partitions, and so on.
+
+### 2x01. Permutations
+
+Permutation one of the most fundamental combinatorial objects. It is a way to count the number of ways to arrange a set of objects in a specific order.
+
+::DefBox{id="Permutation"}
+Let $\{x_1, .., x_n\}$ be a set of $n$ distinguishable elements ($x_k \neq x_j$ for $k \neq j$). Then an injective map
+$$
+\pi : \{x_1, .., x_n\} \hookrightarrow \{1, 2, ..., n\}
+$$
+is called a **permutation** of $\{x_1, .., x_n\}$.
+
+By the pigeonhole principle, a permutation is actually a bijection, so we can also write $\pi : \{x_1, .., x_n\} \leftrightarrow \{1, 2, ..., n\}$.
+::
+
+Intuitively, it is just a way to label each element of the set with a unique index from $1$ to $n$.
+
+The number of permutations of a set of $n$ elements can be derived quite beautifully. Let's denote the number of permutations for $M$ the shorthand $|\{\pi(M)\}|$. We will later justify this notation.
+
+Consider a set $|{x_n}| = N$. Take the first element $x_1$, and the set can be denoted as 
+
+$$
+x_1 \cup M' = \{x_n\}
+$$
+
+It is trivial that there is $N$ ways to label $x_1$. By simple counting, there is $N \times |M'|$ ways to label $x_1$ and $M'$ together. By expanding this expression, a pattern emerges:
+
+$$
+\begin{align*}
+|\{\pi(M)\}| &= N \times |M'| \\
+    &= N \times (N - 1) \times |M''| \\
+    &= N \times (N - 1) \times (N - 2) \times |M'''| \\
+    &\vdots \\
+    &= N \times (N - 1) \times (N - 2) \times \cdots \times 1 \\
+\end{align*}
+$$
+
+This is exactly the recursive definition of the factorial function, so we have $|\{\pi(M)\}| = N!$.
+
+::LemmaBox{id="Permutation Counting"}
+The number of permutations of a set with distinguishable elements of cardinality $N$ is $N!$
+::
+
+We often denote $\pi$ as a non-square matrix like this:
+
+$$
+\pi = \begin{pmatrix}
+x_1 & x_2 & \cdots & x_n \\
+\pi(x_1) & \pi(x_2) & \cdots & \pi(x_n)
+\end{pmatrix}
+$$
+
+And sometimes even more simply as a **tuple** (an generalization of ordered pairs)
+$$
+\pi = (\pi(x_1), \pi(x_2), ..., \pi(x_n ))
+$$
+
+::ExampleBox
+Consider the set of $3$ objects, $\{1, 2, 3\}$. The permutations of this set are:
+$$
+\begin{pmatrix}
+1 & 2 & 3 \\
+1 & 2 & 3
+\end{pmatrix} \quad
+\begin{pmatrix}
+1 & 2 & 3 \\
+1 & 3 & 2
+\end{pmatrix} \quad
+\begin{pmatrix}
+1 & 2 & 3 \\
+2 & 1 & 3
+\end{pmatrix}
+$$
+$$
+\begin{pmatrix}
+1 & 2 & 3 \\
+2 & 3 & 1
+\end{pmatrix} \quad
+\begin{pmatrix}
+1 & 2 & 3 \\
+3 & 1 & 2
+\end{pmatrix} \quad
+\begin{pmatrix}
+1 & 2 & 3 \\
+3 & 2 & 1
+\end{pmatrix}
+$$
+In a more concise fashion:
+$$
+\begin{align*}
+\{\pi\} &= \{(1, 2, 3), (1, 3, 2), (2, 1, 3), \\
+    &(2, 3, 1), (3, 1, 2), (3, 2, 1)\}
+\end{align*}
+::
+
+Sometimes we wish to select a certain number of elements from a set and permute them. This is called a **$r$-permutation**.
+
+::DefBox{id="R-Permutation"}
+Let $M$ be a set of $N$ distinguishable elements. An **$r$-permutation** of $M$ is an injective map
+$$
+\pi : \{x_1, .., x_r\} \hookrightarrow S
+$$
+where $r \le N$, $S \subseteq M$ and $|S| = r$.
+
+Similarly, such permutatino is also a bijection.
+::
+
+We similar inductive derivation could be made to count the number of $r$-permutations.
+
+::HintBox
+A common way to express a product from $N$ to $M$ in combinatorics is
+$$
+\begin{align*}
+\prod^M_{i = N} i &= M \times (M - 1) \times \cdots \times N \\
+&= \frac{M \times (M - 1) \times \cdots \times 1}{(N - 1) \times (N - 2) \times \cdots \times 1} = \frac{M!}{(N - 1)!}
+\end{align*}
+$$
+::
+
+::SpoilerBox
+We start with the same inductive pattern matching on the set $M$ as before, but this time we stop at $r$ instead of $N$:
+$$
+\begin{align*}
+&|\{\pi(M)\}|  \\
+=\ & N \times |M'| &&r - 1 \text{ left}\\
+    =&\ N \times (N - 1) \times |M''| &&r - 2 \text{ left}\\
+    =&\ N \times (N - 1) \times (N - 2) \times |M'''| &&r - 3 \text{ left}\\
+    &\vdots &&\vdots \\
+    =&\ N \times (N - 1) \times (N - 2) \times \cdots \times (N - r + 1) &&1 \text{ left}\\
+    =&\ N \times (N - 1) \times (N - 2) \times \cdots \times (N - r + 1) \times 1 \\
+    =&\ \frac{N!}{(N - r)!}
+\end{align*}
+$$
+::
+
+This enumeration is so commonly used it is given a dedicated function.
+
+::DefBox{id="Permutation Enumeration Function"}
+The **Permutation Enumeration Function** is the function $P^n_k$ denoting the cardinality of $k$-permutations on a set of cardinality $n$.
+$$
+P^n_k = \frac{n!}{(n - k)!}
+$$
+::
+
+A simple example would be.
+
+::ExampleBox
+Consider the set of $3$ objects $\{1, 2, 3\}$. Then all the **2-permutations** are
+$$
+\begin{align*}
+& (1, 2) && (2, 1) \\
+& (1, 3) && (3, 1) \\
+& (2, 3) && (3, 2)
+\end{align*}
+$$
+::
+
+Let's do some excercises:
+
+::Mcq
+---
+options: 
+    - "1. 90"
+    - "2. 100"
+    - "3. 3628800"
+correct: 1
+---
+#prompt
+SSBS provides 10 AP curriculums. Each student chooses one for AP1, and another for AP2. How many unique configurations can one choose?
+
+#explanation
+The action of choosing an AP1 and an AP2 out of 10 curriculums is equivalent to constructing the map $\phi : \{1, ..., 10\} \twoheadrightarrow \{1, 2\}$, which is a **2-permutation** of a set with cardinality $10$. We could just plug in the formula for this.
+$$
+P^{10}_2 = \frac{10!}{(10 - 2)!} = 10 \times 9 = 90
+$$
+::
+
+### 2x02. Combinations
+
+Since we've now considered cases where we select a subset of the original objects, we might wish to generalize this "selection" to be regardless of order. This type of selection is called an **$r$-combination**. Combinations are represented using **sets** rather then tuples because order does not matter anymore.
+
+::DefBox{id="R-Combinations"}
+Let $M$ be a set of $N$ distinguishable elements. An **$r$-combination** of $M$ is a subset $S \subseteq M$ such that the cardinality of $|S| = r$.
+::
+
+You can try to derive the formula for counting the number of $k$-combinations of a set with cardinality $n$, which is usually denoted $C^n_k$. The key is to recognize a $k$-permutation as each unique combination of being repeated by all their permutations.
+
+::SpoilerBox
+We are computing the cardinality of **$k$-combinations** of a set $M$ where $|M| = n$.
+
+Consider the $k$-permutation of $M$. It is of cardinality $P^n_k$. Because the set of all $k$-permutations is comprised of unique combinations, permuted each $P^k_k$ times. Therefore,
+$$
+\begin{align*}
+P^k_k \times C^n_k &= P^n_k \\
+C^n_k &= \frac{P^n_k}{P^k_k} \\
+&= \frac{n!}{k! (n - k!)}
+\end{align*}
+$$
+Therefore,
+$$
+\boxed{
+C^n_k = \frac{n!}{k! (n - k!)}
+}
+$$
+::
+
+In reality, combinations are used much more widely then permutations, so much that a notation was reserved for them:
+$$
+C^n_k = \binom{n}{k}
+$$
+The number of combinations is sometimes also known as the <mark>binomial coefficient</mark> because of its significance in number theory, abstract algebra, and statistics.
+
+::Mcq
+---
+options:
+    - "1. 100"
+    - "2. 90"
+    - "3. 45"
+    - "4. 5"
+correct: 3
+---
+#prompt
+Its March, and students are preparing for AP exams according to the curriculums they chose. Everyone's exams are issued at the same time, so those who chose APCSA as AP1 take the exam the same time as those who chose APCSA as AP2. How many different exam schedules could one chose (remember there are 10 curriculums provided)?
+
+#explanation
+The problem basically degrades to counting the unique choices of subsets of cardinality 2 in the set of classes, which can be formalized as a **2-combination** over the set of classes, which is of cardinality 10. Therefore this number can be directly computed:
+
+$$
+\binom{10}{2} = \frac{10!}{2! \times 8!} = 45
+$$
+::
+
+### 2x03. Partitions
+In case you haven't noticed, $\binom{k}{n} = \binom{n - k}{k}$. Algebraicly this is trivial, but a better way to understand it is that the number of selection of combinations is the same as the number of selection of elements not in the combination. For example, the number of choices for chosing which AP classes to take is the same as the number of choices for chosing which AP classes *not* to take.
+
+A more symmetric way to state $k$-combinations is to ask the number of ways one can split a set of cardinality $n$ into classes of size $k$ and $n - k$. This action of *splitting* is formally known as **partitioning**, and the such as partitioning is known as a **bipartition**.
+
+
+::DefBox{id=Partition}
+Consider a set $M$. A **$r$-partition** of $M$ is a disjoint family of nonempty classes $\mathcal{P}$ ($|\mathcal{P}| = r$) such that
+$$
+\bigcup_{C \in \mathcal{P}} C = M
+$$
+::
+
+An immediate corollary is that the sum of sizes of each class in the partition equals the cardinality of $M$.
+
+::CorollaryBox{id="Cardinality Coverage"}
+Consider a set $M$. If $\mathcal{P}$ is a partition of $M$, then
+$$
+\sum_{C \in \mathcal{P}} |C| = |M|
+$$
+::Folding{title="Extension - Proof"}
+We could define an **indicator function** for each class in the partition:
+$$
+\mathbb{1}_C(x) =
+\begin{cases}
+1 & x \in C \\
+0 & x \notin C
+\end{cases}
+$$
+
+Since $\mathcal{P}$ is a partition, each $x \in M$ lies in exactly one $C \in \mathcal{P}$.
+
+$$
+\begin{align*}
+\sum_{C \in \mathcal{P}} |C|
+&= \sum_{C \in \mathcal{P}} \sum_{x \in M} \mathbb{1}_C(x) \\
+&= \sum_{x \in M} \sum_{C \in \mathcal{P}} \mathbb{1}_C(x) \\
+&= \sum_{x \in M} 1 \\
+&= |M|
+\end{align*}
+$$
+::
+::
+
+Naturally, the question arises to how many **$n$-partitions** exists on a set. This is not derivable without further knowledge of more advanced counting, so we'll only discuss the cases where we know exactly the cardinality of each subclass, which we here denote as 
+$$
+|\{\mathcal{P}\}| = \binom{n}{n_1, n_2, ..., n_k}
+$$
+
+::SpoilerBox
+Consider representing the partition as $C_1 \cup \mathcal{P}'$. Therefore, 
+$$
+\binom{n}{n_1, ..., n_k} = \binom{n}{n_1} \times \binom{n - n_1}{n_2, ..., n_k}
+$$
+Continue to expand gives
+$$
+\begin{align*}
+\binom{n}{n_1, n_2, ..., n_k} 
+&= \binom{n}{n_1} \times \binom{n - n_1}{n_2} \times \binom{n - n_1 - n_2}{n_3, ..., n_k} \\
+&= \binom{n}{n_1} \times \binom{n - n_1}{n_2} \times \binom{n - n_1 - n_2}{n_3} \times \cdots \times \binom{n_k}{n_k} \\
+&= \frac{n!}{n_1!(n-n_1)!} \times \frac{(n-n_1)!}{n_2!(n-n_1-n_2)!} \times \cdots \times \frac{n_k!}{n_k! \cdot 0!} \\
+&= \frac{n!}{n_1! \cdot n_2! \cdot \ldots \cdot n_k!}
+\end{align*}
+$$
+::
+
+This is sometimes called the **multinomial coefficient**.
+
+::McqMultiple
+---
+options:
+    - "1. $\\binom{3000}{300, 1500, 1200}$"
+    - "2. $\\binom{3000}{300} + \\binom{2700}{1200} + \\binom{1500}{1500}$"
+    - "3. $\\frac{3000!}{300! \\cdot 1500! \\cdot 1200!}$"
+    - "4. $3000 \\cdot 300 \\cdot 1200 \\cdot 1500$"
+    - "5. $\\binom{3000}{300} \\cdot \\binom{3000}{1200} \\cdot \\binom{3000}{1500}$"
+correct:
+    - 1
+    - 3
+---
+
+#prompt
+3000 people participated in a marathon. The top 10% are considered elite, the next 40% (from 10% to 50%) are considered good, and the remaining 50% are the rest. In how many ways can we partition the 3000 participants into these three categories?
+
+#explanation
+We need to partition 3000 people into three disjoint groups:
+- Elite: top 10% = $0.10 \times 3000 = 300$ people
+- Good: next 40% = $0.40 \times 3000 = 1200$ people  
+- Rest: remaining 50% = $0.50 \times 3000 = 1500$ people
+
+This is a partition with specified class sizes, so we use the multinomial coefficient:
+
+$$
+\binom{3000}{300, 1200, 1500} = \frac{3000!}{300! \cdot 1200! \cdot 1500!}
+$$
+
+Note that $\binom{n}{n_1, n_2, n_3}$ and $\frac{n!}{n_1! \cdot n_2! \cdot n_3!}$ are equivalent notations for the multinomial coefficient, so both options 1 and 3 are correct.
 ::

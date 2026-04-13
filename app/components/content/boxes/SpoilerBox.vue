@@ -47,7 +47,7 @@ const hideSpoiler = () => {
 }
 
 .spoiler-blurred {
-    filter: blur(8px);
+    filter: blur(10px);
     transition: filter 0.3s ease;
     pointer-events: none;
     user-select: none;
