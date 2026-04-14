@@ -981,3 +981,120 @@ This is a trick question: there is no such constraint that **each box must conta
 
 There are 20 boxes, meaning $20 - 1 = 19$ bars. Each bar can go to $500 - 1 = 499$ spaces. Therefore the answer is $499^{19}$.
 ::
+
+### 2x05. Lexicographic Ordering
+We know that there exists $P^3_3 = 3$ unique permutations of $\{1, 2, 3\}$, but they are currently just a mathematical set without any practical usage. In practice, a **total order** is often defined over the family of permutations of a set. Here we introduce the most commonly used **Lexicographic Ordering**.
+
+> A total order over $M$ is just a function that can compare any two elements of $M$. For our purposes we often analyze subset of reals, so there already exists one for us.
+
+In order to do lexicographic ordering, a total order must first be defined over the set itself. For example, $\{1, 2, 3\}$ have $<$, which is defined for every two elements of it, thus a total order. 
+
+To order two permutations $\pi_1$ and $\pi_2$ of set $M$ lexicographically, we repeat the following starting from $i = 0$:
+
+1. Find the element $x$ such that $\pi_1(x) = i$
+2. Find the element $y$ such that $\pi_2(y) = i$
+3. Compare $x$ and $y$. If they are equal, increment $i$ and repeat again. If not, this order encodes the lexigraphical order of $\pi_1$ and $\pi_2$.
+
+::ExampleBox
+To make sense of how it works, let's order $\{1, 2, 3\}$'s permutations $\pi_1 = (3, 2, 1)$ and $\pi_2 = (3, 1, 2)$.
+
+1. At first $i = 0$. Because $\pi_1(3) = 0$ and $\pi_2(3) = 0$, we move on.
+2. Now $i = 1$. Because $\pi_1(2) = 1$ and $\pi_2(1) = 1$, $2 > 1$, so $\boxed{\pi_1 > \pi_2}$.
+::
+
+You may recognize that this is very similar to the direct comparision of those permutations represented as a decimal expansion:
+
+$$
+321_{10} > 312_{10}
+$$
+
+This is actually provable!
+
+::LemmaBox{id="Positional Encoding of Lexicographical Ordering"}
+Consider a set $M$. Let the *base* $b$ be a number greater then the maximum value of $M$. Define the evaluation function $f$ as
+$$
+f(\pi) = \sum^{|M|}_{i = 1} b^{|M| - i} \cdot \pi(x_i)
+$$
+Then the lexicographical ordering of $\pi_1$ and $\pi_2$ is identical to the numerical ordering of $f(\pi_1)$ and $f(\pi_2)$. That is,
+$$
+f(\pi_1) > f(\pi_2) \iff \pi_1 > \pi_2
+$$
+
+> Remind me to attach a proof later
+
+A special case of this is when $b = 10$ and $M$ only contains numbers below ten. This is the case where we discussed about permutations as decimal expansions. Another use case of this lemma is in digital circuits called **Magnitude Comparators** like 74HC85 IC. A lexicographical comparison of binary bitstrings are used for quick numerical comparison between integers.
+::
+
+A common problem we're given is generating the next lexicographically greater permutation of a permutation.
+
+> Remind me to include a proof of correctness
+1.  **Identify the Pivot**: Scan $\pi$ from right to left to find the first index $j$ such that $\pi(j) < \pi(j+1)$. This index $j$ is the rightmost position that can be increased to create a larger permutation.
+2.  **Find the Successor**: Scan from the right end again to find the first index $k$ where $\pi(k) > \pi(j)$. This $\pi(k)$ is the smallest value to the right of $j$ that is still larger than the pivot.
+3.  **Swap and Minimize**: Swap $\pi(j)$ and $\pi(k)$. Then, reverse the entire sequence to the right of index $j$. Since that tail was previously in descending order, reversing it makes it ascending, ensuring $\pi'$ is the *immediate* successor.
+
+::Folding{title="Extension - Implementation in Haskell"}
+```haskell
+nextPermutation :: Ord a => [a] -> Maybe [a]
+nextPermutation xs = 
+    let revXs = reverse xs
+        (suffix, rest) = span (uncurry (>=)) (zip revXs (drop 1 revXs))
+    in case rest of
+        [] -> Nothing
+        ((curr, pivot) : iterations) ->
+            let 
+                restNodes = map snd iterations
+                (smaller, (target:bigger)) = break (> pivot) (map fst suffix)
+                newSuffix = smaller ++ [pivot] ++ bigger
+            in Just $ reverse restNodes ++ [target] ++ newSuffix
+```
+::
+
+::ExampleBox
+Let's find the next permutation of $\pi = (2, 3, 4, 1, 6, 5)$.
+
+1.  **Find the Pivot**: Looking from the right, $5 < 6$ (no), $6 > 1$ (yes!). Our pivot index $j$ is at value **1**.
+2.  **Find the Successor**: Looking from the right for something larger than 1, we find **5**. Our successor index $k$ is at value **5**.
+3.  **Swap**: Exchange 1 and 5 to get $(2, 3, 4, 5, 6, 1)$.
+4.  **Reverse**: Reverse the tail after the swap position. The tail $(6, 1)$ becomes $(1, 6)$.
+5.  **Result**: The next permutation is $\boxed{(2, 3, 4, 5, 1, 6)}$.
+::
+
+
+
+To find the next permutation $\pi'$ in lexicographical order after a given permutation $\pi$, we perform the following procedure:
+
+1.  **Identify the Pivot**: Scan $\pi$ from right to left to find the first index $j$ such that $\pi(j) < \pi(j+1)$. If no such $j$ exists, the permutation is the largest possible.
+2.  **Find the Successor**: Scan from the right end of the sequence toward the pivot to find the first index $k$ where $\pi(k) > \pi(j)$.
+3.  **Swap**: Exchange the values at positions $j$ and $k$.
+4.  **Reverse the Suffix**: Reverse all elements to the right of index $j$ (from $j+1$ to $n$). This transforms the tail from its maximum possible value (descending) to its minimum possible value (ascending).
+
+
+::Mcq
+---
+options:
+    - "1. $(4, 3, 2, 1, 5, 6)$"
+    - "2. $(4, 3, 5, 1, 2, 6)$"
+    - "3. $(4, 3, 5, 6, 2, 1)$"
+    - "4. $(4, 3, 5, 1, 6, 2)$"
+correct: 2
+---
+
+#prompt
+Given the permutation $\pi = (4, 3, 2, 6, 5, 1)$, what is the immediate lexicographical successor $\pi'$?
+
+#explanation
+Following the algorithm:
+1. **Pivot**: Scanning from the right, the first $a_j < a_{j+1}$ is **2** (since $2 < 6$).
+2. **Successor**: The smallest value to the right of 2 that is larger than 2 is **5**.
+3. **Swap**: Exchange 2 and 5 to get $(4, 3, 5, 6, 2, 1)$.
+4. **Reverse**: Reverse the suffix after the pivot position. The suffix $(6, 2, 1)$ becomes $(1, 2, 6)$.
+The final result is $\boxed{(4, 3, 5, 1, 2, 6)}$.
+::
+
+### 2x06. Generating Combinations
+
+Encoding the combination for a set is much simpler. Because we've assumed our set countable, each number has been given a natural nuber as label and thus, we can positionally encode the inclusion function $\in$ using a bitstring.
+
+::ExampleBox
+Consider the set $M = \{1, 2, 3\}$ and the counting function $x \mapsto x - 1$. Because $2 \mapsto 1$ and $1 \mapsto 0$, the bitstring encoding has bits 1 and 2 highlighted. So it should be `011`.
+::
