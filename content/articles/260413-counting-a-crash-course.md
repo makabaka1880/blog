@@ -17,7 +17,7 @@ We had a tough half-semester in Discrete Mathematics. Here's a compilation of ev
 
 **A family indexed by xxx** is just a function. For example, the grade cohort is just a family of homerooms indexed by their room number, which could also be expressed as a bijection between the space of room numbers and homerooms. The reason we don't use function here is because they emphasize structure and interpretation and preserve identity, not just mapping.
 
-**Identity map** is a function $\lambda x. x$ that maps everything to itself. Over the real numbers, its the linear function $f(x) = x$.
+**Identity map** is a function $\lambda x. x$ that maps everything to itself. Over the real numbers, it's the linear function $f(x) = x$.
 
 
 I'll be defining functions with various syntaxes through the text.
@@ -27,6 +27,8 @@ I'll be defining functions with various syntaxes through the text.
 | Standard |  $f(x) = x^2$ |
 | Lambda Calculus | $f := \lambda x : \mathbb{R}. x^2$
 | Mapsto | $f := x \mapsto x^2$ |
+
+**OBOE (Off-By-One Errors) / Fencepost Error** is a counting mistake where one confuses the number of objects with the number of gaps between them. For a line of length $n$, there are $n$ intervals but $n + 1$ endpoints. Formally, while the distance between two points $a$ and $b$ is $b - a$, the number of discrete integers in the inclusive set $[a, b]$ is $(b - a) + 1$. This error typically occurs in programming and logic when failing to properly account for boundary conditions in loops or array indexing. The **Fencepost Principle** is the principle that relates the number of gaps with the number of endpoints.
 
 ## 1x00. Basics to Counting
 ### 1x01. Maps
@@ -101,7 +103,7 @@ A set is **countable** if it is possible to count the set.
 Counting also allow us to formalize the size of a set into **cardinality**
 
 ::DefBox{id=Cardinality}
-Consider a countable set $M$ with ordinal ${0, 1, 2, ... n - 1}$. Then the **cardinal** of $M$ is $n$.
+Consider a countable set $M$ with ordinal $\{0, 1, 2, ... n - 1\}$. Then the **cardinal** of $M$ is $n$.
 
 The cardinality of a set is denoted as $|M|$ or $\mathrm{card}\ M$.
 ::
@@ -130,7 +132,7 @@ Construct the binary alphabet
 $$
 \Sigma := \{0, 1\}
 $$
-Count the set of bit strings $\Sigma^* = {\lambda, 0, 1, 00, 01, 010, ...}$.
+Count the set of bit strings $\Sigma^* = {\lambda, 0, 1, 00, 01, 10, ...}$.
 ::
 
 Let's access the problem. It is immediately obvious that there should be a connection from bit strings to binary representation of numbers, but it might not be obvious how to implement this connection. 
@@ -276,18 +278,19 @@ If $f$ is injective then $f$ is bijective. Therefore, $|M| > |N|$. Contradiction
 :::
 ::
 
-We can't have injectivity at all -- but we can say *how badly* it fails.
+::CorollaryBox{id="Generalized Pigeonhole Principle"}
+Let $M$, $N$ be finite sets and $f: M \to N$ with $|M| = m$ and $|N| = n$. Then there exists $b \in \text{im}(f)$ such that $|f^{-1}(\{b\})| \ge \lceil m/|\text{im}(f)| \rceil$.
 
-::CorollaryBox{id="Extended Pigeonhole Principle"}
-Let $M$, $N$ be finite sets and $f: M \twoheadrightarrow N$ surjective with $|M| = m$ and 
-$|N| = n$. Then there exists $b \in N$ such that $|f^{-1}(\{b\})| \ge \lceil m/n \rceil$.
 :::Folding{title="Proof"}
-Suppose for contradiction that $|f^{-1}(\{b\})| < \lceil m/n \rceil$ for all 
-$b \in N$, i.e. $p(b) \le \lceil m/n \rceil - 1$ for all $b \in N$. Then
+Let $k = |\text{im}(f)|$. Suppose for contradiction that $|f^{-1}(\{b\})| < \lceil m/k \rceil$ for all $b \in \text{im}(f)$, i.e. $|f^{-1}(\{b\})| \le \lceil m/k \rceil - 1$ for all $b \in \text{im}(f)$. Then
 $$
-\sum_{b \in N} p(b) \le n \cdot (\lceil m/n \rceil - 1) < n \cdot \frac{m}{n} = m,
+m = \sum_{b \in \text{im}(f)} |f^{-1}(\{b\})| \le k \cdot (\lceil m/k \rceil - 1) < k \cdot \frac{m}{k} = m,
 $$
-contradicting $\sum_{b \in N} p(b) = |M| = m$. $\square$
+a contradiction. $\square$
+:::
+
+:::Corollary{title="Surjective Case"}
+If $f$ is surjective, then $\text{im}(f) = N$, so $k = n$, and the bound becomes: there exists $b \in N$ such that $|f^{-1}(\{b\})| \ge \lceil m/n \rceil$.
 :::
 ::
 
@@ -330,7 +333,7 @@ $$
 f : M \twoheadrightarrow \{0, ..., n - 1\} := x \mapsto x\ \mathrm{mod}\ n
 $$
 
-Since $|M| > |\{0, ..., n - 1\}|$, $f$ is surjective. And by the pigeonhole principle, there will be at least one element of $f$'s range that has two preimages (composed of $t_1$ 1's and $t_2$ 1's). Denote them as 
+Since $|M| > |\{0, ..., n - 1\}|$, by the pigeonhole principle, there will be at least one element of $f$'s range that has two preimages (composed of $t_1$ 1's and $t_2$ 1's). Denote them as 
 $$
 k_1 = a n + z = \sum^{t_1}_{i = 0} 10^i\\
 k_2 = b n + z = \sum^{t_2}_{i = 0} 10^i
@@ -475,10 +478,10 @@ Intuitively, it is just a way to label each element of the set with a unique ind
 
 The number of permutations of a set of $n$ elements can be derived quite beautifully. Let's denote the number of permutations for $M$ the shorthand $|\{\pi(M)\}|$. We will later justify this notation.
 
-Consider a set $|{x_n}| = N$. Take the first element $x_1$, and the set can be denoted as 
+Consider a set $|\{x_n\}| = N$. Take the first element $x_1$, and the set can be denoted as 
 
 $$
-x_1 \cup M' = \{x_n\}
+\{x_1\} \cup M' = \{x_n\}
 $$
 
 It is trivial that there is $N$ ways to label $x_1$. By simple counting, there is $N \times |M'|$ ways to label $x_1$ and $M'$ together. By expanding this expression, a pattern emerges:
@@ -678,7 +681,7 @@ options:
 correct: 3
 ---
 #prompt
-Its March, and students are preparing for AP exams according to the curriculums they chose. Everyone's exams are issued at the same time, so those who chose APCSA as AP1 take the exam the same time as those who chose APCSA as AP2. How many different exam schedules could one chose (remember there are 10 curriculums provided)?
+It' s March, and students are preparing for AP exams according to the curriculums they chose. Everyone's exams are issued at the same time, so those who chose APCSA as AP1 take the exam the same time as those who chose APCSA as AP2. How many different exam schedules could one chose (remember there are 10 curriculums provided)?
 
 #explanation
 The problem basically degrades to counting the unique choices of subsets of cardinality 2 in the set of classes, which can be formalized as a **2-combination** over the set of classes, which is of cardinality 10. Therefore this number can be directly computed:
@@ -893,5 +896,88 @@ $$
 3 is algebraicly correct but methodologically incorrect.
 ::
 
+There are also problems on counting the partitioning of indistinguishable elements. A general way to solve them is not to consider how to select objects for each class, rather to consider the possible position of "cuts" that seperate elements into classes. This is a general method known as **stars and bars**.
 
+::Qabox
+Find the number of solutions to the equation
+$$
+x_1 + x_2 + x_3 = 20
+$$
+Where $x_1, x_2, x_3 \geq 1$ are positive integers.
+::
 
+The key here is to imagine the problem like cutting up a long object of length 20 and count the possibilities of configuration of cuts. For example, the solution
+
+$$
+4 + 5 + 11 = 20
+$$
+
+Correspond to this:
+
+```
+* * * * | * * * * * | * * * * * * * * * * *
+```
+
+Therefore, the problem changes to chosing $2$ cuts in $19$ places. Thus, there are $\binom{19}{2}$ possible solution sets.
+
+This way of solving partitions can be further generalized to method known as **stars and bars**. 
+
+::LemmaBox{id="Stars And Bars / Partition of Indistinguishable Elements"}
+If you want to distribute $n$ *stars* into $k$ containers where each container must contain at least one star, you can just lay all the stars in a line in try count the ways to insert $k - 1$ *bars*. Because there are $n - 1$ gaps, this number came out to be
+$$
+\binom{n - 1}{k - 1}
+$$
+::
+
+::ExampleBox
+Find the cardinality of the solution set of the inequality
+$$
+x_1 + x_2 + x_3 + x_4 \leq 20
+$$
+Where $x_1, x_2, x_3, x_4 \geq 1$
+
+Can you find a way to convert this into a regular linear equation?
+
+:::SpoilerBox
+The key is to add a **slack variable** $s$:
+$$
+x_1 + x_2 + x_3 + x_4 + s = 21
+$$
+
+where $s \geq 0$ represents the "unused" amount. This transforms the inequality into an equality. Now we need to distribute $21$ units among $5$ variables (the four $x_i$ and the slack variable $s$), where each $x_i \geq 1$ and $s \geq 0$.
+
+To handle the constraint $x_i \geq 1$, we substitute $y_i = x_i - 1 \geq 0$ for $i = 1, 2, 3, 4$:
+$$
+(y_1 + 1) + (y_2 + 1) + (y_3 + 1) + (y_4 + 1) + s = 21
+$$
+$$
+y_1 + y_2 + y_3 + y_4 + s = 17
+$$
+
+Now we distribute $17$ indistinguishable units among $5$ containers with no restrictions. Using **stars and bars**, the number of solutions is:
+
+$$
+\binom{17 + 5 - 1}{5 - 1} = \binom{21}{4} = 5985
+$$
+
+:::
+::
+
+::Mcq
+---
+options:
+    - "1. $499^{19}$"
+    - "2. $\\frac{500!}{20!}$"
+    - "3. $\\frac{500!}{20! \\times 480!}$"
+    - "4. $\\frac{499!}{19! \\times 480!}$"
+correct: 1
+---
+
+#prompt
+Sam is moving. He have 500 books and 20 boxes. How many ways can he pack his books into boxes?
+
+#explanation
+This is a trick question: there is no such constraint that **each box must contain a book**! Therefore the choices of each bar is independent of each other, so we dont need combinations anymore.
+
+There are 20 boxes, meaning $20 - 1 = 19$ bars. Each bar can go to $500 - 1 = 499$ spaces. Therefore the answer is $499^{19}$.
+::
