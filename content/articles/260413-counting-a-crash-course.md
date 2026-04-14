@@ -1166,10 +1166,6 @@ Note that `takeWhile` here walks left to right and we take the `last` valid elem
 
 Notice the structural parallel with `nextPermutation`: both algorithms are really just *find rightmost non-maxed position, bump it, greedily minimize the suffix*. The combination case is actually simpler because the suffix reset is just consecutive integers rather than a reversal — there's only one ascending arrangement of the tightly-packed tail.
 
-Sure! Here's one in the same style:
-
----
-
 ::Mcq
 ---
 options:
@@ -1207,7 +1203,7 @@ correct: 1
 ---
 
 #prompt
-Consider the function $f: \\mathbb{Z} \\to \\mathbb{Z}$ defined by $f(x) = 2x$. Which of the following properties does $f$ satisfy?
+Consider the function $f: \mathbb{Z} \to \mathbb{Z}$ defined by $f(x) = 2x$. Which of the following properties does $f$ satisfy?
 
 #explanation
 The function $f(x) = 2x$ maps every integer to an even integer. It is injective because if $2x = 2y$, then $x = y$. However, it is not surjective because odd integers are not in the image (there is no integer $x$ such that $2x = 1$). Therefore, $f$ is injective but not surjective, so it is an injection.
@@ -1227,7 +1223,7 @@ correct: 4
 Which of the following statements about cardinalities is true?
 
 #explanation
-The set of natural numbers $\\mathbb{N}$ and rational numbers $\\mathbb{Q}$ are both countably infinite ($\\aleph_0$), so $|\\mathbb{N}| = |\\mathbb{Q}|$, not greater. The real numbers $\\mathbb{R}$ are uncountably infinite, and its cardinality is strictly greater than that of $\\mathbb{Q}$. Therefore, $|\\mathbb{R}| > |\\mathbb{Q}|$ is the only true statement among the options.
+The set of natural numbers $\mathbb{N}$ and rational numbers $\mathbb{Q}$ are both countably infinite ($\aleph_0$), so $|\mathbb{N}| = |\mathbb{Q}|$, not greater. The real numbers $\mathbb{R}$ are uncountably infinite, and its cardinality is strictly greater than that of $\mathbb{Q}$. Therefore, $|\mathbb{R}| > |\mathbb{Q}|$ is the only true statement among the options.
 ::
 
 ::Mcq
@@ -1244,7 +1240,7 @@ correct: 3
 If 13 socks are placed in 3 drawers, what is the minimum number of socks that must be in at least one drawer?
 
 #explanation
-By the pigeonhole principle, distributing $m$ items into $n$ drawers guarantees at least one drawer contains at least $\\lceil m/n \\rceil$ items. Here $m = 13$, $n = 3$, so $\\lceil 13/3 \\rceil = \\lceil 4.33\\ldots \\rceil = 5$.
+By the pigeonhole principle, distributing $m$ items into $n$ drawers guarantees at least one drawer contains at least $\lceil m/n \rceil$ items. Here $m = 13$, $n = 3$, so $\lceil 13/3 \rceil = \lceil 4.33\ldots \rceil = 5$.
 ::
 
 ::Mcq
@@ -1278,7 +1274,7 @@ correct: 2
 ---
 
 #prompt
-How many permutations are there of the set $\\{A,B,C,D,E,F\\}$?
+How many permutations are there of the set $\{A,B,C,D,E,F\}$?
 
 #explanation
 The set has 6 distinct elements. The number of permutations of $n$ distinct objects is $n!$. Here $6! = 720$.
@@ -1295,10 +1291,10 @@ correct: 3
 ---
 
 #prompt
-How many ways can you choose 3 distinct letters from the alphabet $\\{A,B,C,D,E,F\\}$?
+How many ways can you choose 3 distinct letters from the alphabet $\{A,B,C,D,E,F\}$?
 
 #explanation
-The number of ways to choose $k$ elements from a set of $n$ distinct elements is the binomial coefficient $\\binom{n}{k}$. Here $n = 6$, $k = 3$, so $\\binom{6}{3} = 20$.
+The number of ways to choose $k$ elements from a set of $n$ distinct elements is the binomial coefficient $\binom{n}{k}$. Here $n = 6$, $k = 3$, so $\binom{6}{3} = 20$.
 ::
 
 ::Mcq
@@ -1315,7 +1311,7 @@ correct: 1
 How many distinct permutations can be formed from the letters of the word "AABBC"?
 
 #explanation
-The word "AABBC" has 5 letters with multiplicities: A=2, B=2, C=1. The number of distinct permutations is given by the multinomial coefficient $\\frac{5!}{2! \\cdot 2! \\cdot 1!} = \\frac{120}{2 \\cdot 2} = 30$.
+The word "AABBC" has 5 letters with multiplicities: A=2, B=2, C=1. The number of distinct permutations is given by the multinomial coefficient $\frac{5!}{2! \cdot 2! \cdot 1!} = \frac{120}{2 \cdot 2} = 30$.
 ::
 
 ::Mcq
@@ -1332,7 +1328,7 @@ correct: 3
 How many non-negative integer solutions does $x_1 + x_2 + x_3 + x_4 + x_5 = 17$ have?
 
 #explanation
-Using stars and bars, the number of non-negative integer solutions to $x_1 + \\cdots + x_k = n$ is $\\binom{n + k - 1}{k - 1}$. Here $n = 17$, $k = 5$, so $\\binom{17 + 5 - 1}{5 - 1} = \\binom{21}{4}$.
+Using stars and bars, the number of non-negative integer solutions to $x_1 + \cdots + x_k = n$ is $\binom{n + k - 1}{k - 1}$. Here $n = 17$, $k = 5$, so $\binom{17 + 5 - 1}{5 - 1} = \binom{21}{4}$.
 ::
 
 ::Mcq
@@ -1363,10 +1359,10 @@ correct: 2
 ---
 
 #prompt
-Given the 5-combination $\\{1,3,4,5,6\\}$ of $\\{1,2,3,4,5,6,7\\}$, what is the immediate lexicographic successor?
+Given the 5-combination $\{1,3,4,5,6\}$ of $\{1,2,3,4,5,6,7\}$, what is the immediate lexicographic successor?
 
 #explanation
-Following the next combination algorithm: find the rightmost element $a_i$ that is not at its maximum possible value $n - r + i$. Here $n = 7$, $r = 5$. Compute maximums: $[3,4,5,6,7]$. Compare with $[1,3,4,5,6]$ from right: $a_5 = 6$ vs $7$ (not maxed), so pivot $i = 5$. Increment $a_5$ to $7$. No suffix to reset. The result is $\\{1,3,4,5,7\\}$.
+Following the next combination algorithm: find the rightmost element $a_i$ that is not at its maximum possible value $n - r + i$. Here $n = 7$, $r = 5$. Compute maximums: $[3,4,5,6,7]$. Compare with $[1,3,4,5,6]$ from right: $a_5 = 6$ vs $7$ (not maxed), so pivot $i = 5$. Increment $a_5$ to $7$. No suffix to reset. The result is $\{1,3,4,5,7\}$.
 ::
 
 ::
