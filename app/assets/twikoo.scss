@@ -1910,12 +1910,12 @@ $twikoo-error: #ff0000;
                     }
 
                     &:hover {
-                        background-color: color-mix(in srgb, var(--color-accent) 13%, transparent);
+                        background-color: color-mix(in srgb, var(--color-accent) 23%, transparent);
                     }
                 }
 
                 .OwO-package-active {
-                    background-color: color-mix(in srgb, var(--color-accent) 13%, transparent);
+                    background-color: color-mix(in srgb, var(--color-accent) 23%, transparent);
                     -webkit-transition: .3s;
                     transition: .3s;
                 }

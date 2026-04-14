@@ -61,7 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
     line-height: 1;
 
     color: var(--box-bg-char-color, var(--color-box-background-char));
-    opacity: var(--box-bg-char-opacity, 15%);
+    opacity: var(--box-bg-char-opacity, 25%);
     filter: var(--box-bg-char-filter, none);
 
     pointer-events: none;

@@ -25,7 +25,7 @@ $dark-separator-border: oklch(71.547% 0.00008 271.152);
     --color-highlight-marker-thinner: #{c.secondary-color($base-hue, $base-saturation, $base-lightness, $s-offset: 25%, $l-offset: 10%)};
     --color-highlight-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
 
-    --color-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -25%, $l-offset: -15%)};
+    --color-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -27%, $l-offset: -25%)};
     --color-background-alt: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -30%)};
     --color-section-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: -25%)};
     --color-footer-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: -30%)};
@@ -39,10 +39,10 @@ $dark-separator-border: oklch(71.547% 0.00008 271.152);
     --color-card-metadata: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 15%)};
     --color-modal-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: -30%, $alpha: 0.87)};
 
-    --color-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 45%)};
-    --color-text-light: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 50%)};
+    --color-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 35%)};
+    --color-text-light: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 40%)};
     --color-text-muted: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: 15%)};
-    --color-heading: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -15%, $l-offset: 50%)};
+    --color-heading: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -05%, $l-offset: 30%)};
 
     --color-link: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 10%, $l-offset: 25%)};
     --color-link-hover: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 35%)};
@@ -79,7 +79,7 @@ $dark-separator-border: oklch(71.547% 0.00008 271.152);
     --color-tooltip-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
     --color-tooltip-text: #{$dark-tooltip-text};
 
-    --color-code-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -20%)};
+    --color-code-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -10%)};
     --color-quote-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 15%)};
     --color-quote-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 45%)};
     --color-table-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 15%)};

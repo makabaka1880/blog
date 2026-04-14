@@ -1,6 +1,6 @@
 ---
 title: Counting - A Crash Course
-description: Midterm Review
+description: Part 1 of 3-Part Mid-term Preparation Material
 createTime: 2026-04-13
 updateTime: 2026-04-13
 ---
@@ -181,7 +181,7 @@ $$
 \omega_1 \in \omega_1
 $$
 
-which violates the **axiom of foundation** (no set can contain itself). Contradiction. $\square$
+which violates the **axiom of foundation** (no set can contain itself). Contradiction. <Qed />
 ::
 
 ::Mcq
@@ -227,7 +227,7 @@ $$
 \sum_{b \in N} p(b) \ge 2 + \underbrace{1 + \cdots + 1}_{n-1 \text{ terms}} = n+1 > n,
 $$
 
-contradicting $\sum_{b \in N} p(b) = n$. Hence $f$ must be injective. $\square$
+contradicting $\sum_{b \in N} p(b) = n$. Hence $f$ must be injective. <Qed />
 :::
 ::
 
@@ -278,7 +278,7 @@ sets must be bijections. But what happens when $|M| > |N|$?
 ::CorollaryBox{id="Extended Pigeonhole Principle"}
 Consider a surjective map $f : N \twoheadrightarrow M$. If $|M| > |N|$, $f$ cannot be injective.
 :::Folding{title="Proof"}
-If $f$ is injective then $f$ is bijective. Therefore, $|M| > |N|$. Contradiction. $\square$
+If $f$ is injective then $f$ is bijective. Therefore, $|M| > |N|$. Contradiction. <Qed />
 :::
 ::
 
@@ -290,7 +290,7 @@ Let $k = |\text{im}(f)|$. Suppose for contradiction that $|f^{-1}(\{b\})| < \lce
 $$
 m = \sum_{b \in \text{im}(f)} |f^{-1}(\{b\})| \le k \cdot (\lceil m/k \rceil - 1) < k \cdot \frac{m}{k} = m,
 $$
-a contradiction. $\square$
+a contradiction. <Qed />
 :::
 
 :::Corollary{title="Surjective Case"}
@@ -352,7 +352,7 @@ a n + z - b n - z &= \sum^{t_1}_{i = t_2 + 1} 10^i  \\
 (a - b) n &= \underbrace{11..11}_{t_1 - t_2} \overbrace{00.00}^{t_2}
 \end{align*}
 $$
-Because $(a - b) n$ has a factor $n$, it is a multiple of $n$. $\square$
+Because $(a - b) n$ has a factor $n$, it is a multiple of $n$. <Qed />
 ::
 
 ::Folding{title="Bonus"}
@@ -361,7 +361,7 @@ If there are $n$ ($n \geq 3$) people who has each dated each other, prove that n
 ::
 
 ::SpoilerBox
-Construct the map $f$ from people to gender. By the pigeonhole principle ($n \geq 3 > 2$) there must be at least two people of the same gender. Since they dated each other, neither one of them is straight. $\square$
+Construct the map $f$ from people to gender. By the pigeonhole principle ($n \geq 3 > 2$) there must be at least two people of the same gender. Since they dated each other, neither one of them is straight. <Qed />
 ::
 ::
 
@@ -1369,4 +1369,3 @@ Given the 5-combination $\{1,3,4,5,6\}$ of $\{1,2,3,4,5,6,7\}$, what is the imme
 Following the next combination algorithm: find the rightmost element $a_i$ that is not at its maximum possible value $n - r + i$. Here $n = 7$, $r = 5$. Compute maximums: $[3,4,5,6,7]$. Compare with $[1,3,4,5,6]$ from right: $a_5 = 6$ vs $7$ (not maxed), so pivot $i = 5$. Increment $a_5$ to $7$. No suffix to reset. The result is $\{1,3,4,5,7\}$.
 ::
 
-::
