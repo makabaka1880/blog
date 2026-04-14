@@ -1097,4 +1097,276 @@ Encoding the combination for a set is much simpler. Because we've assumed our se
 
 ::ExampleBox
 Consider the set $M = \{1, 2, 3\}$ and the counting function $x \mapsto x - 1$. Because $2 \mapsto 1$ and $1 \mapsto 0$, the bitstring encoding has bits 1 and 2 highlighted. So it should be `011`.
+
+A simpler approach is to list all elements of $M$ on your scratch paper, ordered by their corresponding count.
+
+$$
+1\ 2\ 3
+$$
+
+Now, cross out all the elements not in the combination and underline those in it:
+
+$$
+\cancel{1}\ \underline{2}\ \underline{3}
+$$
+
+And write a $0$ under all those crossed out and $1$ under all underlined:
+
+$$
+\cancel{1}\ \underline{2}\ \underline{3} \\
+0\ 1\ 1
+$$
+::
+
+> This makes counting combinations (which is basically the powerset) much easier, too. Because any combination is basically just a bitstring, simply treat the bitstring as the binary expansion of a number. This is a bijection between the natural numbers with subsets.
+
+However we may wish to obtain the next **lexicographically greater $r$-combination**. Note that since combinations are not ordered internally (i.e. $\{2, 3\}$ is the same is $\{3, 2\}$, they are just syntatically different but structurally equivalent), we are considering the ordering of combinations as *sequences by numeric order*. For example, the 2-combination `011` is represented as $(2, 3)$.
+
+The algorithm for this is a bit more complex than the permutation case, but follows the same spirit -- find the rightmost element with room to grow, increment it, then reset everything to its right to the smallest valid values.
+
+To find the next $r$-combination $\{a_1 < a_2 < \cdots < a_r\}$ of $\{1, 2, \ldots, n\}$:
+
+1. **Find the Pivot**: Scan from right to left to find the largest index $i$ such that $a_i \neq n - r + i$. This is the rightmost element that hasn't yet been "maxed out" — it still has room to increase without pushing the remaining elements out of bounds.
+2. **Increment**: Replace $a_i$ with $a_i + 1$.
+3. **Reset the Suffix**: For all $j = i+1, \ldots, r$, replace $a_j$ with $a_i + j - i + 1$. This packs the tail as tightly as possible immediately after the new $a_i$, giving the lexicographically smallest valid completion.
+
+If no such $i$ exists (i.e. $a_k = n - r + k$ for all $k$), then $\{n-r+1, \ldots, n\}$ is already the largest $r$-combination and we are done.
+
+> Remind me to include a proof of correctness
+
+::ExampleBox
+Let's find the next 4-combination of $\{1,2,3,4,5,6\}$ after $\{1, 2, 5, 6\}$.
+
+The maximum values are $n - r + k = 3, 4, 5, 6$ for $k = 1, 2, 3, 4$.
+
+1. **Find the Pivot**: Comparing right to left — $a_4 = 6 = 6$ (maxed), $a_3 = 5 = 5$ (maxed), $a_2 = 2 \neq 4$ (not maxed!). So $i = 2$.
+2. **Increment**: $a_2 = 2 \to 3$.
+3. **Reset**: $a_3 = 3 + 1 = 4$, $\quad a_4 = 3 + 2 = 5$.
+
+The result is $\boxed{\{1, 3, 4, 5\}}$.
+::
+
+::Folding{title="Extension - Implementation in Haskell"}
+```haskell
+nextCombination :: Int -> [Int] -> Maybe [Int]
+nextCombination n xs =
+    let r    = length xs
+        indexed = zip xs [1..]
+        pivot = last . takeWhile (\(a, k) -> a /= n - r + k) $ indexed
+    in case pivot of
+        (ai, i) ->
+            let prefix = take (i - 1) xs
+                newAi  = ai + 1
+                suffix = map (newAi +) [1 .. r - i]
+            in Just $ prefix ++ [newAi] ++ suffix
+```
+
+Note that `takeWhile` here walks left to right and we take the `last` valid element -- that's our rightmost non-maxed index. If the `takeWhile` yields an empty list, the input was already the final combination, and you'd want to return `Nothing`.
+::
+
+Notice the structural parallel with `nextPermutation`: both algorithms are really just *find rightmost non-maxed position, bump it, greedily minimize the suffix*. The combination case is actually simpler because the suffix reset is just consecutive integers rather than a reversal — there's only one ascending arrangement of the tightly-packed tail.
+
+Sure! Here's one in the same style:
+
+---
+
+::Mcq
+---
+options:
+    - "1. $\\{2, 4, 6, 7\\}$"
+    - "2. $\\{2, 5, 6, 7\\}$"
+    - "3. $\\{3, 4, 5, 6\\}$"
+    - "4. $\\{2, 4, 7, 8\\}$"
+correct: 1
+---
+
+#prompt
+Given the 4-combination $\{2, 4, 5, 8\}$ of $\{1, 2, \ldots, 8\}$, what is the immediate lexicographical successor?
+
+#explanation
+The maximum values are $n - r + k = 5, 6, 7, 8$ for $k = 1, 2, 3, 4$.
+
+1. **Find the Pivot**: Comparing right to left — $a_4 = 8 = 8$ (maxed), $a_3 = 5 = 7$? No, $5 \neq 7$ (not maxed!). So $i = 3$.
+2. **Increment**: $a_3 = 5 \to 6$.
+3. **Reset**: $a_4 = 6 + 1 = 7$.
+
+The result is $\boxed{\{2, 4, 6, 7\}}$.
+::
+
+## 3x00. Short Quiz
+
+::Folding{title="Mapping and Counting"}
+::Mcq
+---
+options:
+    - "1. Injection"
+    - "2. Surjection"
+    - "3. Bijection"
+    - "4. None"
+correct: 1
+---
+
+#prompt
+Consider the function $f: \\mathbb{Z} \\to \\mathbb{Z}$ defined by $f(x) = 2x$. Which of the following properties does $f$ satisfy?
+
+#explanation
+The function $f(x) = 2x$ maps every integer to an even integer. It is injective because if $2x = 2y$, then $x = y$. However, it is not surjective because odd integers are not in the image (there is no integer $x$ such that $2x = 1$). Therefore, $f$ is injective but not surjective, so it is an injection.
+::
+
+::Mcq
+---
+options:
+    - "1. $|\\mathbb{N}| > |\\mathbb{Q}|$"
+    - "2. $|\\mathbb{R}| = |\\mathbb{Q}|$"
+    - "3. $|\\mathbb{N}| = |\\mathbb{R}|$"
+    - "4. $|\\mathbb{R}| > |\\mathbb{Q}|$"
+correct: 4
+---
+
+#prompt
+Which of the following statements about cardinalities is true?
+
+#explanation
+The set of natural numbers $\\mathbb{N}$ and rational numbers $\\mathbb{Q}$ are both countably infinite ($\\aleph_0$), so $|\\mathbb{N}| = |\\mathbb{Q}|$, not greater. The real numbers $\\mathbb{R}$ are uncountably infinite, and its cardinality is strictly greater than that of $\\mathbb{Q}$. Therefore, $|\\mathbb{R}| > |\\mathbb{Q}|$ is the only true statement among the options.
+::
+
+::Mcq
+---
+options:
+    - "1. 3"
+    - "2. 4"
+    - "3. 5"
+    - "4. 6"
+correct: 3
+---
+
+#prompt
+If 13 socks are placed in 3 drawers, what is the minimum number of socks that must be in at least one drawer?
+
+#explanation
+By the pigeonhole principle, distributing $m$ items into $n$ drawers guarantees at least one drawer contains at least $\\lceil m/n \\rceil$ items. Here $m = 13$, $n = 3$, so $\\lceil 13/3 \\rceil = \\lceil 4.33\\ldots \\rceil = 5$.
+::
+
+::Mcq
+---
+options:
+    - "1. 2"
+    - "2. 3"
+    - "3. 4"
+    - "4. 5"
+correct: 2
+---
+
+#prompt
+What is the Ramsey number $R(2,3)$?
+
+#explanation
+The Ramsey number $R(2,3)$ is the smallest $n$ such that any 2-coloring of the edges of $K_n$ contains either a red clique of size 2 (two vertices connected by a red edge) or a blue clique of size 3 (a blue triangle). It is known that $R(2,3) = 3$.
+::
+::
+
+::Folding{title="Combinatorics"}
+
+::Mcq
+---
+options:
+    - "1. 120"
+    - "2. 720"
+    - "3. 5040"
+    - "4. 40320"
+correct: 2
+---
+
+#prompt
+How many permutations are there of the set $\\{A,B,C,D,E,F\\}$?
+
+#explanation
+The set has 6 distinct elements. The number of permutations of $n$ distinct objects is $n!$. Here $6! = 720$.
+::
+
+::Mcq
+---
+options:
+    - "1. 10"
+    - "2. 15"
+    - "3. 20"
+    - "4. 25"
+correct: 3
+---
+
+#prompt
+How many ways can you choose 3 distinct letters from the alphabet $\\{A,B,C,D,E,F\\}$?
+
+#explanation
+The number of ways to choose $k$ elements from a set of $n$ distinct elements is the binomial coefficient $\\binom{n}{k}$. Here $n = 6$, $k = 3$, so $\\binom{6}{3} = 20$.
+::
+
+::Mcq
+---
+options:
+    - "1. 30"
+    - "2. 60"
+    - "3. 90"
+    - "4. 120"
+correct: 1
+---
+
+#prompt
+How many distinct permutations can be formed from the letters of the word "AABBC"?
+
+#explanation
+The word "AABBC" has 5 letters with multiplicities: A=2, B=2, C=1. The number of distinct permutations is given by the multinomial coefficient $\\frac{5!}{2! \\cdot 2! \\cdot 1!} = \\frac{120}{2 \\cdot 2} = 30$.
+::
+
+::Mcq
+---
+options:
+    - "1. $\\binom{19}{3}$"
+    - "2. $\\binom{20}{4}$"
+    - "3. $\\binom{21}{4}$"
+    - "4. $\\binom{22}{5}$"
+correct: 3
+---
+
+#prompt
+How many non-negative integer solutions does $x_1 + x_2 + x_3 + x_4 + x_5 = 17$ have?
+
+#explanation
+Using stars and bars, the number of non-negative integer solutions to $x_1 + \\cdots + x_k = n$ is $\\binom{n + k - 1}{k - 1}$. Here $n = 17$, $k = 5$, so $\\binom{17 + 5 - 1}{5 - 1} = \\binom{21}{4}$.
+::
+
+::Mcq
+---
+options:
+    - "1. $(2,1,4,3)$"
+    - "2. $(2,3,1,4)$"
+    - "3. $(2,3,4,1)$"
+    - "4. $(2,4,1,3)$"
+correct: 2
+---
+
+#prompt
+Given the permutation $(2,1,4,3)$, what is its immediate lexicographic successor?
+
+#explanation
+Following the next permutation algorithm: find the pivot (rightmost element smaller than its right neighbor). Here $1 < 4$, so pivot is 1. Find the successor (smallest element to the right larger than 1), which is 3. Swap pivot and successor to get $(2,3,4,1)$. Reverse the suffix after the pivot position (the suffix is $[4,1]$, reversed to $[1,4]$). The result is $(2,3,1,4)$.
+::
+
+::Mcq
+---
+options:
+    - "1. $\\{1,3,4,5,6\\}$"
+    - "2. $\\{1,3,4,5,7\\}$"
+    - "3. $\\{1,3,4,6,7\\}$"
+    - "4. $\\{1,3,5,6,7\\}$"
+correct: 2
+---
+
+#prompt
+Given the 5-combination $\\{1,3,4,5,6\\}$ of $\\{1,2,3,4,5,6,7\\}$, what is the immediate lexicographic successor?
+
+#explanation
+Following the next combination algorithm: find the rightmost element $a_i$ that is not at its maximum possible value $n - r + i$. Here $n = 7$, $r = 5$. Compute maximums: $[3,4,5,6,7]$. Compare with $[1,3,4,5,6]$ from right: $a_5 = 6$ vs $7$ (not maxed), so pivot $i = 5$. Increment $a_5$ to $7$. No suffix to reset. The result is $\\{1,3,4,5,7\\}$.
+::
+
 ::
