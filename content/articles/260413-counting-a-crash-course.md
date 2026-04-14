@@ -5,6 +5,10 @@ createTime: 2026-04-13
 updateTime: 2026-04-13
 ---
 
+::WarningBox
+This is **NOT** official material provided by SSBS. There could be errors or inaccuracies in tran
+::
+
 We had a tough half-semester in Discrete Mathematics. Here's a compilation of everything we learned — sets, maps, cardinality, and the surprisingly deep rabbit holes that come with them. Grab a coffee, and let's get through this together.
 
 > OK That introduction is written by claude but you get the idea. The <strike>end</strike> midterms is near, and I hope this guide at least help you in one way or another. I included problems midways to help you with reviewing.
@@ -654,7 +658,7 @@ $$
 \begin{align*}
 P^k_k \times C^n_k &= P^n_k \\
 C^n_k &= \frac{P^n_k}{P^k_k} \\
-&= \frac{n!}{k! (n - k!)}
+&= \frac{n!}{k! (n - k)!}
 \end{align*}
 $$
 Therefore,
