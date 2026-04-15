@@ -247,3 +247,50 @@ $$
 
 ### 1x02. Generating Functions
 
+A way of encoding sequences is called **Generating Functions**
+
+::DefBox{id="Generating Functions"}
+Given a sequence $(a_n)$ over real number, its **generating function** is the polynomial
+$$
+\sum^{\infty}_{n = 0} a_n x^n = a_0 + a_1 x + a_2 x^2 + ..
+$$
+When the radius of convergence $\varrho > 0$.
+::
+
+Because recurrences are basically just infinite sequences, generating functions also apply to them.
+
+::ExampleBox
+Consider the natural exponential function $\lambda x. e^x$. By performing a MacLaurin transformation and solving for the general form of generating functions:
+
+$$
+\begin{align*}
+e^x &= \sum^{\infty}_{n = 0} a_n x^n  \\
+\sum^\infty_{n = 0}x^n\frac{1}{n!} &= \sum^{\infty}_{n = 0} a_n x^n  \\
+\forall n, \frac{1}{n!} &= a_n
+\end{align*}
+$$
+
+So the exponential function encodes the sequence 
+$$
+\boxed{a_n = \frac{1}{n!}}
+$$
+::
+
+
+::Mcq
+---
+options:
+    - "1. $a_n = n$"
+    - "2. $a_n = 1$"
+    - "3. $a_n = n!$"
+    - "4. $a_n = (-1)^n$"
+correct: 2
+---
+
+#prompt
+What is the sequence $\{a_n\}$ encoded by the ordinary generating function $A(x) = \frac{1}{1-x}$ for $|x| < 1$?
+
+#explanation
+The function $\frac{1}{1-x}$ is the sum of a geometric series $\sum_{n=0}^{\infty} x^n$. Since the coefficient of each $x^n$ term is 1, the sequence being encoded is the constant sequence $a_n = 1$.
+::
+
