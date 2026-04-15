@@ -3,6 +3,9 @@ title: Discrete Probability - A Crash Course
 description: Part 2 of 3-Part Mid-term Preparation Material
 createTime: 2026-04-14
 updateTime: 2026-04-14
+
+tag:
+    - Discrete Mathematics
 ---
 ## 0x00. Notation and Nomenclature
 **Partial Application** of a function refers to fixing one input of a multi-arity function. For example, given this function:
@@ -222,9 +225,9 @@ In the beginning of the 20<sup>th</sup> century, the Russian mathematician Kolmo
 
 ::DefBox{id="Axiomatic Probability"}
 Let $S$ be a sample space and $\mathcal{P}(S)$ the power set of $S$. Then a function $P : \mathcal{P}(S) \to \mathbb{R} := A \mapsto P(A)$ is called a **probability function** on $S$ if
-1. $P \geq 0$
-2. $P(S) = 1$
-3. $\forall \{A_k\} \subseteq \mathcal{P}(A)$ such that every $A_k$ are mutually disjoint,
+1. $P \geq 0$ (Non-negativity)
+2. $P(S) = 1$ (Normalization)
+3. $\forall \{A_k\} \subseteq \mathcal{P}(A)$ such that every $A_k$ are mutually disjoint, (Countable additivity)
 $$
 P(\cup_{a \in \{A_k\}} a) = \sum_{a \in \{A_k\}} P(a)
 $$

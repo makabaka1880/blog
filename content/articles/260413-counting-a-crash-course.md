@@ -3,10 +3,13 @@ title: Counting - A Crash Course
 description: Part 1 of 3-Part Mid-term Preparation Material
 createTime: 2026-04-13
 updateTime: 2026-04-13
+
+tag:
+    - Discrete Mathematics
 ---
 
 ::WarningBox
-This is **NOT** official material provided by SSBS. There could be errors or inaccuracies in tran
+This is **NOT** official material provided by SSBS.
 ::
 
 We had a tough half-semester in Discrete Mathematics. Here's a compilation of everything we learned — sets, maps, cardinality, and the surprisingly deep rabbit holes that come with them. Grab a coffee, and let's get through this together.

@@ -3,6 +3,9 @@ title: More Counting - A Crash Course
 description: Part 3 of 3-Part Mid-term Preparation Material
 createTime: 2026-04-15
 updateTime: 2026-04-15
+
+tag:
+    - Discrete Mathematics
 ---
 
 
@@ -42,6 +45,8 @@ I bet the probability mthod will not be a focus because I just cannot find a tri
 
 ## 2x00. Recurrences
 The study of recurrences is pretty important thing in computer science since most recursive algorithms could have their resource assumption modeled by one. Systematic methods to solving them, however, does not exist. Luckily for a certain class of recurrences, what we can do is to create an asymptotic approximation of the recurrence and figure its lower bound, higher bound, or both.
+
+### 2x01. DnC and Master's Theorem
 
 ::DefBox{id="Divide-and-Conquer Recurrences"}
 A recurrence is called an **Divide-and-Conquer Recurrence** when it is of the form
@@ -239,3 +244,6 @@ $$
 \boxed{T(n) = \Theta(\log n \log{\log n})}
 $$
 ::
+
+### 1x02. Generating Functions
+
