@@ -155,7 +155,7 @@ const formatDate = (createTime?: string) => {
 
                     &:hover {
                         background-color: var(--color-card-hover-background);
-                        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+                        box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
                         cursor: pointer;
                     }
 

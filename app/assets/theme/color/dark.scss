@@ -30,7 +30,7 @@ $dark-separator-border: oklch(71.547% 0.00008 271.152);
     --color-section-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: -25%)};
     --color-footer-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: -30%)};
     --color-card-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: -30%)};
-    --color-card-hover-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -25%)};
+    --color-card-hover-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: -20%)};
     --color-hard-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 50%, $l-offset: -40%)};
 
     --color-card-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -25%, $l-offset: 20%, $alpha: 1)};
@@ -58,7 +58,7 @@ $dark-separator-border: oklch(71.547% 0.00008 271.152);
     --color-input-focus-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 5%, $l-offset: 5%)};
 
     --color-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 15%, $alpha: 0.55)};
-    --color-shadow: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $alpha: 0.15)};
+    --color-shadow: #{c.theme-color($base-hue, $base-saturation,  $base-lightness, $s-offset: -30%, $l-offset: 50%, $alpha: 0.15)};
 
     --color-navbar-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -45%, $l-offset: -35%, $alpha: 0.8)};
 

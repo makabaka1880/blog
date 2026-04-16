@@ -27,18 +27,21 @@ const props = defineProps<{
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    background: var(--surface-elevated);
-    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    background: var(--color-card-background);
+    transition: box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
     box-shadow: none;
-    border: 1px black solid;
+    border: 1px var(--color-border) solid;
 
     &:hover {
         width: 100%;
         color: var(--color-link);
         border-color: var(--color-link);
-        background-color: var(--color-card-hover-background);
-        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
-        
+        background: var(--color-card-hover-background);
+        box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
+
+        .card-content {
+            background: var(--color-card-hover-background);
+        }
 
         cursor: pointer;
     }
@@ -54,6 +57,7 @@ const props = defineProps<{
     }
 
     .card-content {
+        transition: background-color 0.2s ease-in-out;
         position: relative;
         z-index: 2;
         width: 100%;
@@ -61,7 +65,7 @@ const props = defineProps<{
         border-top: 1px solid #999;
         background-color: var(--color-card-background);
         /* No background color added as requested */
-        
+
         h3 {
             margin: 0;
         }
