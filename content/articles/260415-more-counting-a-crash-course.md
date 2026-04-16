@@ -4,7 +4,7 @@ description: Part 3 of 3-Part Mid-term Preparation Material
 createTime: 2026-04-15
 updateTime: 2026-04-15
 
-tag:
+tags:
     - Discrete Mathematics
 ---
 
@@ -294,3 +294,25 @@ What is the sequence $\{a_n\}$ encoded by the ordinary generating function $A(x)
 The function $\frac{1}{1-x}$ is the sum of a geometric series $\sum_{n=0}^{\infty} x^n$. Since the coefficient of each $x^n$ term is 1, the sequence being encoded is the constant sequence $a_n = 1$.
 ::
 
+Let's look at an specific case. By expanding the binomial using the binomial theorem, we get
+$$
+(x + 1)^n = \sum^n_{k = 0} \binom{n}{k} x^k
+$$
+
+So actually a binomial $(x + 1)^n$ encodes the sequence $a_k = \binom{n}{k}$. This is extremely important, as it provides an alternative way to solve combinatorical problems.
+
+## 2x00. More Counting
+The inclusion-exclusion property of probability can be generalized to any set:
+
+::LemmaBox{id="Inclusion-Exclusion"}
+If set $A$ and $B$ are countable, then the cardinality of $A \cup B$ is 
+$$
+|A \cup B| = |A| + |B| - |A \cap B|
+$$
+::
+
+This can be generalized to multiple sets
+
+::TheoremBox{id="Inclusion-Exclusion"}
+Given a family of sets $\mathca
+::

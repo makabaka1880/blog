@@ -38,7 +38,6 @@ definePageMeta({
     layout: 'article'
 })
 
-import { useHead, inject, computed } from '#imports'
 import type { MinimarkNode } from '@nuxt/content'
 import Comment from '~/components/ui/kit/Comment.vue'
 

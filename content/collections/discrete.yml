@@ -1,0 +1,6 @@
+name: "Discrete Mathematics"
+description: "Elective Discrete Mathematics notes"
+cover: "discrete.webp"
+entries:
+  - "260413-counting-a-crash-course"
+  - "260414-discrete-probability-a-crash-course"

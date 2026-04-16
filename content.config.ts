@@ -17,6 +17,19 @@ export default defineContentConfig({
                 // theme: z.object({}).optional(),
                 rawbody: z.string().optional()
             })
+        }),
+        collections: defineCollection({
+            type: 'data',
+            source: {
+                include: 'collections/*.yml'
+            },
+            schema: z.object({
+                name: z.string(),
+                description: z.string(),
+                entries: z.array(z.string()),
+                cover: z.string(),
+                stem: z.string().optional()
+            })
         })
     }
 })

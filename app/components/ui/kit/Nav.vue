@@ -9,26 +9,24 @@
         </div>
 
         <div class="nav-right">
-            <UtilsNavLink to="/">
-                <span class="nav-title" v-if="props.title">Home</span>
-            </UtilsNavLink>
-            <UtilsNavLink to="/articles">
-                <span class="nav-title">Articles</span>
-            </UtilsNavLink>
-            <UtilsNavLink to="https://github.com/makabaka1880/blog">
-                <span class="nav-title">GitHub</span>
+            <UtilsNavLink v-for="link in navLinks" :key="link.text" :to="link.to">
+                <span class="nav-title" v-if="link.text !== 'Home' || props.title">{{ link.text }}</span>
             </UtilsNavLink>
         </div>
 
-        <button class="nav-menu-toggle" type="button" @click="toggleMenu" aria-label="Toggle navigation menu">
-            ☰
+        <button class="nav-menu-toggle" type="button" @click="toggleMenu" :aria-label="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'">
+            {{ isMenuOpen ? '✕' : '☰' }}
         </button>
 
-        <Transition name="nav-popover">
-            <div v-if="menuOpen" class="nav-popover">
-                <UtilsNavLink to="/" @click="closeMenu">Home</UtilsNavLink>
-                <UtilsNavLink to="/articles" @click="closeMenu">Articles</UtilsNavLink>
-                <UtilsNavLink to="https://github.com/makabaka1880/blog" @click="closeMenu">GitHub</UtilsNavLink>
+        <!-- Dropdown menu for mobile -->
+        <Transition name="dropdown">
+            <div v-if="isMenuOpen" class="nav-dropdown">
+                <div class="nav-dropdown-backdrop" @click="closeMenu"></div>
+                <div class="nav-dropdown-content">
+                    <UtilsNavLink v-for="link in navLinks" :key="link.text" :to="link.to" @click="closeMenu">
+                        <span class="nav-title" v-if="link.text !== 'Home' || props.title">{{ link.text }}</span>
+                    </UtilsNavLink>
+                </div>
             </div>
         </Transition>
     </nav>
@@ -36,12 +34,12 @@
 
 <script setup lang="ts">
 import { useRoute } from '#app';
+import { Transition, computed, ref, watch } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 
 const props = defineProps<{ title?: string }>()
 
 const route = useRoute();
-const navRef = ref<HTMLElement | null>(null);
-const menuOpen = ref(false);
 
 const components = computed(() => {
     const parts = route.path.split('/').filter((x) => x.length > 0);
@@ -51,30 +49,31 @@ const components = computed(() => {
     }))];
 });
 
-const closeMenu = () => {
-    menuOpen.value = false;
-};
+// Navigation links data
+const navLinks = [
+    { text: 'Home', to: '/' },
+    { text: 'Articles', to: '/articles' },
+    { text: 'Collections', to: '/collections' },
+    { text: 'GitHub', to: 'https://github.com/makabaka1880/blog', external: true }
+];
+
+const isMenuOpen = ref(false);
+const navRef = ref<HTMLElement | null>(null);
 
 const toggleMenu = () => {
-    menuOpen.value = !menuOpen.value;
+    isMenuOpen.value = !isMenuOpen.value;
 };
 
-const handleDocumentClick = (event: MouseEvent) => {
-    if (!menuOpen.value || !navRef.value) return;
-    const target = event.target as Node | null;
-    if (target && !navRef.value.contains(target)) {
-        closeMenu();
-    }
+const closeMenu = () => {
+    isMenuOpen.value = false;
 };
 
-watch(() => route.path, () => closeMenu());
+// Close menu when clicking outside
+onClickOutside(navRef, closeMenu);
 
-onMounted(() => {
-    document.addEventListener('click', handleDocumentClick);
-});
-
-onBeforeUnmount(() => {
-    document.removeEventListener('click', handleDocumentClick);
+// Close menu on route change
+watch(() => route.path, () => {
+    closeMenu();
 });
 </script>
 
@@ -107,8 +106,7 @@ onBeforeUnmount(() => {
 }
 
 .nav-left a,
-.nav-right a,
-.nav-popover a {
+.nav-right a {
     text-decoration: none;
     color: var(--color-navbar-link);
     transition: all 0.2s ease-in-out;
@@ -124,9 +122,7 @@ onBeforeUnmount(() => {
 }
 
 .nav-left,
-.nav-right,
-.nav-menu-toggle,
-.nav-popover {
+.nav-right {
     position: relative;
     z-index: 1;
 }
@@ -154,44 +150,11 @@ onBeforeUnmount(() => {
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
 
     &:hover {
-        transform: scale(1.06);
+        transform: scale(1.16);
         color: var(--color-navbar-link-hover);
     }
 }
 
-.nav-popover {
-    position: absolute;
-    right: 2rem;
-    top: calc(100% - 1rem);
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.5rem;
-    min-width: 9rem;
-    border-radius: 0.5rem;
-    border: 0.0625rem solid var(--color-border);
-    background-color: var(--color-background);
-    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.12);
-    z-index: 20;
-
-    a {
-        display: block;
-        padding: 0.375rem 0.5rem;
-        border-radius: 0.25rem;
-
-    }
-}
-
-.nav-popover-enter-active,
-.nav-popover-leave-active {
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
-}
-
-.nav-popover-enter-from,
-.nav-popover-leave-to {
-    opacity: 0;
-    transform: translateY(-0.25rem) scale(0.98);
-}
 
 @media (max-width: calc(#{$critical-width} + #{$sidebar-margin} * 2)) {
     .nav-right {
@@ -202,6 +165,87 @@ onBeforeUnmount(() => {
         display: inline-flex;
         align-items: center;
         justify-content: center;
+    }
+}
+
+// Dropdown menu styles
+.nav-dropdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.nav-dropdown-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.nav-dropdown-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(0);
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    z-index: 1001;
+}
+
+
+// Dropdown transition animations
+.dropdown-enter-from .nav-dropdown-backdrop,
+.dropdown-leave-to .nav-dropdown-backdrop {
+    opacity: 0;
+}
+.dropdown-enter-from .nav-dropdown-content,
+.dropdown-leave-to .nav-dropdown-content {
+    transform: translateY(-100%);
+}
+.dropdown-enter-to .nav-dropdown-backdrop,
+.dropdown-leave-from .nav-dropdown-backdrop {
+    opacity: 1;
+}
+.dropdown-enter-to .nav-dropdown-content,
+.dropdown-leave-from .nav-dropdown-content {
+    transform: translateY(0);
+}
+.dropdown-enter-active .nav-dropdown-backdrop,
+.dropdown-leave-active .nav-dropdown-backdrop {
+    transition: opacity 0.3s ease-in-out;
+}
+.dropdown-enter-active .nav-dropdown-content,
+.dropdown-leave-active .nav-dropdown-content {
+    transition: transform 0.3s ease-in-out;
+}
+
+// Dropdown links
+.nav-dropdown-content a {
+    display: block;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    color: var(--color-navbar-link);
+    font-size: var(--font-size-lg);
+    transition: all 0.2s ease-in-out;
+    border-left: 3px solid transparent;
+
+    &:hover {
+        color: var(--color-navbar-link-hover);
+        background-color: var(--color-bg-subtle);
+        border-left-color: var(--color-primary);
     }
 }
 </style>
