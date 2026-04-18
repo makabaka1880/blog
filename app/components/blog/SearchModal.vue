@@ -54,6 +54,7 @@ type SearchSection = {
 
 const props = defineProps<{
     open: boolean;
+    collection?: string;
 }>();
 
 const emit = defineEmits<{
@@ -72,6 +73,14 @@ const close = () => {
 const onKeydown = (event: KeyboardEvent) => {
     if (event.key === 'Escape' && props.open) close();
 };
+
+const allowedTitles = computedAsync(async () => {
+    if (!props.collection) return undefined;
+    const titles = await queryCollection("collections")
+        .where("name", "=", props.collection)
+        .select("entries").first()
+    return titles?.entries
+})
 
 onMounted(() => {
     window.addEventListener('keydown', onKeydown);
@@ -96,8 +105,11 @@ watch(
 
 async function ensureIndex() {
     if (fuse) return;
-    const sections = await queryCollectionSearchSections('articles');
-    indexedSections.value = sections as SearchSection[];
+
+    let sections: any[] = await queryCollectionSearchSections('articles');
+
+    indexedSections.value = sections;
+
     fuse = new Fuse(indexedSections.value, {
         keys: [
             { name: 'title', weight: 0.5 },
@@ -109,9 +121,9 @@ async function ensureIndex() {
         includeScore: true,
         includeMatches: true,
         minMatchCharLength: 2,
-        threshold: 0.2,   // tighter — junk fuzzy matches get cut
+        threshold: 0.1,
         useExtendedSearch: true,
-        findAllMatches: true,  // don't stop at first match per field
+        findAllMatches: true,
     });
 }
 
@@ -125,7 +137,13 @@ async function onSearch() {
     searchResult.value = (fuse?.search(query) ?? []).map((r) => ({
         ...r.item,
         matches: r.matches,
-    }));
+    })).filter((r) => {
+        const title = r.id.split('/').slice(2).join('/').split("#").slice(0, -1).join()
+        if (!props.collection) return true;
+        else {
+            return allowedTitles.value?.includes(title)
+        }
+    });
 }
 
 function highlightMatches(text: string, matches: any[] | undefined, maxLength?: number, classname?: string): string {
