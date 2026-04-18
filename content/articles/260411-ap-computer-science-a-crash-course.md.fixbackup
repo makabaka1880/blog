@@ -372,16 +372,7 @@ To make sense of how reference types work, you can create a similar stack to the
 
 Let's see a concrete example in how reference passing works.
 
-::Mcq
----
-options:
-    - 1. `5 5`
-    - 2. `10 5`
-    - 3. `10 20`
-    - 4. `5 20`
-correct: 2
----
-#prompt
+::Qabox{type="question"}
 Consider the following classes.
 ```java
 public class Thing {
@@ -415,9 +406,10 @@ public class Test {
 }
 ```
 What will be printed when the `main` method is executed?
-
-#explanation
-See following content.
+1. `5 5`
+2. `10 5`
+3. `10 20`
+4. `5 20`
 ::
 Let's track down the execution line by line (here no shadowing occurs, so instead of maintaining a whole stack of declarations I will directly write the identifiers next to the object for clarity.)
 
@@ -439,18 +431,15 @@ Notice that we are now back in the main scope, and `b` maintains the value witho
 
 ::Qabox{type="answer"}
 2. `10 5`.
-::
 
-::McqMultiple
+::Mcq
 ---
 options:
     - "1. `a == b` returns true because both reference the same object"
     - "2. `a.equals(b)` returns true because both contain the same value"
     - "3. `a` and `b` are separate objects with independent memory locations"
     - "4. Changing `a`'s value will also change `b`'s value"
-correct: 
-    - 2
-    - 3
+correct: 3
 ---
 
 #prompt
@@ -463,6 +452,8 @@ Which statement is correct about the relationship between `a` and `b`?
 
 #explanation
 `a` and `b` are separate objects created with `new`, so they occupy different memory locations. `a == b` compares references and returns false. `a.equals(b)` compares values and returns true for `Integer` objects. Changing `a`'s value (if possible) would not affect `b` since they're independent objects.
+::
+
 ::
 
 ### 0x05. Boolean Algebra and Rewritting Logics
@@ -667,48 +658,30 @@ Therefore, 1 and 3 are isomorphic to the prompt.
 
 [Click here for a cheatsheet of all formulae](#logical-rewrites) used here.
 
+## 1x00. Essential APIs
 
 ::Mcq
 ---
 options:
-    - "1. `!(p && q)`"
+    - "1. `!(p &amp;&amp; q)`"
     - "2. `!p || !q`"
-    - "3. `!p && !q`"
+    - "3. `!p &amp;&amp; !q`"
     - "4. `p || q`"
 correct: 2
 ---
 
 #prompt
-According to De Morgan's Law, which expression is equivalent to `!(p && q)`?
+According to De Morgan's Law, which expression is equivalent to `!(p &amp;&amp; q)`?
 
 #explanation
-De Morgan's Law states that `!(p && q)` is equivalent to `!p || !q`. This is one of the fundamental logical rewrites in Boolean algebra. Option 1 is the original expression, option 3 is `!(p || q)` by De Morgan's Law, and option 4 is unrelated.
+De Morgan's Law states that `!(p &amp;&amp; q)` is equivalent to `!p || !q`. This is one of the fundamental logical rewrites in Boolean algebra. Option 1 is the original expression, option 3 is `!(p || q)` by De Morgan's Law, and option 4 is unrelated.
 ::
 
-## 1x00. Essential APIs
 In this section I'll walk over the most commonly used APIs in APCSA.
 [Click here for the APCSA API Reference Sheet](#apcsa-api-reference-sheet)
 
 ### 1x01. Arrays
 
-::McqMultiple
----
-options:
-    - "1. `int[] arr = new int[5];`"
-    - "2. `int[] arr = {1, 2, 3, 4, 5};`"
-    - "3. `int[] arr = new int[]{1, 2, 3, 4, 5};`"
-correct: 
-    - 1
-    - 2
-    - 3
----
-
-#prompt
-Which of the following are valid ways to declare and initialize an array in Java?
-
-#explanation
-All three are valid array declarations and initializations in Java. Option 1 creates an array of size 5 with default values (0 for `int`). Option 2 uses array literal syntax (only allowed during declaration). Option 3 uses explicit array creation syntax, which can be used anywhere, not just during declaration.
-::
 > [Click here for all the constructors](#array-constructors) for arrays listed in the appendix.
 
 When you define a normal primitive variable, you simply push the data into the stack. However, most of the time we want a way to define multiple values in a collection and query them based on their location. Arrays are interfaces built for this; they are fixed-sized containers that take up a block of contagious memory in the heap.
@@ -749,6 +722,23 @@ System.out.println(a[0]) // Prints 2
 ```
 
 ### 1x02. `String` Class
+
+::Mcq
+---
+options:
+    - "1. `int[] arr = new int[5];`"
+    - "2. `int[] arr = {1, 2, 3, 4, 5};`"
+    - "3. `int[] arr = new int[]{1, 2, 3, 4, 5};`"
+    - "4. All of the above"
+correct: 4
+---
+
+#prompt
+Which of the following are valid ways to declare and initialize an array in Java?
+
+#explanation
+All three are valid array declarations and initializations in Java. Option 1 creates an array of size 5 with default values (0 for `int`). Option 2 uses array literal syntax (only allowed during declaration). Option 3 uses explicit array creation syntax, which can be used anywhere, not just during declaration.
+::
 
 
 > The String class represents character strings. All string literals in Java programs, such as "abc", are implemented as instances of this class.
@@ -834,17 +824,16 @@ And the last line assigns `d` to `c`, which makes the two reference the same str
 
 [Click here for the string section](#string-class) of the AP reference sheet.
 
+### 1x03. `ArrayList` Class Family
 
-
-::McqMultiple
+::Mcq
 ---
 options:
     - "1. `str1 == str2`"
     - "2. `str1.equals(str2)`"
     - "3. `str1.compareTo(str2) == 0`"
-correct: 
-    - 2
-    - 3
+    - "4. Both 2 and 3"
+correct: 4
 ---
 
 #prompt
@@ -854,7 +843,6 @@ Given two `String` objects `str1` and `str2`, which expression(s) correctly chec
 For `String` objects, `equals()` compares the actual character sequences, and `compareTo() == 0` also indicates equality of content. The `==` operator compares object references, not content, so it returns true only if both variables reference the exact same `String` object in memory.
 ::
 
-### 1x03. `ArrayList` Class Family
 
 An `ArrayList` is a primary example of a **generic type**. Although the APCSA exam does not cover the formal theory of generics, it is essentially a method of parameterizing type variables to make one type dependent on another. For instance, an `ArrayList<Integer>` is dependent on the `Integer` type, whereas an `ArrayList<String>` is dependent on the `String` type. Within the APCSA reference sheet, the capital `E` serves as a placeholder for the specific type passed in at construction time.
 
@@ -936,12 +924,6 @@ ArrayList<String> listFromSet = new ArrayList<>(existingSet); // Or construct us
 > scores.set(0, 100); // Exception java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
 > ```
 
-::WarningBox
-`ArrayList`s only work for objects! That is, you cannot write `ArrayList<double>` to create an abstracted collection of `double`s. This is partly due to how java implements parametric polymorphism as an implicit private attribute of as an extra pointer. 
-
-However, you can utilize what's known as **Wrapper Classes**.
-::
-
 By default, the `add` method appends the element to the back of the list (bigger index). You can also provide an index to put the element in and shift everything backwards.
 
 The `set` method is different from `insert` in the sense that `set` does not account for any elemnets already occuring in the target index; it just overwrites everything.
@@ -949,7 +931,7 @@ The `set` method is different from `insert` in the sense that `set` does not acc
 `ArrayList` also support the enhanced for loop. 
 
 ::WarningBox
-Just remember **NOT** to mutate the `ArrayList` while you are looping over it, or else Java gets really angry and throws an error not covered in the AP Subset (`ConcurrentModificationException`, but you *can* modify elements because its essentially mutating another object whose point is in the `ArrayList`.). Even in the AP Subset, mutating during iteration is very non-idiomatic code and carries a high risk of losing points.
+Just remember **NOT** to mutate the `ArrayList` while you are looping over it, or else Java gets really angry and throws an error not covered in the AP Subset. Even in the AP Subset, mutating during iteration is very non-idiomatic code and carries a high risk of losing points.
 
 ```java
 ArrayList<String> tasks = new ArrayList<>();
@@ -965,15 +947,16 @@ for (String task : tasks) {
 ```
 ::
 
-::McqMultiple
+### 1x04. `Scanner` and `File` Class
+
+::Mcq
 ---
 options:
-    - 1. `ArrayList&lt;int>; list = new ArrayList&lt;int>();`
-    - 2. `ArrayList&lt;Integer> list = new ArrayList&lt;Integer>();`
-    - 3. `ArrayList list = new ArrayList();`
-correct: 
-    - 2
-    - 3
+    - "1. `ArrayList&lt;int&gt; list = new ArrayList&lt;int&gt;();`"
+    - "2. `ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();`"
+    - "3. `ArrayList list = new ArrayList();`"
+    - "4. Both 2 and 3"
+correct: 4
 ---
 
 #prompt
@@ -983,8 +966,6 @@ Which of the following are valid `ArrayList` declarations in Java?
 Option 2 is the correct generic syntax using the wrapper class `Integer`. Option 3 is valid without generics (raw type), though not recommended. Option 1 is invalid because generics require reference types, not primitives like `int`. `ArrayList` is a generic class that works with reference types, so primitive types need their corresponding wrapper classes.
 ::
 
-
-### 1x04. `Scanner` and `File` Class
 
 > [Click here for a complete cheatsheet of Scanner methods](#scanner-class) in the appendix.
 
@@ -1439,6 +1420,8 @@ private static void merge(int[] result, int[] left, int[] right) {
 ```
 Sometimes merging is taken out on its on as a seperate algorithm.
 
+### 2x04. Searching
+
 ::Mcq
 ---
 options:
@@ -1455,9 +1438,6 @@ Which sorting algorithm has an incorrect time complexity listed?
 #explanation
 Merge Sort has a time complexity of $O(n \log n)$, not $O(n^2)$. Bubble Sort, Insertion Sort, and Selection Sort all have worst-case time complexities of $O(n^2)$. Merge Sort uses a divide-and-conquer approach that achieves better asymptotic performance than the simple quadratic sorts.
 ::
-
-### 2x04. Searching
-
 
 
 #### Linear Search
@@ -1516,13 +1496,15 @@ public static int binarySearch(int[] arr, int target) {
 }
 ```
 
+### 2x05. Miscellaneous Algorithms
+
 ::Mcq
 ---
 options:
-    - 1. Binary search requires the array to be sorted
-    - 2. Linear search works on both sorted and unsorted arrays
-    - 3. Binary search has $O(\log n)$ time complexity
-    - 4. Linear search is always faster than binary search
+    - "1. Binary search requires the array to be sorted"
+    - "2. Linear search works on both sorted and unsorted arrays"
+    - "3. Binary search has $O(\log n)$ time complexity"
+    - "4. Linear search is always faster than binary search"
 correct: 4
 ---
 
@@ -1533,8 +1515,6 @@ Which statement about searching algorithms is FALSE?
 Linear search is NOT always faster than binary search. For large sorted arrays, binary search ($O(\log n)$) is significantly faster than linear search ($O(n)$). Binary search does require a sorted array and has logarithmic time complexity. Linear search works on any array regardless of sorting but has linear time complexity.
 ::
 
-
-### 2x05. Miscellaneous Algorithms
 
 #### Extrema Searching
 Given a collection and a total order over it, find the maxima / minima of the collection. Always initialize with the first element (or `Integer.MIN_VALUE`/`Integer.MAX_VALUE` for empty array handling).

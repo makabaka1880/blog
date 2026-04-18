@@ -1,0 +1,5 @@
+- [User APCSA MCQ Request](user_apcsa_mcq_request.md) — User requested MCQs for AP Computer Science A article covering compilers, variables, types, APIs, algorithms, and class writing
+- [APCSA Compilers MCQ](apcsa_mcq_compilers.md) — MCQ about Java compilers and syntax checking
+- [APCSA Scopes MCQ](apcsa_mcq_scopes.md) — MCQ about variable scope and shadowing
+- [APCSA Type Coercion MCQ](apcsa_mcq_type_coercion.md) — MCQ about type promotion and narrowing in Java
+- [APCSA References MCQ](apcsa_mcq_references.md) — MCQ about object references and pass-by-value in Java

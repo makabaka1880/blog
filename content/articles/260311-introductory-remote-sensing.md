@@ -226,12 +226,14 @@ function evaluatePixel(sample) {
 Outside of photography and artistic use, those non-visible bands are of far more practical value. Scientists exploit the fact that different materials absorb and reflect specific wavelengths in predictable ways — and by taking ratios of carefully chosen bands, we can construct **indices** that measure specific surface properties with a single number per pixel.
 
 ::DefBox{id="Normalized Difference Indices"}
+
 Most indices are ratios that correlate positively to one band and negatively to another, of the form:
 $$
 \text{ND}(A, B) = \frac{A - B}{A + B}
 $$
 This ratio always lies in $[-1, 1]$, normalized so that absolute brightness differences due to illumination don't skew the result. Here is an interactive Desmos model of a general ND index:
-<iframe src="https://www.desmos.com/3d/dhgqfwcgdh?embeded" />
+<iframe src="https://www.desmos.com/3d/dhgqfwcgdh?embeded"></iframe>
+
 ::
 
 For example, chlorophylls absorb red light — which is precisely why plants appear green. At the same time, chlorophylls reflect infrared strongly to prevent plants from overheating. Biologists observed a sharp drop in absorptance at the boundary between these two regimes, known as the **Red Edge**.

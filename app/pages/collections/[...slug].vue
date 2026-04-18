@@ -33,7 +33,7 @@
                 </template>
             </div>
         </div>
-        <hr />
+        <hr class="sep"/>
         <Comment />
         <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" :collection="collection?.name"/>
     </div>

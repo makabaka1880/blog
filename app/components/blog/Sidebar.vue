@@ -17,7 +17,7 @@
         </div>
         <button class="search-button" type="button" @click="isSearchOpen = true">
             <span>
-                <Icon name="uil:search" /> Search
+                <Icon name="uil:search" /> Search  all articles...
             </span>
         </button>
 
@@ -112,7 +112,7 @@ onMounted(async () => {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        width: 78%;
+        width: 90%;
         margin-top: 1rem;
         border: 0.0625rem solid var(--color-border);
         background: var(--color-card-background);

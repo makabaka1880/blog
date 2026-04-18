@@ -10,11 +10,11 @@ tags:
 
 
 ## 0x00. Notation and Nomenclature
-A **predicate** over a set $M$ is a map that maps everything in $M$ to either true ($\top$) or false ($\bot$). By the way, the set $\{\top, \bot\}$ is known as **Booleans** $\mathbb{B}$ (the same thing as `bool` in computer science.) 
+A **predicate** over a set $M$ is a map that maps everything in $M$ to either true ($\top$) or false ($\bot$). By the way, the set $\{\top, \bot\}$ is known as **Booleans** $\mathbb{B}$ (the same thing as `bool` in computer science). 
 
 ## 1x00. More Probability
 ### 1x01. Probabilistic Method
-A very interesting way to prove the existence of a certain property for an object is to construct a probability over all such objects and proving that the probability of this property existing not 0.
+A very interesting way to prove the existence of a certain property for an object is to construct a probability over all such objects and prove that the probability of this property existing is not 0.
 
 ::TheoremBox{id="Probabilistic Method"}
 If the probability that an element of a set $S$ does not have a specified property is less than 1, then there exists an element in $S$ that possesses that property.
@@ -41,10 +41,10 @@ However, this directly contradicts our initial assumption that $P(\{x \in S \mid
 ::
 ::
 
-I bet the probability mthod will not be a focus because I just cannot find a trivial enough excercise to put here
+I bet the probability method will not be a focus because I just cannot find a trivial enough exercise to put here
 
 ## 2x00. Recurrences
-The study of recurrences is pretty important thing in computer science since most recursive algorithms could have their resource assumption modeled by one. Systematic methods to solving them, however, does not exist. Luckily for a certain class of recurrences, what we can do is to create an asymptotic approximation of the recurrence and figure its lower bound, higher bound, or both.
+The study of recurrences is a pretty important thing in computer science since most recursive algorithms could have their resource assumptions modeled by one. Systematic methods for solving them, however, do not exist. Luckily for a certain class of recurrences, what we can do is to create an asymptotic approximation of the recurrence and figure out its lower bound, upper bound, or both.
 
 ### 2x01. DnC and Master's Theorem
 
@@ -58,7 +58,7 @@ $$
 Under the context of algorithmic analysis, the term $a T (n / b)$ is sometimes known as the **recursive cost**, and $f$ the **local cost**. Let's look at an explicit example.
 
 ::WarningBox
-Im using Java here purely because many of you are taking APCSA and my pseuocode renderer went on a strike.
+I'm using Java here purely because many of you are taking APCSA and my pseudocode renderer went on strike.
 ::
 
 ::ExampleBox
@@ -98,19 +98,19 @@ T(n) =& a (a T(n / b^2) + f(n / b)) + f(n) \\
 \end{align*}
 $$
 
-Because we only want an asymptotic approximation we may as well assume the recurrence has its base case at $n = 1$ to be $T(n) = 1$.
+Because we only want an asymptotic approximation, we may as well assume the recurrence has its base case at $n = 1$ to be $T(n) = 1$.
 
 ::Folding{title="Proof of Why"}
 > Remind me later
 ::
 
-Now we have a definite case of $T$, we could try calling it in our expression. Let $n / b^k = 1$, and $n = b^k$.
+Now that we have a definite case of $T$, we could try calling it in our expression. Let $n / b^k = 1$, and $n = b^k$.
 
 $$
 T(n) = n^{log_b a} + \sum^{\log_b n - 1}_{i = 0} a^i f(n / b^i)
 $$
 
-Let's assume f(n) be to polynomial for a second. Therefore the means that there exists a $c$ such that
+Let's assume f(n) to be polynomial for a second. This means that there exists a $c$ such that
 
 $$
 f(n) = \Theta(n^c)
@@ -138,7 +138,7 @@ $$
 T(n) = n^{\log_b a} + n^c \cdot \Theta \left(\sum_{i=0}^{\log_b n - 1} r^i \right)
 $$
 
-Now its basic calculus to compare the order of magnitude for the two terms. When $a / b^c$ < 1, the sum term is bounded (When approaching infinity, it converges to a bound) so its asymptotically equivalent to $\Theta(1)$. So the recurrence reduces to
+Now it's basic calculus to compare the order of magnitude of the two terms. When $a / b^c$ < 1, the sum term is bounded (when approaching infinity, it converges to a bound) so it's asymptotically equivalent to $\Theta(1)$. So the recurrence reduces to
 
 $$
 T(n) = n^{\log_b a} + \Theta(n^c)
@@ -169,7 +169,7 @@ $$
 
 Since $a = b^c \Rightarrow \log_b a = c$, both terms have the same polynomial order, but the logarithmic factor dominates:
 
-The case where the $r > 1$ is given as below:
+The case where $r > 1$ is given as below:
 
 $$
 \begin{align*}
@@ -184,7 +184,7 @@ T(n)
 \end{align*}
 $$
 
-And thus by analyzing all cases, we came to a result known as the **Master's Theorem**:
+And thus by analyzing all cases, we come to a result known as the **Master's Theorem**:
 
 ::TheoremBox{id="Master's Theorem"}
 Given recurrence
@@ -223,7 +223,7 @@ $$
 $$
 ::
 
-There are cases where recurrences that is not exactly in the form of divide and conquer can be converted to one:
+There are cases where recurrences that are not exactly in the form of divide and conquer can be converted to one:
 
 ::ExampleBox
 From last quiz:
@@ -233,12 +233,12 @@ $$
 ::
 
 ::SpoilerBox
-We can do a subtitution $m := \log n$:
+We can do a substitution $m := \log n$:
 
 $$
 T(m) = 2T(m / 2) + m
 $$
-And this become a standard divide-and-conquer that resolves to $T = \Theta(m \log m)$. Substuting back yields
+And this becomes a standard divide-and-conquer that resolves to $T = \Theta(m \log m)$. Substituting back yields
 
 $$
 \boxed{T(n) = \Theta(\log n \log{\log n})}
@@ -247,10 +247,10 @@ $$
 
 ### 1x02. Generating Functions
 
-A way of encoding sequences is called **Generating Functions**
+A way of encoding sequences is called **Generating Functions**.
 
 ::DefBox{id="Generating Functions"}
-Given a sequence $(a_n)$ over real number, its **generating function** is the polynomial
+Given a sequence $(a_n)$ over real numbers, its **generating function** is the polynomial
 $$
 \sum^{\infty}_{n = 0} a_n x^n = a_0 + a_1 x + a_2 x^2 + ..
 $$
@@ -294,12 +294,12 @@ What is the sequence $\{a_n\}$ encoded by the ordinary generating function $A(x)
 The function $\frac{1}{1-x}$ is the sum of a geometric series $\sum_{n=0}^{\infty} x^n$. Since the coefficient of each $x^n$ term is 1, the sequence being encoded is the constant sequence $a_n = 1$.
 ::
 
-Let's look at an specific case. By expanding the binomial using the binomial theorem, we get
+Let's look at a specific case. By expanding the binomial using the binomial theorem, we get
 $$
 (x + 1)^n = \sum^n_{k = 0} \binom{n}{k} x^k
 $$
 
-So actually a binomial $(x + 1)^n$ encodes the sequence $a_k = \binom{n}{k}$. This is extremely important, as it provides an alternative way to solve combinatorical problems.
+So actually a binomial $(x + 1)^n$ encodes the sequence $a_k = \binom{n}{k}$. This is extremely important, as it provides an alternative way to solve combinatorial problems.
 
 ## 2x00. More Counting
 The inclusion-exclusion property of probability can be generalized to any set:
@@ -311,8 +311,247 @@ $$
 $$
 ::
 
-This can be generalized to multiple sets
+This can be trivially understood using a Venn diagram.
+
+::Pic
+---
+src: incl-excl-1.webp
+alt: Visualization of Inclusion-Exclusion
+---
+::
+
+::Mcq
+---
+options:
+    - A. $270$
+    - B. $350$ 
+    - C. $190$
+    - D. Not deducatable
+correct: 3
+---
+#prompt
+There are $150$ students who took AP Mechanics C and $120$ students who took AP Electromagnetics C, and $80$ students that took both. Assuming only those two physics courses were available, how many students took calculus-based physics courses?
+
+#explanation
+Let $A$ be the set of all students who took Mech C and $B$ the set of all students who took EM C. Then 
+$$
+|A| = 150 \\
+|B| = 120 \\
+|A \cap B| = 80
+$$
+And by using inclusion-exclusion we get $|A| + |B| - |A \cap B| = 150 + 120 - 80 = 190$.
+::
+
+For multiple sets, just chain the rule over and over again. In fact, there is a certain pattern to it:
+$$
+\begin{align*}
+|A \cup B \cup C| &= |A \cup B| + |C| - |(A \cup B) \cap C| \\
+&= |A \cup B| + |C| - |A \cap C \cup B \cap C| \\ 
+&= (|A| + |B| - |A \cap B|) + |C| - (|A \cap B| + |A \cap B| - |A \cup B \cup B|) \\
+&= (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|
+\end{align*}
+$$
+
+If you have noticed a pattern, you're right: we are indeed collecting all possible $n$-combinations of sets' intersections, adding them when $n$ is odd and subtracting when $n$ is even.
 
 ::TheoremBox{id="Inclusion-Exclusion"}
-Given a family of sets $\mathca
+Given a family of countable sets $\mathcal{S}$, the cardinality of its disjunctive aggregation:
+
+$$
+\begin{align*}
+|\bigcup \mathcal{S}| &= \sum_{0 \lt i \le |\mathcal S|}|\mathcal S_i| - \sum_{0 \lt i \lt j \le |\mathcal S|}|\mathcal S_i \cap \mathcal S_j| + \sum_{0 \lt i \lt j \lt k \le |\mathcal S|}|\mathcal S_i \cap \mathcal S_j \cap \mathcal S_k| - \dots \\
+&= \sum_{\emptyset \neq J \subseteq \{1, \dots, |\mathcal{S}|\}} (-1)^{|J|-1} \left| \bigcap_{j \in J} \mathcal{S}_j \right|
+\end{align*}
+$$
+
+> This generalization also applies to Kolmogorov's probability theory.
+
+::Folding{title="Proof"}
+We proceed by induction on $|\mathcal S|$.
+
+**Base case:**
+If $\mathcal{S} = \{A\}$, then
+
+$$
+\begin{align*}
+\left|\bigcup \mathcal S\right| &= |A|.
+\end{align*}
+$$
+
+**Inductive step:**
+Assume the formula holds for any collection of $n-1$ sets. Let
+$\mathcal S = \{A_1, A_2, \dots, A_n\}$ and define
+$\mathcal S' = \{A_2, A_3, \dots, A_n\}$.
+
+Then
+
+$$
+\begin{align*}
+\left|\bigcup \mathcal S\right|
+&= \left|A_1 \cup \bigcup \mathcal S'\right| \\
+&= |A_1| + \left|\bigcup \mathcal S'\right| - \left|A_1 \cap \bigcup \mathcal S'\right|.
+\end{align*}
+$$
+
+By the inductive hypothesis,
+
+$$
+\begin{align*}
+\left|\bigcup \mathcal S'\right|
+&= \sum_{i=2}^n |A_i|
+- \sum_{2 \le i < j \le n} |A_i \cap A_j| \\
+&\quad + \sum_{2 \le i < j < k \le n} |A_i \cap A_j \cap A_k|
+- \cdots \\
+&\quad + (-1)^{n} |A_2 \cap \cdots \cap A_n|.
+\end{align*}
+$$
+
+Also,
+
+$$
+\begin{align*}
+A_1 \cap \bigcup \mathcal S'
+&= \bigcup_{i=2}^n (A_1 \cap A_i).
+\end{align*}
+$$
+
+Applying the inductive hypothesis again,
+
+$$
+\begin{align*}
+\left|A_1 \cap \bigcup \mathcal S'\right|
+&= \sum_{i=2}^n |A_1 \cap A_i|
+- \sum_{2 \le i < j \le n} |A_1 \cap A_i \cap A_j| \\
+&\quad + \sum_{2 \le i < j < k \le n} |A_1 \cap A_i \cap A_j \cap A_k|
+- \cdots \\
+&\quad + (-1)^{n-1} |A_1 \cap A_2 \cap \cdots \cap A_n|.
+\end{align*}
+$$
+
+Substitute both expansions:
+
+$$
+\begin{align*}
+\left|\bigcup \mathcal S\right|
+&= |A_1| + \left|\bigcup \mathcal S'\right| - \left|A_1 \cap \bigcup \mathcal S'\right| \\
+&= |A_1|
++ \sum_{i=2}^n |A_i|
+- \sum_{2 \le i < j \le n} |A_i \cap A_j| \\
+&\quad + \sum_{2 \le i < j < k \le n} |A_i \cap A_j \cap A_k|
+- \cdots \\
+&\quad - \sum_{i=2}^n |A_1 \cap A_i|
++ \sum_{2 \le i < j \le n} |A_1 \cap A_i \cap A_j| \\
+&\quad - \sum_{2 \le i < j < k \le n} |A_1 \cap A_i \cap A_j \cap A_k|
++ \cdots
+\end{align*}
+$$
+
+Now group terms by intersection size:
+
+$$
+\begin{align*}
+\left|\bigcup_{i=1}^n A_i\right|
+&= \sum_{i=1}^n |A_i| \\
+&\quad - \sum_{1 \le i < j \le n} |A_i \cap A_j| \\
+&\quad + \sum_{1 \le i < j < k \le n} |A_i \cap A_j \cap A_k| \\
+&\quad - \cdots \\
+&\quad + (-1)^{n+1} |A_1 \cap \cdots \cap A_n|.
+\end{align*}
+$$
+
+This completes the induction.
 ::
+
+:Qed
+
+::
+
+The formalization looks very scary. Luckily, there is a much more human way to memorize the theorem: it just states that the cardinality of such a union is a big sum.
+
+Consider for each $n$ where $0 < n \le |\mathcal{S}|$. For each $n$, we calculate all $n$-combinations of $\mathcal{S}$'s elements and compute each combination's intersection. Then we sum the cardinality of those intersections, and add them to the overall sum if $n$ is odd and subtract them from the sum when $n$ is even.
+
+Let's take the 5-set case for example.
+
+::ExampleBox
+To find $|A \cup B \cup C \cup D \cup E|$ for countable sets $A, B, C, D, E$, we consider all $n$-combinations where $0 < n \le 5$. 
+
+First, all $1$-combinations are just the sets themselves.
+
+$$
+|A \cup B \cup C \cup D \cup E| = |A| + |B| + |C| + |D| + |E| + ....
+$$
+
+Now, we compute the sum of cardinalities for each $2$-combinations and subtract them (because 2 is even):
+
+$$
+\begin{align*}
+|A \cup B \cup C \cup D \cup E| &= |A| + |B| + |C| + |D| + |E|  \\
+&- |A \cap B| - |A \cap C| ... - |B \cap C| - |B \cap D| - ....
+\end{align*}
+$$
+
+Now adding the $3$-combinations since $3$ is odd:
+
+$$
+\begin{align*}
+|A \cup B \cup C \cup D \cup E| &= |A| + |B| + |C| + |D| + |E| \\
+&- |A \cap B| - |A \cap C| ... - |B \cap C| - |B \cap D| - ... \\
+&+ |A \cap B \cap C| + |A \cap B \cap D| + ... \\
+\end{align*}
+$$
+
+And the $4$-combinations:
+$$
+\begin{align*}
+|A \cup B \cup C \cup D \cup E| &= |A| + |B| + |C| + |D| + |E|  \\
+&- |A \cap B| - |A \cap C| ... - |B \cap C| - |B \cap D| - ... \\
+&+ |A \cap B \cap C| + |A \cap B \cap D| + ... \\
+&- |A \cap B \cap C \cap D| - |A \cap B \cap C \cap E| - ... \\
+\end{align*}
+$$
+
+The $5$-combination is just the intersection across all the five sets:
+$$
+\begin{align*}
+|A \cup B \cup C \cup D \cup E| &= |A| + |B| + |C| + |D| + |E|  \\
+&- |A \cap B| - |A \cap C| ... - |B \cap C| - |B \cap D| - ... \\
+&+ |A \cap B \cap C| + |A \cap B \cap D| + ... \\
+&- |A \cap B \cap C \cap D| - |A \cap B \cap C \cap E| - ... \\
+&+ |A \cap B \cap C \cap D \cap E|
+\end{align*}
+$$
+::
+
+Let's test the inclusion-exclusion principle with an example.
+
+::Mcq
+---
+options:
+    - A. 120
+    - B. 130
+    - C. 140
+    - D. 150
+correct: 2
+---
+#prompt
+Suppose sets $A$, $B$, and $C$ have $|A| = 50$, $|B| = 60$, and $|C| = 70$. The pairwise intersections are $|A \cap B| = 20$, $|A \cap C| = 15$, and $|B \cap C| = 20$. The triple intersection is $|A \cap B \cap C| = 5$.
+
+What is $|A \cup B \cup C|$?
+
+#explanation
+Apply the inclusion-exclusion principle for three sets:
+
+$$
+\begin{aligned}
+|A \cup B \cup C| &= |A| + |B| + |C| \\
+                  &\quad - |A \cap B| - |A \cap C| - |B \cap C| \\
+                  &\quad + |A \cap B \cap C| \\
+                  &= 50 + 60 + 70 - 20 - 15 - 20 + 5 \\
+                  &= 180 - 55 + 5 \\
+                  &= 130.
+\end{aligned}
+$$
+
+Thus, the cardinality of the union is 130.
+::
+
