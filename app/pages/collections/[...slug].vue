@@ -33,6 +33,8 @@
                 </template>
             </div>
         </div>
+        <hr />
+        <Comment />
         <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" :collection="collection?.name"/>
     </div>
 </template>
@@ -40,6 +42,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import SearchModal from '~/components/blog/SearchModal.vue';
+import Comment from '~/components/ui/kit/Comment.vue';
 
 const route = useRoute();
 const collection = ref<any>(null);
