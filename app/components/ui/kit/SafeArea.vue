@@ -54,7 +54,7 @@ const hasRightSidebar = computed(() => !!slots.aside);
     width: $sidebar-width;
     flex-shrink: 0;
 
-    & > * {
+    &>* {
         margin-top: $sidebar-margin;
     }
 }
@@ -70,9 +70,9 @@ const hasRightSidebar = computed(() => !!slots.aside);
     .left-sidebar {
         display: none;
     }
-
     .main-content {
-        margin-left: $sidebar-margin;
+        margin-inline: 4vw !important;
+        width: 100%;
     }
 }
 </style>

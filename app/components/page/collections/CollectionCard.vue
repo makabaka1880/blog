@@ -40,6 +40,7 @@ const props = defineProps<{
         box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
 
         .card-content {
+            height: 40.5%;
             background: var(--color-card-hover-background);
         }
 
@@ -57,11 +58,12 @@ const props = defineProps<{
     }
 
     .card-content {
-        transition: background-color 0.2s ease-in-out;
+        transition: background-color 0.2s ease-in-out, height 0.2s ease-in-out;
         position: relative;
         z-index: 2;
         width: 100%;
         padding: 1.2rem;
+        height: 40%;
         border-top: 1px solid #999;
         background-color: var(--color-card-background);
         /* No background color added as requested */

@@ -3,20 +3,13 @@
         <div class="hero">
             <h1>Collections</h1>
             <p>{{ config.description }}</p>
-            <button class="search-fallback-button" type="button" @click="isSearchOpen = true">
-                <span>
-                    <Icon name="uil:search" /> Search
-                </span>
-            </button>
         </div>
         <div class="collection-list-wrapper">
-            <div class="year-art-container">
-                <div v-for="collection in collections" :key="collection.path" class="collection-item">
-                    <NuxtLink :to="collection.stem">
-                        <CollectionCard :title="collection.name" :cover="collection.cover"
-                            :description="collection.description" />
-                    </NuxtLink>
-                </div>
+            <div v-for="collection in collections" :key="collection.path" class="collection-item">
+                <NuxtLink :to="'/collections/' + collection.stem.split('/').slice(1).join('/')">
+                    <CollectionCard :title="collection.name" :cover="collection.cover"
+                        :description="collection.description" />
+                </NuxtLink>
             </div>
         </div>
         <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
@@ -53,17 +46,13 @@ onMounted(async () => {
     }
 
     .collection-list-wrapper {
-
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+        gap: 2.5rem;
 
-        .year-art-container {
-            .collection-item {
-                margin-bottom: 1.5rem;
-
-                :deep(*) {
-                    text-decoration: none;
-                }
+        .collection-item {
+            :deep(*) {
+                text-decoration: none;
             }
         }
 
@@ -84,27 +73,12 @@ onMounted(async () => {
     }
 }
 
-.search-fallback-button {
-    display: none;
-    align-items: center;
-    justify-content: flex-start;
-    width: 78%;
-    margin-top: 1rem;
-    border: 0.0625rem solid var(--color-border);
-    background: var(--color-card-background);
-    color: var(--color-text);
-    border-radius: 0.25rem;
-    padding: 0.5rem 0.75rem;
-    cursor: pointer;
-    font-size: var(--font-size-md);
-    transition: width 0.1s ease-in-out;
-    will-change: width;
-
-}
-
-@media (max-width: calc(#{$critical-width} + #{$sidebar-margin} * 2)) {
-    .search-fallback-button {
+@media (max-width: $screen-transition-width) {
+    .collection-list-wrapper {
         display: flex;
+        flex-direction: column;
+        width: 100%;
+        grid-template-columns: unset;
     }
 }
 </style>

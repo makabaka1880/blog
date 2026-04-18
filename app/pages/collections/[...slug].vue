@@ -33,7 +33,7 @@
                 </template>
             </div>
         </div>
-        <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" />
+        <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" :collection="collection?.name"/>
     </div>
 </template>
 
@@ -55,7 +55,6 @@ onMounted(async () => {
         const stem = slug.join('/');
         const allCollections = await queryCollection('collections').select('name', 'description', 'entries', 'stem', 'cover').all();
         const collectionResult = allCollections.find(c => c.stem?.split('/').slice(1).join('/') === stem);
-        console.log(allCollections.map(c => c.stem))
         if (!collectionResult) {
             notFound.value = true;
             return;

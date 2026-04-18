@@ -1,0 +1,6 @@
+name: "Computer Science"
+description: "Various blogs and thoughts on CS."
+cover: "CS.webp"
+entries:
+  - "260311-introductory-remote-sensing"
+  - "260411-ap-computer-science-a-crash-course"

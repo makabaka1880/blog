@@ -170,3 +170,7 @@ div.footer {
 // ::-webkit-scrollbar-thumb:hover {
 //     background: var(--color-link);
 // }
+
+.katex-display {
+    overflow-x: scroll;
+}

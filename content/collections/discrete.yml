@@ -1,6 +1,6 @@
 name: "Discrete Mathematics"
 description: "Notes from the SSBS Elective Discrete Mathematics course."
-cover: "discrete.webp"
+cover: "Discrete.webp"
 entries:
   - "260413-counting-a-crash-course"
   - "260414-discrete-probability-a-crash-course"
