@@ -11,7 +11,7 @@
         </div>
         <div class="article-list-wrapper">
             <div class="article-list">
-                <template v-for="(yearArticles, year) in entriesGrouped" :key="year">
+                <template v-for="{ year, articles: yearArticles } in entriesGrouped" :key="year">
                     <div class="year-title-bar">
                         <h2 class="year-disp"><strong>{{ year }}</strong> </h2> {{ yearArticles.length }} article{{
                             yearArticles.length > 1 ? "s" : "" }}
@@ -59,7 +59,10 @@ const entriesGrouped = computed(() => {
         }
         grouped[year].push(article);
     });
-    return grouped;
+
+    return Object.keys(grouped)
+        .sort((a, b) => Number(b) - Number(a))
+        .map(year => ({ year, articles: grouped[year] }));
 });
 
 </script>

@@ -14,7 +14,7 @@
         <div v-else-if="articles.length === 0" class="empty">No articles in this collection.</div>
         <div v-else class="article-list-wrapper">
             <div class="article-list">
-                <template v-for="(yearArticles, year) in entriesGrouped" :key="year">
+                <template v-for="{ year, articles: yearArticles } in entriesGrouped" :key="year">
                     <div class="year-title-bar">
                         <h2 class="year-disp"><strong>{{ year }}</strong> </h2> {{ yearArticles.length }} article{{
                             yearArticles.length > 1 ? "s" : "" }}
@@ -33,9 +33,9 @@
                 </template>
             </div>
         </div>
-        <hr class="sep"/>
+        <hr class="sep" />
         <Comment />
-        <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" :collection="collection?.name"/>
+        <SearchModal :open="isSearchOpen" @update:open="isSearchOpen = $event" :collection="collection?.name" />
     </div>
 </template>
 
@@ -63,7 +63,7 @@ onMounted(async () => {
             return;
         }
         collection.value = collectionResult;
-        
+
         const entries = collectionResult.entries as string[];
         const articlePaths = entries.map(entry => `/articles/${entry}`);
 
@@ -72,7 +72,7 @@ onMounted(async () => {
             return result;
         });
         const fetchedArticles = await Promise.all(articlePromises);
-        
+
         articles.value = fetchedArticles
             .filter(a => a !== null)
             .sort((a, b) => {
@@ -90,13 +90,16 @@ onMounted(async () => {
 const entriesGrouped = computed(() => {
     const grouped: Record<string, typeof articles.value> = {};
     articles.value.forEach(article => {
-        const year = article.createTime ? new Date(article.createTime).getFullYear().toString() : 'Unknown';
+        const year = new Date(article.createTime).getFullYear().toString();
         if (!grouped[year]) {
             grouped[year] = [];
         }
         grouped[year].push(article);
     });
-    return grouped;
+
+    return Object.keys(grouped)
+        .sort((a, b) => Number(b) - Number(a))
+        .map(year => ({ year, articles: grouped[year] }));
 });
 
 const formatDate = (createTime?: string) => {
@@ -233,7 +236,9 @@ const formatDate = (createTime?: string) => {
     }
 }
 
-.loading, .not-found, .empty {
+.loading,
+.not-found,
+.empty {
     margin: var(--section-margin);
     text-align: center;
     color: var(--text-secondary);
