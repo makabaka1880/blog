@@ -94,12 +94,9 @@ export default defineNuxtConfig({
             ],
             link: [
                 { rel: "icon", type: "image/x-icon", href: blogConfig.favicon },
-                { rel: "stylesheet", href: 'https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css' }
             ],
             script: [
                 { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" },
-                { src: "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js" },
-                { src: "https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js" }
             ]
         },
     },

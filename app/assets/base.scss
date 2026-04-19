@@ -7,11 +7,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-optical-sizing: auto;
-
-    &:not(.katex):not(.katex *) {
-        font-family: "JetBrains Mono", monospace;
-    }
 }
 
 ::selection {
@@ -36,6 +31,8 @@ body {
     color: var(--color-text);
     font-size: var(--font-size-sm);
     transition: all 0.2s ease-in-out;
+
+    font-family: "JetBrains Mono", monospace;
 }
 
 /* 链接 */
@@ -172,5 +169,6 @@ div.footer {
 // }
 
 .katex-display {
+    height: 1110% !important;
     overflow-x: scroll;
 }

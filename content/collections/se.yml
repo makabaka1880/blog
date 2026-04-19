@@ -1,6 +1,6 @@
-name: "Computer Science"
-description: "Various blogs and thoughts on CS."
-cover: "CS.webp"
+name: "Software Engineering"
+description: "World building with strings."
+cover: "SE.webp"
 entries:
   - "260311-introductory-remote-sensing"
   - "260411-ap-computer-science-a-crash-course"

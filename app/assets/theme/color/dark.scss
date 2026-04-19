@@ -79,7 +79,7 @@ $dark-separator-border: oklch(71.547% 0.00008 271.152);
     --color-tooltip-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
     --color-tooltip-text: #{$dark-tooltip-text};
 
-    --color-code-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -10%)};
+    --color-code-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -20%)};
     --color-quote-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 15%)};
     --color-quote-text: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: 45%)};
     --color-table-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: 15%)};

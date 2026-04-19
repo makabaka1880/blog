@@ -37,7 +37,7 @@ Partial application fixes the second argument to $5$, resulting in the function 
 In the 16<sup>th</sup> century the Italian mathematician Cardano, a heavy gambler, attempted to use mathematis to describe the outcome of games. He hit upon the following definition:
 
 ::TheoremBox{id="Classical Probability"}
-Let $A$ be one of the events that could happen during an experiment. Then the probability $P(A)$ is calculated as
+Let $A$ be one of the events that could happen during an experiment. Then the **probability** $P(A)$ is calculated as
 $$
 P(A) := \frac{\text{Number of ways leading to }A}{\text{Number of ways an experiment can proceed}}
 $$
@@ -295,6 +295,7 @@ P(A) &= P(A) + P(\emptyset) \\
 P(\emptyset) &= 0
 \end{align*}
 $$
+:Qed
 ::
 ::
 

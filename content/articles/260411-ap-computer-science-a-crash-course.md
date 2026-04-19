@@ -1315,6 +1315,7 @@ Bubble sort is the simplest algorithm of them all: we just scan from the beginni
 **Step:** Each pass compares adjacent pairs. If they're out of order, they swap. This ensures the largest element in the unsorted portion moves toward the end. After a full pass, the largest element reaches its final position.
 
 **Termination:** When a complete pass makes no swaps, the array is sorted (all adjacent pairs are in order).
+:Qed
 ::
 
 The implementation is also the easiest.
@@ -1348,6 +1349,7 @@ Insertion sort builds the final sorted array one element at a time. It takes eac
 **Step:** For each new element, we shift larger elements right to make space, then insert the new element. This preserves the sorted order of the first $i+1$ elements.
 
 **Termination:** After processing all $n$ elements, the entire array is sorted.
+:Qed
 ::
 
 ```java
@@ -1377,6 +1379,7 @@ Selection sort repeatedly finds the minimum element from the unsorted portion an
 **Step:** We find the minimum element in the unsorted portion and swap it with the element at position $i$. This element is now the $(i+1)$-th smallest and belongs at position $i$ in sorted order.
 
 **Termination:** After $n$ iterations, the first $n$ elements are sorted and contain all elements.
+:Qed
 ::
 
 ```java
@@ -1407,6 +1410,7 @@ Merge sort uses a divide-and-conquer approach: it recursively splits the array i
 **Inductive Step:** For an array of size $n$, we split it into two halves of size $\lfloor n/2 \rfloor$ and $\lceil n/2 \rceil$. By the inductive hypothesis, both halves are sorted correctly. The merge operation then combines two sorted arrays into one sorted array.
 
 **Termination:** Recursion terminates when arrays reach size 0 or 1.
+:Qed
 ::
 
 ```java
@@ -1471,6 +1475,7 @@ Linear search sequentially checks each element of an array until it finds the ta
 **Step:** At each iteration, we check if the current element equals the target. If yes, we return the index. If not, we continue to the next element, maintaining the invariant.
 
 **Termination:** The algorithm terminates when either the target is found or all elements have been checked. In the first case, it returns the correct index; in the second, it correctly returns $-1$.
+:Qed
 ::
 
 ```java
@@ -1495,6 +1500,7 @@ Binary search requires a sorted array and uses a divide-and-conquer approach. It
 **Step:** At each iteration, we examine the middle element `mid`. If `arr[mid] == target`, we return `mid`. If `arr[mid] < target`, the target must be in the right half (`low = mid + 1`). If `arr[mid] > target`, the target must be in the left half (`high = mid - 1`). The invariant is preserved.
 
 **Termination:** The loop terminates when `low > high`. At this point, the search space is empty, and the target is not in the array.
+:Qed
 ::
 
 ```java
