@@ -180,10 +180,8 @@ example (U : Type) (x : U) (A : Set U)
             exact h1 h2 /- Goals Accomplished! -/
 ```
 :::WarningBox
-I don't know why but you explicitly provide implicit arguments to a term in HHU's server. If you try this with a standard mathlib setup, `exact h1 x h2` works, whereas on the server, it does not.
+I don't know why but you cannot explicitly provide implicit arguments to a term in HHU's server. If you try this with a standard mathlib setup, `exact h1 x h2` works, whereas on the server, it does not.
 :Pic{src="Screenshot 2026-04-20 at 23.08.11.webp" alt="Wierd"}
 
 :::
 ::
-
-To be continued...
