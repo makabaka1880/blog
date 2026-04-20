@@ -294,6 +294,13 @@ example (U : Type) (x : U) (A B C : Set U)
     (h1 : A ⊆ B) (h2 : x ∈ B -> x ∈ C)
         : x ∈ A -> x ∈ C := h2 ∘ h1
 ```
+::WarningBox
+Well point-free does not work. Can you see why?
+
+:::SpoilerBox
+`h1` has an implicit argument: the witness of $x \in A$. We can ommit this in the abstraction form because the elaborator can infer it explictly, but function composition does not care about whether if the first argument is implicit or not.
+:::
+::
 
 But we're writing code as mathematicians, not haskellers. Mathematicians weight reabability over everything (Ramanujan, not talking about you). Remember what we said about reducing the goal instead of building the proof? We here introduces our first goal changing tactic: `intro`.
 
@@ -387,3 +394,5 @@ example (U : Type) (x : U) (A B C : Set U)
 ```
 :Pic{src="Screenshot 2026-04-21 at 07.47.15.webp"}
 ::
+
+## 0x04. Subset is Reflexive
