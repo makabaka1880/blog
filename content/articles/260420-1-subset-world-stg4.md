@@ -193,7 +193,7 @@ $$
 \left.\begin{align*}
 \text{Objects}\quad U & : \ast \\
 x & : U \\
-A, B & : \{U\} \\
+A, B, C & : \{U\} \\
 \text{Assumptions}\quad h_1 & : A \subseteq B \\
 h_2 & : B \subseteq C \\
 h_3 & : x \in A
@@ -232,7 +232,7 @@ $$
 \left.\begin{align*}
 \text{Objects}\quad U & : \ast \\
 x & : U \\
-A, B & : \{U\} \\
+A, B, C & : \{U\} \\
 \text{Assumptions}\quad h_1 & : A \subseteq B \\
 h_2 & : B \subseteq C \\
 h_3 & : x \in A \\
@@ -252,4 +252,138 @@ example (U : Type) (x : U) (A : Set U)
             exact h2 h4
 ```
 :Pic{src="Screenshot 2026-04-21 at 06.44.49.webp" alt="Screenshot on the HHU Server"}
+::
+
+## 0x03. Implication
+::QaBox{type=question}
+Let x be an object from the universe $U$, and let $A$, $B$, and $C$ be sets such that $A \subseteq B$ and $x \in B \implies x \in C$. Then $x \in A \implies x \in C$
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+x & : U \\
+A, B, C & : \{U\} \\
+\text{Assumptions}\quad h_1 & : A \subseteq B \\
+h_2 & : x \in B \implies x \in C \\
+\end{align*}\right\}
+\vdash x \in A \implies x \in C
+$$
+```lean
+example (U : Type) (x : U) (A B C : Set U)
+    (h1 : A ⊆ B) (h2 : x ∈ B -> x ∈ C)
+        : x ∈ A -> x ∈ C := sorry
+```
+::
+
+We see an implication in our goal. To prove an implication in the lambda calculus corresponds to constructing an $\lambda$ abstraction with the corresponding type of the implication under the Curry-Howard isomorphism. In this case, we need a term of type
+
+$$
+A\ x \to C\ x
+$$
+
+It's totally fine to do this in term mode and construct a term like
+```lean
+example (U : Type) (x : U) (A B C : Set U)
+    (h1 : A ⊆ B) (h2 : x ∈ B -> x ∈ C)
+        : x ∈ A -> x ∈ C := 
+            λ ha => h2 (h1 ha)
+```
+
+Or using point-free style
+```lean
+example (U : Type) (x : U) (A B C : Set U)
+    (h1 : A ⊆ B) (h2 : x ∈ B -> x ∈ C)
+        : x ∈ A -> x ∈ C := h2 ∘ h1
+```
+
+But we're writing code as mathematicians, not haskellers. Mathematicians weight reabability over everything (Ramanujan, not talking about you). Remember what we said about reducing the goal instead of building the proof? We here introduces our first goal changing tactic: `intro`.
+
+The `intro` tactic basically "assumes" the antecedent of the goal (the $A$ in $A \to B$). This works because we truely only need to consider if the antecedent holds, because if it doesn't the goal automatically proves itself by vacuous truth.
+
+::Folding{title="Ex Falso"}
+**Ex Falso Quodlibet** (the explosion theorem) says that falsity leads to anything. That is,
+$$
+\prod_{A : \ast} (\bot \to A)
+$$
+is a tautology. This can be easily proven via the definition of $\bot$.
+
+:::FlagDeriv{center=true}
+
+#flag
+$\ast : \square$
+
+#pole
+::::FlagDeriv
+
+#flag
+$A : \ast$
+
+#pole
+
+:::::FlagDeriv
+
+#flag
+$\text{hn} : \prod_{\alpha : \ast} \alpha$
+
+#pole
+$\text{hn}\ A : A$
+
+:::::
+
+$\lambda \text{hn} : \bot.\ \text{hn}\ A : \bot \to A$
+
+
+::::
+
+$$
+\begin{align*}
+\Lambda A& : \ast. \lambda \text{hn} : \bot.\ \text{hn}\ A \\
+&: \prod_{A : \ast} (\bot \to A)
+\end{align*}
+$$
+
+:::
+::
+
+
+To see it in action, let's use it on this problem.
+
+```lean
+intro h3;
+```
+
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+x & : U \\
+A, B, C & : \{U\} \\
+\text{Assumptions}\quad h_1 & : A \subseteq B \\
+h_2 & : x \in B \implies x \in C \\
+h_3 & : x \in A \\
+\end{align*}\right\}
+x \in C
+$$
+
+::NoteBox
+Another way to interpret `intro` is that it erects a flag in a normal flag-pole derivation, but it automatically applies the $\text{(abst)}$ rule to produce an abstraction that closes the goal. 
+$$
+\frac{
+    \Gamma, a : A\vdash b : B
+}{
+    \Gamma \vdash \lambda a : A. b : A \to B
+} \text{(abst)}
+$$
+::
+
+Notice how the goal changed from an implication to only the original goal's consequent. From now on, we already know what to do. We first use `have` to produce a proof of $x \in B$ using $h_1\ h_3$, then apply it to $h_2$ and use `exact` to close the goal.
+
+::QaBox{type=answer}
+```lean
+example (U : Type) (x : U) (A B C : Set U)
+    (h1 : A ⊆ B) (h2 : x ∈ B -> x ∈ C)
+        : x ∈ A -> x ∈ C := by
+            intro h3
+            have h4 : x ∈ B := h1 h3
+            exact h2 h4
+```
+:Pic{src="Screenshot 2026-04-21 at 07.47.15.webp"}
 ::
