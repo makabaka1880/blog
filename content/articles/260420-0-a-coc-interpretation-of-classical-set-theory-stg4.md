@@ -61,7 +61,7 @@ Let's port this definition over to CoC. Beware that the universe we say in type 
 ::DefBox{id=Set}
 Given a sort $*_u$ and a type $\alpha : \ast_u$. Then a **Set** over the universe $\alpha$ is an abstraction dependent on $\alpha$:
 $$
-(\ast_u : \square) \triangleright \texttt{Set} := \Pi_{\alpha : \ast_u} (\alpha \to *_0) \\
+(\ast_u : \square) \triangleright \texttt{Set} := \prod_{\alpha : \ast_u} (\alpha \to *_0) \\
 $$
 Or with parameter lists:
 $$
@@ -73,6 +73,24 @@ Where $*_0$ is the sort (type theoretical universe) of propositions.
 > Note that we're defining the **type constructor** for a set here, not the set itself! $$\texttt{Set}$$ is just a way to parametrically polymorphisize over universes in our sorts. 
 >
 > It's sorta like how `ArrayList<...>` constructs a type instead of a term and you need to call the *data constructor*`new ArrayList<...>()` to actually get a container.
+
+From this example familiar patterns from informal mathematics could be easily implemented. For example, the membership function is just the term itself:
+
+::FlagDeriv{center=true}
+#flag
+$S : \texttt{S}(\alpha), a : \alpha$
+#pole
+$a \in S := S(a) : \ast_0$
+::
+
+And furthermore, the predicate $f$ in set-builder notation is quite literally what is working under the hood:
+
+::FlagDeriv{center=true}
+#flag
+$\alpha : \ast, f : \alpha \to \alpha$
+#pole
+$ \{ x \mid f(x)\ \text{where}\ x : \alpha\} := f : \texttt{Set}\ \alpha$ 
+::
 
 For an explicit example, let's look at the set of functions with mathematical fixed points:
 

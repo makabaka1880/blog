@@ -53,13 +53,13 @@ $$
 Cardano's work although published, received little attention, and 100 years later, in the middle of the 17th century, the two French mathematicians Fermat and Pascal rediscovered his principles, also by considering games. They discussed how to divide the jackpot if a game in progress is interrupted.
 
 
-::Qabox{type=question}
+::QaBox{type=question}
 Imagine that Fermat and Pascal are playing a simple game,whereby a coin is repeatedly tossed. Fermat wins as soon as the coin hasturned up heads six times, Pascal wins as soon as the coin has turned uptails six times.There are 24 gold pieces in the pot. Now the game is interrupted when thecoin has already turned up 5 tails and 4 heads. How to divide the pot?
 ::
 
 The idea is that the pot should be divided proportional to the probability of each player winning. Fermat can only win if the coin turns up heads in each of the next two tosses. Pascal wins in any other case.
 
-::Qabox{type=answer}
+::QaBox{type=answer}
 We can enumerate all possible outcomes of the remaining (at most 2) tosses:
 
 | Toss 1 | Toss 2 | Winner |
@@ -172,7 +172,7 @@ A sample space must contain all possible outcomes of the experiment. For a fair 
 
 Now that events are formalized using naïve set theory, we can apply counting arguments to it.
 
-::Qabox{type=question}
+::QaBox{type=question}
 We roll a four-sided dice 10 times. What is the probability of obtaining 5 ones, 3 twos, 1 three and 1 four?
 ::
 
@@ -601,7 +601,7 @@ Formally, a **Monte Carlo (MC) method** is any algorithm that uses statistical s
 
 Lets look at an example. 
 
-::Qabox{type=question}
+::QaBox{type=question}
 You are on a game show. In front of you are three door, behind one of the doors is a grand prize. After you choose the door you want to open, the host opens another door that is guaranteed to have no prize behind it. Prove that switching to the other door the host didn't open maximizes your probability of winning the prize.
 ::
 

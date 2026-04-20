@@ -134,7 +134,7 @@ Notice that the bijection $f$ is not unique — we could equally well have mappe
 
 Let's do a much harder one.
 
-::Qabox{type=question}
+::QaBox{type=question}
 Construct the binary alphabet
 $$
 \Sigma := \{0, 1\}
@@ -209,7 +209,7 @@ mapping $0 \mapsto 0,\ 1 \mapsto -1,\ 2 \mapsto 1,\ 3 \mapsto -2,\ \ldots$, whic
 
 There is also this corollary that is left to the reader as an excercise to prove.
 
-::Qabox{type=question}
+::QaBox{type=question}
 If $f : M \leftrightarrow N$ is bijective, $|M| = |N|$.
 ::
 
@@ -327,7 +327,7 @@ To see why $3$ is not sufficient: the maximum configuration with $3$ objects in 
 
 Let's see another textbook example of the Pigeonhole principle.
 
-::Qabox
+::QaBox
 Let $n \in \mathbb{Z}^+$. Proof that there exists a multiple of $n$ such that its decimal expansions only contain $1$ and $0$.
 ::
 
@@ -364,7 +364,7 @@ Because $(a - b) n$ has a factor $n$, it is a multiple of $n$.
 ::
 
 ::Folding{title="Bonus"}
-::Qabox{type="question"}
+::QaBox{type="question"}
 If there are $n$ ($n \geq 3$) people who has each dated each other, prove that not every one is straight.
 ::
 
@@ -913,7 +913,7 @@ $$
 
 There are also problems on counting the partitioning of indistinguishable elements. A general way to solve them is not to consider how to select objects for each class, rather to consider the possible position of "cuts" that seperate elements into classes. This is a general method known as **stars and bars**.
 
-::Qabox
+::QaBox
 Find the number of solutions to the equation
 $$
 x_1 + x_2 + x_3 = 20

@@ -437,7 +437,7 @@ This line, `obj2` is binded to a new instance of `Thing`.
 
 Notice that we are now back in the main scope, and `b` maintains the value without ever changing. However, `a` did change; or, rather, what behind `a` did change.
 
-::Qabox{type="answer"}
+::QaBox{type="answer"}
 2. `10 5`.
 ::
 
@@ -790,7 +790,7 @@ c == d // true
 
 > Remember: `String`s are objects. This meant that when you compare them using `==`, it compares the underlaying address. Therefore, `a == b` returns whether if `a` and `b` are the same object, not just the same string. Simply put, `a == b` implies `a.equals(b)` but not necessarily the converse.
 
-::Qabox{type=question}
+::QaBox{type=question}
 ```java
 String a = "coffee";
 String b = "coffee";
@@ -826,7 +826,7 @@ And the last line assigns `d` to `c`, which makes the two reference the same str
 
 :Pic{src="scp-4.webp"}
 
-::Qabox{type=answer}
+::QaBox{type=answer}
 1. `true false true true`
 
 `a.equals(c)` is trivial. 
@@ -1051,7 +1051,7 @@ while (sn.hasNextInt()) System.out.println("Has Int " + sn.nextInt());
 
 To trace what a scanner does is pretty easy. Just simply write out the text, and imagine yourself being the parser.
 
-::Qabox{type=question}
+::QaBox{type=question}
 Consider the following program.
 ```java
 while (sn.hasNext()) {
@@ -1126,7 +1126,7 @@ Alice 17 3.8 Bob 18 3.9 |
 
 Now `sn.hasNext()` returns `false`, so the loop terminates.
 
-::Qabox{type=answer}
+::QaBox{type=answer}
 ```
 Alice (17) GPA: 3.8
 Bob (18) GPA: 3.9
@@ -1142,11 +1142,11 @@ Iteration refers to the practice of sequentially computing over an ordered colle
 
 We can utilize the `for` loop's abstraction of termination conditions and looping control to write efficient and clean code.  The most idiomatic way to use `for` loop is to maintain an index variables `i` to keep track of the loop count and also to control termination.
 
-::Qabox{type=question}
+::QaBox{type=question}
 Given positive integer $n$, print integers 0 up to $n$ delimited by newlines.
 ::
 
-::Qabox{type=answer}
+::QaBox{type=answer}
 ```java
 void printIntegers(int n) {
     for (int i = 0; i <= n; i++) {
@@ -1158,11 +1158,11 @@ void printIntegers(int n) {
 
 The operational semantics of the `for` loop does not restrict the termination predicate and update statement to be about our loop index. It could be anything.
 
-::Qabox{type=question}
+::QaBox{type=question}
 Given positive integer $n$ and $k$, compute the sum of its digits under base $k$ expansion.
 ::
 
-::Qabox{type=answer}
+::QaBox{type=answer}
 ```java
 int sumOfDigits(int n, int k) {
     int sum;
@@ -1700,7 +1700,7 @@ This ordering is a convention, not a rule enforced by the compiler — but follo
 
 Let's look at a real problem.
 
-::Qabox{type=question}
+::QaBox{type=question}
 A `TrafficLight` models a simple three-phase traffic light that cycles through **green → yellow → red → green → ...**. Each light also belongs to an **intersection** (a `String` given at construction) that never changes. The city tracks how many `TrafficLight` objects have been created in total.
 
 Each light starts on **green**. Advancing the light moves it to the next phase in the cycle. A light can also be **manually overridden** via `setPhase(String phase)`, which forces it to any phase directly, bypassing the normal cycle. A light that has ever been manually overridden is considered **dangerous**. Any light that has gone through 10000 cycles is considered degraded, and thus also **dangerous**.
@@ -1856,7 +1856,7 @@ public static int getCount() {
 
 And we're done! Just remember to correctly implement the variables, and we're good to go.
 
-::Qabox{type=answer}
+::QaBox{type=answer}
 
 ```java
 public class TrafficLight {

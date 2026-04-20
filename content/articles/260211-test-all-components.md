@@ -99,7 +99,7 @@ This is a tip box component to test custom content rendering.
 ::
 
 ### Question Box
-::Qabox
+::QaBox
 This is a question box component for FAQ-style content.
 ::
 
