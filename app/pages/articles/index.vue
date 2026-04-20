@@ -180,12 +180,6 @@ const entriesGrouped = computed(() => {
     transition: width 0.1s ease-in-out;
     will-change: width;
 
-    // span {
-    //     display: inline-flex;
-    //     align-items: center;
-    //     gap: 0.375rem;
-    // }
-
     &:hover {
         width: 100%;
         color: var(--color-link);
