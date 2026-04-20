@@ -110,7 +110,7 @@ h_2 & : x \in A
 $$
 ``` lean
 example (U : Type) (x : U) (A : Set U) 
-    (h2 : x ∈ A) (h1 : A ⊆ B)
+    (h1 : A ⊆ B) (h2 : x ∈ A)
         : x ∈ B := sorry
 ```
 ::HintBox
@@ -175,7 +175,7 @@ Likewise, in lean you do not have to explicitly provide the witness $x$ to prove
 ::QaBox{type="answer"}
 ``` lean
 example (U : Type) (x : U) (A : Set U) 
-    (h2 : x ∈ A) (h1 : A ⊆ B)
+    (h1 : A ⊆ B) (h2 : x ∈ A)
         : x ∈ B := by   /- Goal : x ∈ B -/
             exact h1 h2 /- Goals Accomplished! -/
 ```
@@ -184,4 +184,72 @@ I don't know why but you cannot explicitly provide implicit arguments to a term 
 :Pic{src="Screenshot 2026-04-20 at 23.08.11.webp" alt="Wierd"}
 
 :::
+::
+
+## 2x00. The `have` tactic
+::QaBox
+Suppose $A \subseteq B$, $B \subseteq C$, and $x \in A$. Then $x \in C$.
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+x & : U \\
+A, B & : \{U\} \\
+\text{Assumptions}\quad h_1 & : A \subseteq B \\
+h_2 & : B \subseteq C \\
+h_3 & : x \in A
+\end{align*}\right\}
+\vdash x \in C
+$$
+``` lean
+example (U : Type) (x : U) (A : Set U) 
+    (h1 : A ⊆ B) (h2 : B ⊆ C) (h3 : x ∈ A) 
+        : x ∈ C := sorry
+```
+::
+
+Using the experience from last level, this level seems pretty easy. Just prove $x \in B$ using $h_1\ h_3$ and prove $x \in C$ using that intermediate conclusion and $h_2$.
+```lean
+exact h2 (h1 h3)
+```
+For those sort proofs, a terse style is totally ok. However, constructing large and not readable terms is not considered idiomatic in tactic mode. In tactic mode, we gradually solve the goal; we gradually populate our premise and object pool. Therefore, we introduce our next tool: the `have` tactic.
+
+The `have` tactic introduces another object built from existing objects and assumptions. The syntax looks like a binding:
+
+```lean
+have h4 : x ∈ B := h1 h3
+```
+
+::NoteBox
+Even though not considered idiomatic, it's totally fine to omit the type signature here thanks to the Lean elaborator's strong type inference abilities:
+```lean
+have h4 := h1 h3
+```
+::
+
+And from here, $h_4$ appears in our object pool just like any other object!
+
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+x & : U \\
+A, B & : \{U\} \\
+\text{Assumptions}\quad h_1 & : A \subseteq B \\
+h_2 & : B \subseteq C \\
+h_3 & : x \in A \\
+h_4 & : \boxed{x \in B}
+\end{align*}\right\}
+\vdash x \in C
+$$
+
+And we just apply $h_4$ to $h_2$ for the final result and use $exact$ for closing the goal.
+
+::QaBox{type=answer}
+``` lean
+example (U : Type) (x : U) (A : Set U) 
+    (h1 : A ⊆ B) (h2 : B ⊆ C) (h3 : x ∈ A) 
+        : x ∈ C := by
+            have h4 : x ∈ B := h1 h3
+            exact h2 h4
+```
+:Pic{src="Screenshot 2026-04-21 at 06.44.49.webp" alt="Screenshot on the HHU Server"}
 ::
