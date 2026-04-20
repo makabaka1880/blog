@@ -32,7 +32,9 @@ body {
     font-size: var(--font-size-sm);
     transition: all 0.2s ease-in-out;
 
-    font-family: "JetBrains Mono", monospace;
+    & *:not(.katex):not(.katex *) {
+        font-family: "JetBrains Mono", monospace;
+    }
 }
 
 /* 链接 */

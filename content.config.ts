@@ -11,10 +11,10 @@ export default defineContentConfig({
             },
             // Custom fields
             schema: z.object({
+                title: z.string(),
+                description: z.string(),
                 createTime: z.string().date().optional(),
                 updateTime: z.string().date().optional(),
-                // collection: z.string(),
-                // theme: z.object({}).optional(),
                 rawbody: z.string().optional()
             })
         }),
@@ -29,6 +29,18 @@ export default defineContentConfig({
                 entries: z.array(z.string()),
                 cover: z.string(),
                 stem: z.string().optional()
+            })
+        }),
+        friends: defineCollection({
+            type: 'data',
+            source: {
+                include: 'friends/*.json'
+            },
+            schema: z.object({
+                name: z.string(),
+                description: z.string(),
+                site: z.string(),
+                avatar: z.string(),
             })
         })
     }

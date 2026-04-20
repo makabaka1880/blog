@@ -205,7 +205,7 @@ Scrolling Parallax with an angle of $-\frac{\pi}{4}$ and sensitivity of 0.04:
 ::ParallaxWindowScrolltrack
 ---
 src: "/assets/index/poolcore.webp"
-sensitivity: 0.04
+sensitivity: 0.1
 angle: -0.785
 ---
 ::

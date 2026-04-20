@@ -597,5 +597,12 @@ $$
 Now this is pretty easy to compute for $5$, but we might want to extend this for bigger samples, or altogether provide an analytical solution to any $n$ rolls.
 
 ::SpoilerBox
-
+The key is the binomial theorem 
+$$
+(x + y)^n = \sum^n_{i = 0} \binom{n}{i} x^i y^{n - i}
+$$
+By plugging in $y = 1$, we obtain
+$$
+(x + 1)^n = \sum^n_{i = 0} \binom{n}{i} x^i
+$$
 ::

@@ -30,13 +30,14 @@ const slots = useSlots();
 
 .derivation-wrapper.center {
     justify-content: center;
+    margin: 2rem 0;
 }
 
 .derivation-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    border-left: 2px #000 solid;
+    border-left: 2px var(--color-text) solid;
 
     &>* {
         width: max-content
@@ -44,7 +45,7 @@ const slots = useSlots();
 
     & .flag-column {
         padding: 0.5rem 1rem;
-        border: 2px #000 solid;
+        border: 2px var(--color-text) solid;
         transform: translateX(-2px);
 
         &>* {
