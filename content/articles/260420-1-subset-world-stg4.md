@@ -251,7 +251,9 @@ example (U : Type) (x : U) (A : Set U)
             have h4 : x ∈ B := h1 h3
             exact h2 h4
 ```
+::Folding{title="Screenshot"}
 :Pic{src="Screenshot 2026-04-21 at 06.44.49.webp" alt="Screenshot on the HHU Server"}
+::
 ::
 
 ## 0x03. Implication
@@ -392,7 +394,152 @@ example (U : Type) (x : U) (A B C : Set U)
             have h4 : x ∈ B := h1 h3
             exact h2 h4
 ```
+::Folding{title="Screenshot"}
 :Pic{src="Screenshot 2026-04-21 at 07.47.15.webp"}
+::
 ::
 
 ## 0x04. Subset is Reflexive
+::QaBox{type=question}
+Let $A$ be any set. Then $A \subseteq A$.
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A & : \{U\} \\
+\end{align*}\right\}
+A \subseteq A
+$$
+```lean
+example (U : Type) (A : Set U) : A ⊆ A := sorry
+```
+::
+
+Let's break the goal down into the definition of the subset relation.
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A & : \{U\} \\
+\end{align*}\right\}
+\vdash \prod_{x : U} A\ x \to A\ x
+$$
+The good news is that `intro` can also handle dependent function types. By employing `intro`, we could "assume" the existence of the witness $x : U$.
+```lean
+intro x;
+```
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A & : \{U\} \\
+x &: U
+\end{align*}\right\}
+\vdash  A\ x \to A\ x
+$$
+```lean
+intro x;
+intro hA;
+```
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A & : \{U\} \\
+x &: U \\
+\text{Assumptions}\quad h_A &: A\ x
+\end{align*}\right\}
+\vdash  A\ x
+$$
+And we use `exact` to close the goal.
+
+::QaBox{type=answer}
+```lean
+example (U : Type) (A : Set U) : A ⊆ A := by
+    intro x
+    intro hA
+    exact hA;
+```
+::Folding{title="Screenshot"}
+:Pic{src="Screenshot 2026-04-21 at 08.06.58.webp"}
+::
+::
+
+## 0x05. Subset is Transitive
+::QaBox{type=question}
+Suppose $A \subseteq B$ and $B \subseteq C$. Then $A \subseteq C$.
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A, B, C & : \{U\} \\
+\text{Assumptions}\quad h_1 &: A \subseteq B \\
+h_2 &: B \subseteq C
+\end{align*}\right\}
+\vdash  A \subseteq C
+$$
+```lean
+example (U : Type) (A B C : Set U)
+    (h1 : A ⊆ B) (h2 : B ⊆ C) : A ⊆ C
+        := sorry
+```
+::
+
+We've learned everything we need in previous levels. Try doing this yourself.
+
+::SpoilerBox
+```lean
+example (U : Type) (A B C : Set U)
+    (h1 : A ⊆ B) (h2 : B ⊆ C) : A ⊆ C
+        := by
+            intro x
+            intro hA
+            have h3 : x ∈ B := h1 hA
+            exact h2 h3
+```
+The first `intro` extracts the witness term.
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A, B, C & : \{U\} \\
+x & : U \\
+\text{Assumptions}\quad h_1 &: A \subseteq B \\
+h_2 &: B \subseteq C
+\end{align*}\right\}
+\vdash  A\ x \to C\ x
+$$
+And the second term extract $x \in A$ into assumption $h_A$:
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A, B, C & : \{U\} \\
+x & : U \\
+\text{Assumptions}\quad h_1 &: A \subseteq B \\
+h_2 &: B \subseteq C \\
+h_A &: A\ x
+\end{align*}\right\}
+\vdash C\ x
+$$
+We produce an intermediate proof of $x \in B$ via `have`
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A, B, C & : \{U\} \\
+x & : U \\
+\text{Assumptions}\quad h_1 &: A \subseteq B \\
+h_2 &: B \subseteq C \\
+h_A &: A\ x \\
+h_3 &: B\ x \\
+\end{align*}\right\}
+\vdash C\ x
+$$
+And close the goal by applyinh $h_3$ on $h_2$ to produce the final proof of $x \in C$.
+$$
+\left.\begin{align*}
+\text{Objects}\quad U & : \ast \\
+A, B, C & : \{U\} \\
+x & : U \\
+\text{Assumptions}\quad h_1 &: A \subseteq B \\
+h_2 &: B \subseteq C \\
+h_A &: A\ x \\
+h_3 &: B\ x \\
+h_2\ h_3 &: \boxed{C\ x} \\
+\end{align*}\right\}
+\vdash \boxed{C\ x} \quad \checkmark
+$$
+::
