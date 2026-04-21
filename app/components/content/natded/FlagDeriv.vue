@@ -24,14 +24,6 @@ const slots = useSlots();
 </script>
 
 <style scoped>
-.derivation-wrapper {
-    display: flex;
-}
-
-.derivation-wrapper.center {
-    justify-content: center;
-    margin: 2rem 0;
-}
 
 .derivation-container {
     display: flex;
@@ -56,6 +48,15 @@ const slots = useSlots();
     &> :not(.flag-column) {
         margin: 0;
         margin-left: 1rem;
+    }
+}
+.derivation-wrapper.center {
+    margin: 2rem auto;
+    width: 100%;
+    overflow-x: scroll;
+    .derivation-container {
+        width: fit-content;
+        margin: auto auto;
     }
 }
 </style>
