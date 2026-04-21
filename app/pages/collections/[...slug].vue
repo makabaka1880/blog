@@ -88,18 +88,32 @@ onMounted(async () => {
 });
 
 const entriesGrouped = computed(() => {
-    const grouped: Record<string, typeof articles.value> = {};
-    articles.value.forEach(article => {
+    // 1. Grouping logic
+    const grouped = articles.value.reduce((acc, article) => {
         const year = new Date(article.createTime).getFullYear().toString();
-        if (!grouped[year]) {
-            grouped[year] = [];
-        }
-        grouped[year].push(article);
-    });
+        acc[year] = acc[year] ?? [];
+        acc[year].push(article);
+        return acc;
+    }, {});
 
+    // 2. Sorting years (Descending) and inner articles
     return Object.keys(grouped)
         .sort((a, b) => Number(b) - Number(a))
-        .map(year => ({ year, articles: grouped[year] }));
+        .map(year => {
+            const sortedArticles = [...grouped[year]].sort((a, b) => {
+                const dateA = new Date(a.createTime).getTime();
+                const dateB = new Date(b.createTime).getTime();
+
+                // Primary sort: Date (Newest first)
+                // Secondary sort: Title (Lexicographic)
+                return (dateB - dateA) || b.title.localeCompare(a.title);
+            });
+
+            return {
+                year,
+                articles: sortedArticles
+            };
+        });
 });
 
 const formatDate = (createTime?: string) => {
