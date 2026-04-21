@@ -211,7 +211,7 @@ Using the experience from last level, this level seems pretty easy. Just prove $
 ```lean
 exact h2 (h1 h3)
 ```
-For those sort proofs, a terse style is totally ok. However, constructing large and not readable terms is not considered idiomatic in tactic mode. In tactic mode, we gradually solve the goal; we gradually populate our premise and object pool. Therefore, we introduce our next tool: the `have` tactic.
+For those sort of short proofs, a terse style is totally ok. However, constructing large and not readable terms is not considered idiomatic in tactic mode. In tactic mode, we gradually solve the goal; we gradually populate our premise and object pool. Therefore, we introduce our next tool: the `have` tactic.
 
 The `have` tactic introduces another object built from existing objects and assumptions. The syntax looks like a binding:
 
