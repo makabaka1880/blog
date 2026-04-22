@@ -94,9 +94,11 @@ export default defineNuxtConfig({
             ],
             link: [
                 { rel: "icon", type: "image/x-icon", href: blogConfig.favicon },
+                { rel: "stylesheet", type: "text/css", href: "http://tikzjax.com/v1/fonts.css" },
             ],
             script: [
                 { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" },
+                { src: "https://tikzjax.com/v1/tikzjax.js" }
             ]
         },
     },
