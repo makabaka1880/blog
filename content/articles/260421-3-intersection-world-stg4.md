@@ -335,3 +335,68 @@ theorem inter_subset_swap (A B : Set U)
 
 
 ## 0x07. Intersection is Associative
+::QaBox
+Prove the following theorem
+
+::TheoremBox{id="Associativity of Intersection"}
+For any sets $A$, $B$, and $C$, $(A \cap B) \cap C = A \cap (B \cap C)$
+::
+```lean
+theorem inter_assoc (A B C : Set U)
+    : (A ∩ B) ∩ C = A ∩ (B ∩ C) := by
+```
+::
+
+Its pretty obvious that our first step is to apply the `Subset.antisymm` theorem to convert our goal into subset propositions. But after that, we need a tremendous amount of projection nesting to extract membership proofs. Luckily, Lean supports pattern matching. For example, 
+```lean
+intro h
+have p := h.left
+have q := h.right
+```
+Could be compressed into one line with
+```lean
+intro ⟨p, q⟩
+```
+Pattern matching could also be nested. In our example:
+
+$$
+\left.\begin{align*}
+\text{Objects} \quad
+A, B &: \{U\} \\
+x &: U 
+\end{align*}\right\}
+\vdash (A \cap B \cap C)\ x \to (A \cap (B \cap C))\ x
+$$
+
+Using `intro ⟨⟨hA, hB⟩, hC⟩`, the implication could be unwrapped as
+
+$$
+\left.\begin{align*}
+\text{Objects} \quad
+A, B &: \{U\} \\
+x &: U \\
+\text{Assumptions} \quad
+h_A &: A\ x \\
+h_B &: B\ x \\
+h_C &: C\ x \\
+\end{align*}\right\}
+\vdash (A \cap (B \cap C))\ x
+$$
+
+And thus be proven by `exact ⟨hA, ⟨hB, hC⟩⟩`. The same goes for the second subgoal.
+
+::QaBox{type=answer}
+```lean
+theorem inter_assoc (A B C : Set U)
+    : (A ∩ B) ∩ C = A ∩ (B ∩ C) := by
+        apply Subset.antisymm
+
+        intro a
+        intro ⟨⟨hA, hB⟩, hC⟩
+        exact ⟨hA, ⟨hB, hC⟩⟩
+
+        intro a
+        intro ⟨hA, ⟨hB, hC⟩⟩
+        exact ⟨⟨hA, hB⟩, hC⟩
+```
+::
