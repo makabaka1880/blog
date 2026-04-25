@@ -170,9 +170,15 @@ div.footer {
 //     background: var(--color-link);
 // }
 
-.katex-display {
-    overflow-y: hidden;
-    height: 110%;
-    align-items: center;
-    overflow-x: scroll;
+.MathJax {
+    &[display=true] {
+        display: block;
+        width: 100%;
+        overflow-x: scroll;
+
+        & svg {
+            width: 100%;
+            margin: 0 auto;
+        }
+    }
 }

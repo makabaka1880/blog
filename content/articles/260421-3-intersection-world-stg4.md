@@ -42,6 +42,7 @@ You can type $\langle$ and $\rangle$ by typing a backslash, `<` or `>`, then mov
 :Pic{src="Screen Recording 2026-04-22 at 08.04.36.gif" alt="This also works in VSCode once you install the Lean 4 extension"}
 ::
 
+
 ::NoteBox
 Lean uses church's second order encoding of logic. Therefore, the conjunctive construct $\langle \cdot, \cdot \rangle$ is formally
 

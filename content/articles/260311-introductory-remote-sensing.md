@@ -12,8 +12,7 @@ source: "Paul Valéry"
 "To see is to forget the name of the thing one sees."
 ::
 
-I first picked up remote sensing for our IMMC 2026 project, and was surprised to find it as much a software engineering discipline as a scientific one — working with satellite data means writing pipelines, wrangling geospatial formats, and processing gigabytes of raster data in code. This article is a brief, practical introduction to the core ideas, written for programmers who are curious about what satellites actually see and how we turn that into 
-something useful.
+I first picked up remote sensing for our IMMC 2026 project, and was surprised to find it as much a software engineering discipline as a scientific one — working with satellite data means writing pipelines, wrangling geospatial formats, and processing gigabytes of raster data in code. This article is a brief, practical introduction to the core ideas, written for programmers who are curious about what satellites actually see and how we turn that into something useful.
 
 > This entry is mainly focused on spectral indices collected from satellites. Later on maybe I'll do a project on UAV remote sensing, but right now I don't have the resource to do so.
 > 

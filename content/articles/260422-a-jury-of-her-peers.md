@@ -13,7 +13,11 @@ The **First-Wave Feminism** is the term for the origins of the movement in the e
 
 Susan's article focused on more diverse aspects of social inequality than these primary political issues. The text was written in the 20<sup>th</sup> century, so the langauge was pretty archiac.
 
-## 0x01. Plot summary
+## 1x00. Plot Summary
+
+Minnie Wright was then arrested and taken to jail. Her ruined canning jars of fruits were discovered, when ... acknowledged that women facing such trivial troubles are facing 
+
+## 2x00. Text Analysis
 
 ::QuoteBox{source="Opening Paragraph"}
 When Martha Hale opened the storm-door and got a cut of the north wind, she ran back for her big woolen scarf. As she hurriedly wound that round her head her eye made a scandalized sweep of her kitchen. It was no ordinary thing that called her away--it was probably further from ordinary than anything that had ever happened in Dickson County. But what her eye took in was that her kitchen was in no shape for leaving: her bread all ready for mixing, half the flour sifted and half unsifted.
@@ -110,4 +114,15 @@ Now that it is clear that a crime has been commited. The sheriff is protecting t
 Mrs. Hale, still leaning against the door, had that sinking feeling of the mother whose child is about to speak a piece. Lewis often wandered along and got things mixed up in a story. She hoped he would tell this straight and plain, and not say unnecessary things that would just make things harder for Minnie Foster. He didn't begin at once, and she noticed that he looked queer--as if standing in that kitchen and having to tell what he had seen there yesterday morning made him almost sick.
 ::
 
-This alarmed Mrs Hales
+This alarmed Mrs Hales. 
+
+## 3x00. Symbolism
+
+**The Quilt** is a repeated symbol. There were repeated discussion of two types of quilting styles: regular quilting and knotting.
+
+Martha hale's mention of "knotting" may symbolize the act of killing by typing a rope around another's neck.
+
+**The Dead Bird No. 1** symbolizes *mistreatment*, *trap*, and *hope*. Note that John Wright's act of strangling the songbird, though cruel, was a nonrelated action.
+
+## 4x00. Themes
+

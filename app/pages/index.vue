@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import CommitBadge from '~/components/blog/CommitBadge.vue';
 
-const birth = new Date('2009-12-28T00:00:00');
+const birth = new Date('2009-11-17T00:00:00');
 const now = ref(Date.now());
 const runtimeConfig = useRuntimeConfig();
 

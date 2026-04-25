@@ -17,7 +17,7 @@
         </div>
         <button class="search-button" type="button" @click="isSearchOpen = true">
             <span>
-                <Icon name="uil:search" /> Search  all articles...
+                <Icon name="uil:search" /> Search all articles...
             </span>
         </button>
 
@@ -75,9 +75,13 @@ function cycleColorMode() {
 }
 
 onMounted(async () => {
-    const result = await queryCollection('articles').select('title', 'path').order('createTime', 'DESC');
+    const result = await queryCollection('articles')
+        .select('title', 'path', 'createTime')
+        .order('createTime', 'DESC')
+        .order('title', 'DESC')
+        .limit(5);
     const allArticles = await result.all();
-    recentArticles.value = allArticles.slice(0, 5);
+    recentArticles.value = allArticles;
 })
 </script>
 

@@ -53,7 +53,16 @@ export default defineNuxtConfig({
                     "remark-math": {},
                 },
                 rehypePlugins: {
-                    "rehype-katex": {
+                    "rehype-mathjax": {
+                        options: {
+                            loader: {
+                                load: ['[custom]/xypic.js'],
+                                paths: { custom: 'https://cdn.jsdelivr.net/gh/sonoisa/XyJax-v3@3.0.1/build/' }
+                            },
+                            chtml: {
+                                fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'
+                            }
+                        }
                     }
                 },
             }
@@ -98,7 +107,7 @@ export default defineNuxtConfig({
             ],
             script: [
                 { src: "https://registry.npmmirror.com/twikoo/1.6.44/files/dist/twikoo.nocss.js" },
-                { src: "https://tikzjax.com/v1/tikzjax.js" }
+                { src: "https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-chtml-full.js", id: "MathJax-script" }
             ]
         },
     },
