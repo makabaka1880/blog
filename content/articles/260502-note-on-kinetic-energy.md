@@ -52,7 +52,7 @@ $$
 J_3 = \int \mathbf{v}_T \cdot (\omega R_{90}\mathbf{r}) \, dm = \omega \int \mathbf{v}_T \cdot (R_{90}\mathbf{r}) \, dm.
 $$
 
-Using $\mathbf{v}_T \cdot (R_{90}\mathbf{r}) = (R_{90}^T \mathbf{v}_T) \cdot \mathbf{r}$ and $R_{90}^T = R_{-90}$,
+Using $\mathbf{v}_T \cdot (R_{90}\mathbf{r}) = (R_{90}^\intercal \mathbf{v}_T) \cdot \mathbf{r}$ and $R_{90}^\intercal = R_{-90}$,
 $$
 J_3 = \omega \int (R_{-90}\mathbf{v}_T) \cdot \mathbf{r} \, dm = \omega (R_{-90}\mathbf{v}_T) \cdot \int \mathbf{r} \, dm.
 $$
