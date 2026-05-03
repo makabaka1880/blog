@@ -18,16 +18,7 @@
                     </div>
                     <div class="year-art-container">
                         <div v-for="article in yearArticles" :key="article.path" class="article-item">
-                            <NuxtLink :to="article.path">
-                                <div class="title-bar">
-                                    <h3>{{ article.title }}</h3>
-                                    <small>{{ new Date(article.createTime).toLocaleDateString('en-US', {
-                                        day:
-                                            'numeric', month: 'short'
-                                    }) }}</small>
-                                </div>
-                                <p>{{ article.description }}</p>
-                            </NuxtLink>
+                            <ArticleCard :article="article" />
                         </div>
                     </div>
                 </template>
@@ -40,6 +31,7 @@
 <script setup lang="ts">
 import config from '@@/blog.config';
 import { ref, computed, onMounted } from 'vue';
+import ArticleCard from '~/components/blog/ArticleCard.vue';
 import SearchModal from '~/components/blog/SearchModal.vue';
 
 const articles = ref<any[]>([]);
@@ -134,28 +126,6 @@ const entriesGrouped = computed(() => {
                         background-color: var(--color-card-hover-background);
                         box-shadow: 0 0.25rem 0.75rem var(--color-shadow);
                         cursor: pointer;
-                    }
-
-                    .title-bar {
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        justify-content: space-between;
-                        gap: 1rem;
-
-                        h3 {
-                            margin: 0;
-                        }
-
-                        small {
-                            color: var(--text-muted);
-                            flex-shrink: 0;
-                        }
-                    }
-
-                    p {
-                        margin: 0.5rem 0 0 0;
-                        color: var(--text-secondary);
                     }
                 }
             }

@@ -36,6 +36,7 @@
         "better-sqlite3": "^12.6.2",
         "chess-fen": "^1.0.2",
         "chess.js": "^1.4.0",
+        "color-hash": "^2.0.2",
         "eventsource": "^4.1.0",
         "fuse.js": "^7.1.0",
         "github-slugger": "^2.0.0",

@@ -3,6 +3,9 @@ title: 4. Union World - STG4
 description: TODO
 createTime: 2026-04-22
 updateTime: 2026-04-22
+tags:
+    - "STG4"
+    - "Lean Prover 4"
 ---
 
 ::DefBox{id=Union}

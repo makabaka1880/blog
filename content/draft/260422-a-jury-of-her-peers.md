@@ -3,6 +3,9 @@ title: A Jury of Her Peers
 description: Lit analysis
 createTime: 2026-04-22
 updateTime: 2026-04-22
+tags:
+    - "Literature"
+    - "School"
 ---
 
 ## 0x00. Historical Context 
@@ -125,4 +128,3 @@ Martha hale's mention of "knotting" may symbolize the act of killing by typing a
 **The Dead Bird No. 1** symbolizes *mistreatment*, *trap*, and *hope*. Note that John Wright's act of strangling the songbird, though cruel, was a nonrelated action.
 
 ## 4x00. Themes
-
