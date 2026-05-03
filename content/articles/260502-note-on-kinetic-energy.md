@@ -19,6 +19,8 @@ E &= \frac{1}{2} \int_V \mathrm{d}m\ v^2 \\
 \end{align*}
 $$
 
+:Pic{src="Screenshot 2026-05-03 at 16.17.21.webp" alt="Velocity decomposition of a rolling rigid body"}
+
 Here, we take the reference frame to be the center of mass of the rigid body. For simplicity let's consider the translational dynamics of the axis of rotation. Here, $\mathbf{v_R}$ is the linear velocity of the point on the rigid body due to rotation, and $\mathbf{v_T}$ is the translational velocity of the axis of rotation. We can expand the square term as follows:
 
 $$
