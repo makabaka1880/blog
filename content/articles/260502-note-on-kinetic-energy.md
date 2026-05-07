@@ -57,3 +57,15 @@ $$
 J_3 = \omega \int (R_{-90}\mathbf{v}_T) \cdot \mathbf{r} \, dm = \omega (R_{-90}\mathbf{v}_T) \cdot \int \mathbf{r} \, dm.
 $$
 Since we chose the reference point as the center of mass, $\int \mathbf{r} \, dm = 0$. Hence $J_3 = 0$, and the cross term vanishes.
+
+Putting everything together:
+
+::NoteBox
+The kinetic energy of a rolling rigid body is given by:
+$$
+E = \frac{1}{2}mv^2 + \frac{1}{2}I\omega^2
+$$
+Where $v$ is the translational velocity of the axis of rotation. This formula only applies when either of the following holds:
+1. The axis of rotation coincides with the center of mass.
+2. The translational velocity $v$ of the axis of rotation is zero.
+::
