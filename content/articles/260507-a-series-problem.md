@@ -72,7 +72,7 @@ $$
 :Qed
 ::
 
-By plugging $x = 0$ into the equation and de, we have:
+By plugging $x = 0$ into the equation we have:
 
 $$
 f^{(n + 2)}(0) + n f^{(n)}(0) = 0
@@ -142,7 +142,7 @@ $$
 f_0(x) &= \sum^\infty_{i = 0} \frac{f^{(2i + 1)}}{(2i + 1)!} x^{2i + 1} \\
 &= \sum^\infty_{i=0} \frac{b_{\lfloor \frac{2i + 1}{2}\rfloor}}{(2i + 1)!} x^{2i + 1} \\ 
 &= \sum^\infty_{i=0} \frac{b_i}{(2i + 1)!} x^{2i + 1} \\ 
-&= \boxed{\sum^\infty_{i=0} \frac{(-1)^n (2i - 1)!!}{(2i + 1)!} x^{2i + 1}}
+&= \boxed{\sum^\infty_{i=0} \frac{(-1)^i (2i - 1)!!}{(2i + 1)!} x^{2i + 1}}
 \end{align*}
 $$
 
