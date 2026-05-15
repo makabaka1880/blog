@@ -68,6 +68,6 @@ I &= \int^a_b \frac{x + 1}{x(x + 3)} \\
 \end{align*}
 $$
 Proof that this also equates to $\left. \frac 13 \ln |3x| + \frac 23 \ln |3x + 9| + C_1 \right|^a_b$ is trivial and left as an excercise to the reader.
-::
+    ::
 
 Let's look at another practical example.
