@@ -58,7 +58,9 @@ $$
 &= - G m \left(\iiint_\Omega \frac{p_x \hat i}{\|\mathbf p - y \hat k\|^3} \mathrm d M + \iiint_\Omega \frac{p_y \hat j}{\|\mathbf p - y \hat k\|^3} \mathrm d M + \iiint_\Omega \frac{p_z \hat k - y \hat k}{\|\mathbf p - y \hat k\|^3} \mathrm d M\right)\\
 \end{align*}
 $$
+
 By the spherical symmetry of the planet $\Omega$, the first two integrations evaluates to $0$. Thus
+
 $$
 \begin{align*}
 \mathbf G &= - G m \hat k \iiint_\Omega \frac{p_z - y}{\|\mathbf p - y \hat k \|^3} \mathrm d M \\
