@@ -182,3 +182,23 @@ div.footer {
         }
     }
 }
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: var(--color-slider-background);
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+    border-radius: 1rem;
+    border: none;
+}
+
+input[type="range"]::-moz-range-track {
+    background: var(--color-slider-background);
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+    border-radius: 1rem;
+    border: none;
+}
