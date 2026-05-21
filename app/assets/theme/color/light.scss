@@ -74,7 +74,7 @@ $light-separator-border: oklch(0.57 0 0deg);
     --color-progress-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 44%)};
     --color-progress-fill: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
 
-    --color-slider-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -40%, $l-offset: 48%)};
+    --color-slider-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -30%, $l-offset: 40%)};
     --color-slider-fill: #{c.theme-color($base-hue, $base-saturation, $base-lightness)};
 
     --color-tooltip-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};

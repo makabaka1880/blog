@@ -234,6 +234,7 @@ const format = (t: number) => {
         overflow: hidden;
         flex-shrink: 0;
         box-sizing: border-box;
+        background-color: #fff;
 
         &.monochrome {
             .cover-art {
