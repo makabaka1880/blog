@@ -44,6 +44,7 @@ onMounted(async () => {
 
 const entriesGrouped = computed(() => {
     // 1. Grouping logic
+    console.log(articles.value);
     const grouped = articles.value.reduce((acc, article) => {
         const year = new Date(article.createTime).getFullYear().toString();
         acc[year] = acc[year] ?? [];

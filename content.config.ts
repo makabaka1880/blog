@@ -6,7 +6,7 @@ export default defineContentConfig({
         articles: defineCollection({
             type: 'page',
             source: {
-                include: '**/*.md',
+                include: '**/articles/*.md',
                 exclude: ['**/draft/**', '**/draft'],
             },
             // Custom fields
