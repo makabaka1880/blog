@@ -64,6 +64,7 @@ Assume $f(0) < 1$. Because of $f$'s monotonicity, $\forall a < 0, \nexists d < 0
 
 **Case 2**. $f(0) \le 0$. Then $\forall x_0 < 0, f(x_0) > f(0)$. Fix some $x_0$, then $D(x_0) \subseteq D(0)$. Because $\forall 0 < x < 1, f(x) < f(0)$, then $\forall 0 < \epsilon < 1, \epsilon \notin D(0)$. Now fix such $0 < \epsilon < \min(1, -x_0)$. By the monoticity of $f$, $f(x_0) < f(x_0 + \epsilon)$, so $\epsilon \in D(x_0)$. Because $D(x_0) \subseteq D(0)$, $\epsilon \in D(0)$ too. This is a direct contradiction with $\nexists 0 < \epsilon < 1, \epsilon \in D(0)$.
 
+:Pic{src="Screenshot 2026-06-10 at 14.11.37.webp"}
 :Qed
 ::
 
