@@ -61,10 +61,11 @@ The third problem is slightly harder. We notice that when $f(0) < 1$, $D(0)$ wil
 Assume $f(0) < 1$. Because of $f$'s monotonicity, $\forall a < 0, \nexists d < 0, d \in D(a)$. 
 
 **Case 1**. $f(0) > 0$. Because $\lim_{a \to -\infty} f(a) = 0$, for any $\delta > 0$, there exists some $X$ that $f(X) < \delta$. Take $\delta = f(0)$. Fix some $X$. Because $f(X) < f(0), D(0) \subseteq D(X)$.  Because $\lim_{a \to 0^-} f(a) = 1$, there must exist some $\epsilon < 0$ s.t. $f(\epsilon) > f(0)$. Therefore $\epsilon \in D(0)$. Because $D(0) \subseteq D(X)$, $\epsilon \in D(X)$ too. This is a direct contradiction with $\nexists d < 0, d \in D(X)$.
+:Pic{src="Screenshot 2026-06-10 at 16.30.23.webp"}
 
 **Case 2**. $f(0) \le 0$. Then $\forall x_0 < 0, f(x_0) > f(0)$. Fix some $x_0$, then $D(x_0) \subseteq D(0)$. Because $\forall 0 < x < 1, f(x) < f(0)$, then $\forall 0 < \epsilon < 1, \epsilon \notin D(0)$. Now fix such $0 < \epsilon < \min(1, -x_0)$. By the monoticity of $f$, $f(x_0) < f(x_0 + \epsilon)$, so $\epsilon \in D(x_0)$. Because $D(x_0) \subseteq D(0)$, $\epsilon \in D(0)$ too. This is a direct contradiction with $\nexists 0 < \epsilon < 1, \epsilon \in D(0)$.
 
-:Pic{src="Screenshot 2026-06-10 at 14.11.37.webp"}
+:Pic{src="Screenshot 2026-06-10 at 16.30.36.webp"}
 :Qed
 ::
 
