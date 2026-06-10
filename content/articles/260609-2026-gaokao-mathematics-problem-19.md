@@ -1,6 +1,6 @@
 ---
 title: 2026 Gaokao Mathematics Problem 19
-description: TODO
+description: A taste of real analysis
 createTime: 2026-06-09
 updateTime: 2026-06-09
 ---
