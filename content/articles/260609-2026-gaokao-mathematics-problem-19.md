@@ -32,25 +32,45 @@ The second one requires some definition expansion.
 $$
 D(x_2) \subseteq D(x_1) \iff  \forall d \in \mathbb R, f(x_2 + d) > f(x_2) \implies f(x_1 + d) > f(x_1)
 $$
-Fix $d \in \mathbb R$ and assume $f(x_2 + d) > f(x_2)$. We now just need to prove $f(x_1 + d) > f(x_1)$. Also since $f(x) = -f(-x)$, then $f(x) = -2^{-x}\, (x > 0)$. Also note that $f$ is monotonic over $(-\infty, 0)$ and $(0, +\infty)$, respectively.
+Fix $d \in \mathbb R$ and assume $f(x_2 + d) > f(x_2)$. We now just need to prove $f(x_1 + d) > f(x_1)$. Because $f$ is odd, we can reconstruct the analytical form of $f$:
 
-::QaBox{type="a"}
-**Case 1**. When $x_1$ and $x_2$ has the same sign, then $x_1 \ge x_2$. When they are both negative, the problem become proving $2^{x_2 + d} > 2^{x_2} \implies 2^{x_1 + d} > 2^{x_1}$. Because $f$ is monotonically increasing over this specific range of $x_1$ and $x_2$, then $d > 0$. By the monotonicity of $f$, RHS of the implication automatically holds. A similar argument goes for $x_1 \ge x_2 > 0$. 
+$$
+f(x) = 
+\begin{cases}
+2^x & x < 0 \\
+0 & x = 0 \\
+-2^{-x} & x > 0
+\end{cases}
+$$
 
-**Case 2**. When $x_1$ and $x_2$ does not have the same sign. Then $x_1 > 0 > x_2$. The problem is now proving $2^{x_2 + d} > 2^{x_2} \implies -2^{-x_1 - d} > -2^{-x_1}$. By monotonicity $d > 0$. Therefore $2^{-x_1 - d} < 2^{-x_1}$ and the inequality flips when signs are reverse on both side. 
+We just discuss every possible case of the sign of $x_1$ and $x_2$.
+
+::QaBox{type=a}
+**Case 1**. When $x_1 \le x_2 < 0$, $f$ could be expanded to the $x < 0$ case because any $x \ge 0$ will be less then the lower bound of $f(x_1)$ and $f(x_2)$. Therefore the problem simplifies to proving $2^{x_2 + d} > 2^{x_2} \implies 2^{x_1 + d} > 2^{x_1}$. By the monotonicity of $f$, $d > 0$. Therefore the consequent must hold because of $f$'s monotonicity.
+
+**Case 2**. When $x_1 > 0 > x_2$. $f$ on the premise could be expanded to $x < 0$ for the same reason in case 1, thus it is evident that $d > 0$. Similarly because the $x > 0$ case for $f$ is also monotonic, the consequent holds.
+
+**Case 3**. When $0 < x_1 \le x_2$. The premise could hold for two cases of $d$: when $d \le -x_2$ or $d > 0$, and to prove the consequent, either $d \le -x_1$ or $d > 0$. Because $x_1 \le x_2$, then $d \le -x_2$  must imply $d \le -x_1$. When $d > 0$, the consequent also holds.
+
 :Qed
 ::
 
 The third problem is slightly harder. We notice that when $f(0) < 1$, $D(0)$ will contain a subset of $(-\infty, 0)$, whereas $D(a)$ for any $a < 0$ wont.
 
 ::QaBox{type="a"}
-Assume $f(0) < 1$. Consider some $a < 0$. By the monotonicity of $f$ over $(-\infty, 0)$, there does not exist any $d < 0$ such that $f(a + d) > f(a)$. Therefore $\nexists d < 0, d \in D(a)$. However because $\lim_{a \to 0^-} f(a) = 1$, for any $\delta$, there will always exist some $\epsilon < 0$ such that $f(\epsilon) > 1 - \delta$. Take $\delta = 1 - f(0)$. Then $\epsilon \in D(0)$. This is a direct contradiction. :Qed
+Assume $f(0) < 1$. Because of $f$'s monotonicity, $\forall a < 0, \nexists d < 0, d \in D(a)$. 
+
+**Case 1**. $f(0) > 0$. Because $\lim_{a \to -\infty} f(a) = 0$, for any $\delta > 0$, there exists some $X$ that $f(X) < \delta$. Take $\delta = f(0)$. Fix some $X$. Because $f(X) < f(0), D(0) \subseteq D(X)$.  Because $\lim_{a \to 0^-} f(a) = 1$, there must exist some $\epsilon < 0$ s.t. $f(\epsilon) > f(0)$. Therefore $\epsilon \in D(0)$. Because $D(0) \subseteq D(X)$, $\epsilon \in D(X)$ too. This is a direct contradiction with $\nexists d < 0, d \in D(X)$.
+
+**Case 2**. $f(0) \le 0$. Then $\forall x_0 < 0, f(x_0) > f(0)$. Fix some $x_0$, then $D(x_0) \subseteq D(0)$. Because $\forall 0 < x < 1, f(x) < f(0)$, then $\forall 0 < \epsilon < 1, \epsilon \notin D(0)$. Now fix such $0 < \epsilon < \min(1, -x_0)$. By the monoticity of $f$, $f(x_0) < f(x_0 + \epsilon)$, so $\epsilon \in D(x_0)$. Because $D(x_0) \subseteq D(0)$, $\epsilon \in D(0)$ too. This is a direct contradiction with $\nexists 0 < \epsilon < 1, \epsilon \in D(0)$.
+
+:Qed
 ::
 
 
 The last proof of monotonicity requires proving a lemma that $\forall x > 0, f(x) < 0$.
 
-**Proof**. Assume $\exists x_0, 0 \ge f(x_0) < f(0)$. Then $\forall x < 0, D(x_0) \subseteq D(x)$. But because $f(x_0) < f(0)$, then $-x_0 \in D(x_0)$. By the monotonicity of $f(x)$ when $x < 0$, $\forall x < 0, \nexists d < 0, d \in D(x)$. But because $\forall x < 0, \forall d \in D(x_0) \implies d \in D(x)$, this is a direct contradiction since $-x_0 < 0$. :Qed
+**Proof**. Assume $\exists x_0, 0 \le f(x_0) < f(0)$. Then $\forall x < 0, D(x_0) \subseteq D(x)$. But because $f(x_0) < f(0)$, then $-x_0 \in D(x_0)$. By the monotonicity of $f(x)$ when $x < 0$, $\forall x < 0, \nexists d < 0, d \in D(x)$. But because $\forall x < 0, \forall d \in D(x_0) \implies d \in D(x)$, this is a direct contradiction since $-x_0 < 0$. :Qed
 
 Now we can prove the monotonicity of $f$.
 
