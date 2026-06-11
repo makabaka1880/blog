@@ -13,6 +13,13 @@ const blogLinks = [
         description: "You're good enough!!",
         site: "https://www.itedev.com",
         avatar: "https://wsrv.nl/?url=github.com%2Fminc-nice-100.png%3Fsize=92"
+    },
+    {
+        name: "Thomas Wu",
+        sitename: "TakumiBC",
+        description: "`Nerd`.",
+        site: "https://www.takumibc.com",
+        avatar: "https://www.takumibc.com/avatar.jpg"
     }
 ]
 

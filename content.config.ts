@@ -31,18 +31,6 @@ export default defineContentConfig({
                 cover: z.string(),
                 stem: z.string().optional()
             })
-        }),
-        friends: defineCollection({
-            type: 'data',
-            source: {
-                include: 'friends/*.json'
-            },
-            schema: z.object({
-                name: z.string(),
-                description: z.string(),
-                site: z.string(),
-                avatar: z.string(),
-            })
         })
     }
 })

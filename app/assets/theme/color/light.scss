@@ -34,7 +34,7 @@ $light-separator-border: oklch(0.57 0 0deg);
     --color-card-hover-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 48%)};
     --color-hard-background: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: 50%, $l-offset: -40%)};
 
-    --color-card-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -35%, $l-offset: 0%)};
+    --color-card-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -30%, $l-offset: 30%)};
     --color-card-hover-border: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};
     --color-card-title: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -10%, $l-offset: -15%)};
     --color-card-metadata: #{c.theme-color($base-hue, $base-saturation, $base-lightness, $s-offset: -20%, $l-offset: -15%)};

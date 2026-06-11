@@ -1,55 +1,43 @@
 <template>
-    <div class="links-container">
-        <h1 class="link-header">Links</h1>
-
-        <div v-for="category in links" :key="category.title" class="category-section">
-            <h2>{{ category.title }}</h2>
-            <p v-if="category.subTitle" class="subtitle">{{ category.subTitle }}</p>
-
-            <div class="links-grid">
-                <UIKitWebsiteCard v-for="link in category.links" :key="link.url" :title="link.name" :desc="link.desc"
-                    :to="link.url" />
-            </div>
+    <div class="container">
+        <div class="hero">
+            <h1 class="link-header">Links</h1>
+            <p>Say hi to my friends and check out their blogs!</p>
+        </div>
+        <div class="links-grid">
+            <FriendCard v-for="entry in links" :key="entry.name" :name="entry.name" :sitename="entry.sitename"
+                :description="entry.description" :avater="entry.avatar" :site="entry.site">
+            </FriendCard>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import blogConfig from '@@/blog.config'
+import FriendCard from '~/components/page/friends/FriendCard.vue';
 const links = blogConfig.links
 </script>
 
 <style scoped>
-.links-container {
-    margin: 0 auto;
-    padding: 0;
-}
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
-.link-header {
-    margin: var(--section-margin);
-    color: var(--color-text);
-}
+    .hero {
+        margin: var(--section-margin);
+    }
 
-.category-section {
-    margin-bottom: 2rem;
-}
+    .links-container {
+        margin: 0 auto;
+        padding: 0;
+    }
 
-.category-section h2 {
-    font-size: var(--font-size-3xl);
-    font-weight: 600;
-    color: var(--color-text);
-    margin-bottom: 1rem;
-}
-
-.category-section .subtitle {
-    font-size: var(--font-size-base);
-    color: var(--color-text-secondary);
-    margin-bottom: 1rem;
-}
-
-.links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
-    gap: 1.5rem;
+    .links-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
+        gap: 1.5rem;
+    }
 }
 </style>

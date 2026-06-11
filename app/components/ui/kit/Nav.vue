@@ -14,7 +14,8 @@
             </UtilsNavLink>
         </div>
 
-        <button class="nav-menu-toggle" type="button" @click="toggleMenu" :aria-label="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'">
+        <button class="nav-menu-toggle" type="button" @click="toggleMenu"
+            :aria-label="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'">
             {{ isMenuOpen ? '✕' : '☰' }}
         </button>
 
@@ -54,6 +55,7 @@ const navLinks = [
     { text: 'Home', to: '/' },
     { text: 'Articles', to: '/articles' },
     { text: 'Collections', to: '/collections' },
+    { text: 'Friends', to: 'link' },
     { text: 'GitHub', to: 'https://github.com/makabaka1880/blog', external: true }
 ];
 
@@ -211,22 +213,27 @@ watch(() => route.path, () => {
 .dropdown-leave-to .nav-dropdown-backdrop {
     opacity: 0;
 }
+
 .dropdown-enter-from .nav-dropdown-content,
 .dropdown-leave-to .nav-dropdown-content {
     transform: translateY(-100%);
 }
+
 .dropdown-enter-to .nav-dropdown-backdrop,
 .dropdown-leave-from .nav-dropdown-backdrop {
     opacity: 1;
 }
+
 .dropdown-enter-to .nav-dropdown-content,
 .dropdown-leave-from .nav-dropdown-content {
     transform: translateY(0);
 }
+
 .dropdown-enter-active .nav-dropdown-backdrop,
 .dropdown-leave-active .nav-dropdown-backdrop {
     transition: opacity 0.3s ease-in-out;
 }
+
 .dropdown-enter-active .nav-dropdown-content,
 .dropdown-leave-active .nav-dropdown-content {
     transition: transform 0.3s ease-in-out;
