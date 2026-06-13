@@ -2,6 +2,8 @@
 import blogLinks from './configs/blog.links.config'
 import ayuTheme from './configs/theme-light.json'
 
+
+
 //? Blog configuration
 const blogConfig = {
     title: 'Teal Blog',
@@ -23,7 +25,7 @@ const blogConfig = {
     timezone: 'Asia/Shanghai',
     url: 'https://blog.makabaka1880.xyz', //! TODO Fill in blog URL
     highlight: {
-        langs: ['json', 'js', 'ts', 'html', 'css', 'vue', 'shell', 'mdc', 'md', 'yaml', 'sql', 'swift', 'c', 'cpp', 'glsl', 'py', 'r', 'java', 'lean', 'haskell'],
+        langs: ['json', 'js', 'ts', 'html', 'css', 'vue', 'shell', 'mdc', 'md', 'yaml', 'sql', 'swift', 'c', 'cpp', 'glsl', 'py', 'r', 'java', 'lean', 'haskell', 'lisp'],
         theme: {
             // Default theme (same as single string)
             default: ayuTheme,
@@ -31,24 +33,17 @@ const blogConfig = {
             // dark: 'ayu-dark',
             // Theme used if `html.sepia`
             // sepia: 'monokai'
-        },
+        }
     },
     // collections: blogCollections, //! Do not modify
     links: blogLinks, //! Do not modify
     birth: "2009-11-17",
-    defaults: {
-        track: {
-            mode: "server" as const,
-            server: "netease" as const,
-            id: "1913745954"
-        }
-    },
     services: {
         twikooConfig: {
             endpoint: "https://blog-twikoo-one-dun.vercel.app/"
         },
         metingConfig: {
-            endpoint: 'https://api.i-meto.com/meting/api'
+            endpoint: 'https://api.music.abloom.site/'
         }
     }
 }

@@ -47,7 +47,7 @@ export default defineNuxtConfig({
             markdown: {
                 highlight: {
                     // theme: blogConfig.highlight.theme as any,
-                    langs: blogConfig.highlight.langs as any[],
+                    langs: blogConfig.highlight.langs,
                 },
                 remarkPlugins: {
                     "remark-math": {},
