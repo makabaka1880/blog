@@ -20,14 +20,15 @@ const props = defineProps<{
     url: string,
     title: string,
     details: string,
-    image: string,
+    image?: string,
     absolute?: boolean
 }>()
 
 const route = useRoute();
 
 const resolvedImage = computed(() => {
-    const imageSrc = props.image ?? '/default-image.webp';
+    if (props.image == undefined) return '/assets/default-siteicon.webp'
+    const imageSrc = props.image;
     return resolveAssetSrc(imageSrc, route.path, props.absolute);
 });
 </script>
