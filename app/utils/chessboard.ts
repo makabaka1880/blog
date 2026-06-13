@@ -152,32 +152,32 @@ export const drawBoard = (el: HTMLCanvasElement, gridWidth: number = GRID_SIZE, 
     return { ctx, cellSize, colors };
 };
 
-export const drawCoordinates = (
-    ctx: CanvasRenderingContext2D,
-    cellSize: number,
-    gridSize: number,
-    colors: { light: string; dark: string }
-) => {
-    ctx.font = `${cellSize * 0.15}px JetBrains Mono`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+// export const drawCoordinates = (
+//     ctx: CanvasRenderingContext2D,
+//     cellSize: number,
+//     gridSize: number,
+//     colors: { light: string; dark: string }
+// ) => {
+//     ctx.font = `${cellSize * 0.15}px JetBrains Mono`;
+//     ctx.textAlign = "center";
+//     ctx.textBaseline = "middle";
 
-    for (let rank = 0; rank < gridSize; rank += 1) {
-        const label = String(gridSize - rank);
-        const x = 0.15 * cellSize;
-        const y = (rank + 0.15) * cellSize;
-        ctx.fillStyle = rank % 2 === 0 ? colors.dark : colors.light;
-        ctx.fillText(label, x, y);
-    }
+//     for (let rank = 0; rank < gridSize; rank += 1) {
+//         const label = String(gridSize - rank);
+//         const x = 0.15 * cellSize;
+//         const y = (rank + 0.15) * cellSize;
+//         ctx.fillStyle = rank % 2 === 0 ? colors.dark : colors.light;
+//         ctx.fillText(label, x, y);
+//     }
 
-    for (let file = 0; file < gridSize; file += 1) {
-        const label = String.fromCharCode(97 + file).toUpperCase();
-        const x = (file + 0.85) * cellSize;
-        const y = (gridSize - 0.15) * cellSize;
-        ctx.fillStyle = file % 2 === 1 ? colors.dark : colors.light;
-        ctx.fillText(label, x, y);
-    }
-};
+//     for (let file = 0; file < gridSize; file += 1) {
+//         const label = String.fromCharCode(97 + file).toUpperCase();
+//         const x = (file + 0.85) * cellSize;
+//         const y = (gridSize - 0.15) * cellSize;
+//         ctx.fillStyle = file % 2 === 1 ? colors.dark : colors.light;
+//         ctx.fillText(label, x, y);
+//     }
+// };
 
 export const acnToXY = (acn: string, cellSize: number) => {
     const file = acn.charCodeAt(0) - "a".charCodeAt(0);
