@@ -121,7 +121,10 @@ However this does not offer anything other then a topological ordering of the de
 
 After pondering around for a bit I had enough of effect systems and single-state semantics. So I tried to get sth out of more environment-oriented design that focues more on individual entities and provides access to the environment through bindings. 
 
-
+> Anyways this little stack-based language is quite cool and I implemented it just for fun.
+> 
+> You can play with it here
+> :LinkCard{title="Stacky" url="http://makabaka1880.github.io/stacky/"}
 ## 0x01. Semantics
 
 
@@ -204,3 +207,5 @@ $$
     \langle \texttt{skip} ; P \;,\; \sigma \rangle \nrightarrow
 }
 $$
+
+The completeness of this language is even more trivial then the last stack-based language. I wont waste my time here for this.
