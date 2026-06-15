@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { MetingApi, type MusicServer, type MusicSong } from '@/utils/music-api'
+import config from '@@/blog.config'
 
 const props = withDefaults(
     defineProps<{
@@ -56,6 +57,7 @@ const props = withDefaults(
         id?: string | number
         autoplay?: boolean
         monochrome?: boolean
+        api?: string
     }>(),
     {
         mode: 'local',
@@ -63,7 +65,7 @@ const props = withDefaults(
     },
 )
 
-const api = new MetingApi({ baseUrl: 'https://api.i-meto.com/meting/api' })
+const api = new MetingApi({ baseUrl: props.api || config.services.metingConfig.endpoint })
 
 const audio = ref<HTMLAudioElement | null>(null)
 const isPlaying = ref(false)
