@@ -9,7 +9,7 @@ updateTime: 2026-06-25
 ---
 title: Plato
 details: Gamified Formal Logic.
-url: https://plato.makabaka1880.xyz
+url: https://plato.thespool.xyz
 ---
 ::
 
