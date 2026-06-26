@@ -38,17 +38,54 @@ If that sounds like a bunch of intimidating math jargon, think of it as a puzzle
 
 ::Pic
 ---
-src: "Screenshot 2026-06-25 at 23.28.53.webp"
+src: "Screenshot 2026-06-26 at 11.36.17.webp"
 alt: "Home Screen"
 ---
 ::
 
-You start a level with a set of premises (the facts you know), a target goal, and an initial context. To win, you type standard logic commands like `(->-elim 1 2)` or `(and-intro 3 4)` to apply rules of inference, step by step, until your goal is completely resolved. 
+The game is split into three sections, each with its own logic mode and cast of characters. **Propositional Logic** (38 problems) has you chatting with Plato and Aristotle about connectives like "and", "or", and "if-then". **First-Order Logic** (15 problems) brings in De Morgan and Frege to introduce quantifiers — "for all" and "there exists" — letting you reason about predicates like "Socrates is mortal". **Modal Logic** (8 problems) wraps up with Aristotle and the Master, where you handle necessity ($\Box$) and possibility ($\Diamond$). That's 61 problems in total, each one teaching a specific inference rule or proof technique.
+
+When you first enter a section, you're greeted by a Discovery dialogue — a short illustrated conversation between two historical logicians that sets up the section's theme before dropping you into the first problem. It's a nice breather between the heavy lifting, and it gives each section its own narrative flavor.
+
+::Pic
+---
+src: "Screenshot 2026-06-26 at 11.37.17.webp"
+alt: "Section 1 - Discovery"
+---
+::
+
+The core loop is simple. Each problem gives you a set of premises (facts you already know), a goal (what you need to prove), and an initial context. You type s-expression commands like `(->-elim 1 2)` or `(and-intro 3 4)` into a REPL to apply rules of inference, step by step, until the goal is fully resolved.
 
 ::Pic
 ---
 src: "Screenshot 2026-06-25 at 23.34.50.webp"
 alt: "Yes! You have autosuggestions"
+---
+::
+
+Under the hood, Plato's reasoning engine is written in Rust and compiled to WebAssembly. Every command you type gets parsed, validated against the current proof context, and either applied to advance the proof or rejected with a precise error. The engine handles formula substitution, variable capture, context management, and all the fiddly bookkeeping that makes natural deduction rigorous. It doesn't just check syntax — it actually *derives* the judgement $\Gamma \vdash \varphi$ at each step, so you can't cheat your way to the goal.
+
+::NoteBox
+To keep the proof search decidable, Plato separates the axiom set into two modes: propositional logic (PL, with FOL turned off) and first-order logic (FOL, with FOL turned on). First-order modal logic is undecidable in general, so the modal section runs under PL — you get modal operators ($\Box$, $\Diamond$) but not quantifiers ($\forall$, $\exists$), keeping the system within well-behaved territory. Conversely, first-order problems use FOL mode where quantifiers and predicate application are available but modal operators are disabled. The active axiom set is always visible in the navbar as a colored chip (green for FOL on, orange for FOL off), so you never lose track of what's in your toolkit.
+::
+
+As you solve problems, you unlock tactics — 24 in total across all three sections. Each tactic has a LaTeX inference rule, a natural-language description, and example usage. The unlocked tactics appear in a sidebar as quick-reference cards, and you can open the full command reference (with group-by-group filtering) at any time by hitting the `?` button in the navbar. Unlocked tactics from earlier sections carry forward, so by the time you're wrestling with quantifier elimination in first-order logic, you still have your full propositional toolkit at your disposal.
+
+::Pic
+---
+src: "Screenshot 2026-06-26 at 11.51.25.webp"
+alt: "Tactics collected along the way"
+---
+::
+
+If you get stuck, every problem comes with an optional hint system and a step-by-step guide walkthrough. Hints nudge you in the right direction; guides spell out the exact command sequence. Both use inline LaTeX ($A \to B$) and glossary links ([modus-ponens]) so the notation is always readable.
+
+You can also switch between two display modes: TeX (pretty-printed mathematical notation via KaTeX) and plain text (the raw s-expression form). The TeX mode is great for learning; the text mode is closer to what you'd actually type.
+
+::Pic
+---
+src: "Screenshot 2026-06-26 at 11.45.35.webp"
+alt: "Hardcore"
 ---
 ::
 
