@@ -605,11 +605,45 @@ Upcoming lectures will cover type casting, control flow (conditionals and loops)
 
 Experiment with the online editor below — try declaring variables of different types and observe the results.
 
+::
+## Glossary
+
+A quick reference for terms whose CS meaning differs from everyday English — or which simply didn't exist before this lecture.
+
+| Term | Everyday / Literal Meaning | What It Means in CS |
+|:---|:---|:---|
+| **Abstraction** (抽象) | A vague idea; something not concrete | Hiding the messy internal details behind a clean, simple interface. A `String` abstracts away the raw character array — you don't need to know how characters are laid out in memory, you just use it. |
+| **Address** (地址) | Where a building is; a street number | A number that tells the CPU exactly where in memory something lives. Like a postal address, but for bytes in RAM. |
+| **Allocation** (分配) | Setting aside money or resources for a purpose | Reserving a block of memory for a variable or object. "Static allocation" happens at compile time (stack); "dynamic allocation" happens while the program runs (heap). |
+| **Assignment** (赋值) | A task given to someone | The act of storing a value into a variable: `a = 5` means "put 5 into `a`." Not to be confused with mathematical equality. |
+| **Binding** (绑定) | Tying things together; an obligation | The act of associating a name (identifier) with a type and a value. `int a = 0;` creates a binding: the name `a` now refers to an `int` holding `0`. |
+| **Bit** (比特 / 位) | A small piece; a tiny amount | Short for **bi**nary digi**t**. The smallest unit of data — a single $0$ or $1$. Eight bits make one byte. |
+| **BNF** (巴科斯-诺尔范式) | — | A notation for precisely describing the grammar of a programming language. Uses `::=` for "is defined as", `<...>` for things that need to be expanded, and `\|` for "or". |
+| **Byte** (字节) | — | A group of 8 bits. The smallest chunk of memory the CPU can directly address. Named as a deliberate misspelling of "bite." |
+| **Compile** (编译) | To assemble from various sources | The process of translating human-written source code (Java) into machine-executable instructions (binary). Done by a **compiler**. |
+| **Declarative** (声明式) | Making a formal statement | A style of programming where you describe *what* you want, not *how* to get it. SQL ("give me all rows where age > 18") is declarative; Java is not. |
+| **Dynamic** (动态) | Energetic; constantly changing | In CS: something that happens at **runtime** — while the program is executing — rather than at compile time. Opposite of **static**. |
+| **Expression** (表达式) | A phrase; conveying feeling | A piece of code that can be **evaluated** to produce a single value. `a + 1` is an expression; so is `50.0` by itself. |
+| **Garbage Collector** (垃圾回收器) | — | A part of the JVM that automatically finds and frees heap memory that is no longer being used by any variable. You don't manually "delete" objects in Java. |
+| **Heap** (堆内存) | A messy pile; a mound | A region of RAM where variable-size data (strings, objects, arrays) is stored. Allocated and freed in any order, managed by the garbage collector. |
+| **Identifier** (标识符) | Something that identifies | The name of a variable. Must start with a letter or underscore, cannot be a reserved keyword. Examples: `totalCost`, `playerScore`. |
+| **Imperative** (命令式) | Giving orders; bossy | A style of programming where you tell the computer *how* to do something through a sequence of statements. Java is an imperative language. |
+| **JVM** (Java虚拟机) | — | A program that runs compiled Java bytecode. It provides the heap, the garbage collector, and abstracts away the underlying operating system. |
+| **Keyword** (关键字) | An important word | A word reserved by the Java language that cannot be used as a variable name. Examples: `class`, `public`, `int`, `static`, `true`, `false`. |
+| **LIFO** (后进先出) | — | The rule that governs the stack: the last item placed on top is the first one taken off. Like a stack of plates or homework assignments. |
+| **Literal** (字面量) | Taking words at face value | A constant value written directly in source code. `42`, `3.14`, `true`, `"Hello"` are all literals. |
+| **Lvalue / Rvalue** (左值 / 右值) | — | An **lvalue** is something that can appear on the **left** side of `=` (a variable — it names a location). An **rvalue** is something that can only appear on the **right** side (a literal or expression — it just produces a value). `a = 5`: `a` is an lvalue, `5` is an rvalue. |
+| **Reference** (引用) | A mention; a source citation | A value that is a memory address pointing to an object on the heap. The variable stores the address, not the object itself. Passing a reference is like photocopying an apartment key. |
+| **Static** (静态) | Unmoving; fixed | In CS: something that happens at **compile time** — before the program runs. A static variable belongs to the class, not to any instance. Opposite of **dynamic**. |
+| **Syntax** (语法) | Grammar; sentence structure | The set of rules that define what is a valid program in a language. BNF is a way to describe syntax precisely. Syntax errors are like grammatical mistakes. |
+| **Type** (类型) | A category; a kind | A classification of what kind of data a variable holds (`int`, `double`, `boolean`, `String`, …). Types determine what operations are allowed and how much memory is needed. |
+| **Word** (字) | A unit of language | In computer architecture: 2 bytes (16 bits). Not frequently tested in APCSA, but a standard term. |
+| **Wrapper** (包装类) | Something that covers or encloses | A class that "wraps" a primitive type into an object so it can be used where objects are required. `Integer` wraps `int`; `Double` wraps `double`. Not covered in this lecture, but you'll see them soon. |
+
 ::LinkCard
 ---
 url: "http://online-java.com"
 title: "Online Java — Browser-Based Java REPL"
 details: "A zero-setup Java environment that runs in your browser. No installation, no IDE configuration. Just type code and run it. Perfect for experimenting with everything covered in this lecture."
 ---
-::
 ::

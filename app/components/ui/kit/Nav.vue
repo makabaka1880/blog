@@ -55,7 +55,7 @@ const navLinks = [
     { text: 'Home', to: '/' },
     { text: 'Articles', to: '/articles' },
     { text: 'Collections', to: '/collections' },
-    { text: 'Friends', to: 'link' },
+    { text: 'Friends', to: '/link' },
     { text: 'GitHub', to: 'https://github.com/makabaka1880/blog', external: true }
 ];
 
