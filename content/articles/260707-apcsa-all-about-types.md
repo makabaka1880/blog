@@ -62,7 +62,7 @@ $$
 This lets us reason about types using familiar set concepts. The relationship between `int` and `double` becomes simple:
 
 $$
-⟦\texttt{int}⟧ \subset ⟦\texttt{double}⟧
+⟦\texttt{int}⟧ \subseteq ⟦\texttt{double}⟧
 $$
 
 Every integer is also a real number. The set of ints is a **subset** of the set of doubles. As we'll see, this subset relationship is the entire basis for type conversion rules.
@@ -260,13 +260,13 @@ Variables have types. But what happens when you mix them — assigning an `int` 
 Recall our Oxford bracket intuition:
 
 $$
-⟦\texttt{int}⟧ \subset ⟦\texttt{double}⟧
+⟦\texttt{int}⟧ \subseteq ⟦\texttt{double}⟧
 $$
 
 Every integer is a valid real number. This subset relationship drives everything:
 
 ::DefBox{id="Type Compatibility Rule"}
-A value of type $A$ can be assigned to a variable of type $B$ **without extra syntax** if and only if $⟦A⟧ \subset ⟦B⟧$ — every value of $A$ is also a valid value of $B$.
+A value of type $A$ can be assigned to a variable of type $B$ **without extra syntax** if and only if $⟦A⟧ \subseteq ⟦B⟧$ — every value of $A$ is also a valid value of $B$.
 ::
 
 ```java
@@ -629,8 +629,8 @@ For an assignment statement `<variable> = <expression>;`:
 
 1. **Evaluate** the expression on the right — use reduction (inside-out), compute the resulting value and its type
 2. **Check compatibility**: can the expression's type be assigned to the variable's type?
-   - If $⟦\text{expr type}⟧ \subset ⟦\text{var type}⟧$ (e.g., `int` → `double`): **implicit widening** — OK, no cast needed
-   - If $⟦\text{expr type}⟧ \not\subset ⟦\text{var type}⟧$ (e.g., `double` → `int`): **compile error** — unless an explicit cast is provided
+   - If $⟦\text{expr type}⟧ \subseteq ⟦\text{var type}⟧$ (e.g., `int` → `double`): **implicit widening** — OK, no cast needed
+   - If $⟦\text{expr type}⟧ \not\subseteq ⟦\text{var type}⟧$ (e.g., `double` → `int`): **compile error** — unless an explicit cast is provided
    - If the types are **identical**: always OK (trivial case)
 3. **Perform the assignment**: store the (possibly converted) value into the variable's memory location
 ::
@@ -653,13 +653,13 @@ int c = 5.0;
 ::NoteBox
 **Cognitive Anchor**
 
-- The **Oxford bracket** `⟦T⟧` means "the set of all values of type `T`." The colon `x : T` means "x has type T." Both are discussion shorthands — they help us reason about types without writing full Java declarations. The key relationship: $⟦\texttt{int}⟧ \subset ⟦\texttt{double}⟧$ — every integer is a valid real number.
+- The **Oxford bracket** `⟦T⟧` means "the set of all values of type `T`." The colon `x : T` means "x has type T." Both are discussion shorthands — they help us reason about types without writing full Java declarations. The key relationship: $⟦\texttt{int}⟧ \subseteq ⟦\texttt{double}⟧$ — every integer is a valid real number.
 - A **signed integer** reserves the leftmost bit for the sign ($0$ = non-negative, $1$ = negative). For 32 bits: 31 bits for magnitude → range $-2^{31}$ to $2^{31}-1$. The negative side gets one extra value because zero sits in the non-negative camp.
 - An **unsigned integer** uses all bits for magnitude (range $0$ to $2^n-1$). Java does not have unsigned integers — context only, not on the AP exam.
 - The **off-by-one** pattern ($2^n - 1$, not $2^n$) is a universal programming pitfall. Counting starts at $0$, so maximum = count $- 1$.
 - **Stack memory**: compile-time-known sizes, LIFO ordering, fast allocation. Holds primitives and references. **Heap memory**: runtime-determined sizes, any-order allocation, managed by the garbage collector. Holds objects, arrays, strings.
 - `String` is a **reference type**: the variable (on the stack) stores an **address**; the character data (on the heap) is the actual object. Strings are **immutable** — "modification" creates a new object; the old one becomes garbage.
-- **Implicit conversion** (widening): `int` → `double` happens automatically because $⟦\texttt{int}⟧ \subset ⟦\texttt{double}⟧$. No information is lost.
+- **Implicit conversion** (widening): `int` → `double` happens automatically because $⟦\texttt{int}⟧ \subseteq ⟦\texttt{double}⟧$. No information is lost.
 - **Explicit coercion** (narrowing): `double` → `int` requires a cast `(int)`. The fractional part is **truncated** (not rounded). BNF: `<coercion> ::= "(" <type> ")" <term>`.
 - **The compiler checks types, not values.** Even if `5.0` is "integer-like," `int x = 5.0;` is a compile error — the compiler sees `double` → `int` and rejects it mechanically.
 - In mixed-type expressions (`int + double`), the result is **always the wider type** (`double`). This is determined at compile time, not by the actual numeric values.
