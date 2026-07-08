@@ -16,7 +16,8 @@ export default defineContentConfig({
                 createTime: z.string().date().optional(),
                 updateTime: z.string().date().optional(),
                 rawbody: z.string().optional(),
-                tags: z.string().array().default([])
+                tags: z.string().array().default([]),
+                ligatures: z.boolean().default(true)
             })
         }),
         collections: defineCollection({

@@ -6,6 +6,7 @@ updateTime: 2026-07-08
 
 tags:
     - APCSA
+ligatures: false
 ---
 
 ## 0x00. Boolean Values & Core Operators

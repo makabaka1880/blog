@@ -1,6 +1,6 @@
 <template>
     <div class="hover-popover-backdrop" v-if="popoverOpen" @click="popoverOpen = false" />
-    <div class="article-view">
+    <div class="article-view" :class="{ 'no-ligatures': page?.ligatures === false }">
         <div class="article-header">
             <div style="margin-bottom: 1.5rem">
                 <h1 id="article-top">{{ page?.title }}</h1>
@@ -216,5 +216,9 @@ const togglePopover = () => popoverOpen.value = !popoverOpen.value
     background-color: #00000033;
     inset: 0;
     z-index: 9; // just below popover
+}
+
+.no-ligatures {
+    font-variant-ligatures: none;
 }
 </style>
