@@ -3,3 +3,5 @@ description: "Course material"
 cover: "CB.webp"
 entries:
   - "260706-apcsa-an-introduction"
+  - "260707-apcsa-all-about-types"
+  - "260708-apcsa-boolean-algebra"
