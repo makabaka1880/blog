@@ -376,6 +376,12 @@ Every `{ }` you write simultaneously does two things:
 
 When execution enters a `{`, a new scope begins. Variables declared inside that scope are visible from their declaration point to the matching `}`. When execution passes the `}`, those variables are **destroyed**.
 
+::WarningBox
+**The code in this section is pseudocode — it does not compile.** Java forbids declaring a variable with the same name as one already visible in the current scope, even if the type is different. The examples below (like `int x` shadowed by `String x`) are for building intuition about how scoping and shadowing work conceptually. Real Java code would use distinct names or different scoping constructs.
+
+There *are* legitimate cases of shadowing in Java — method parameters shadowing instance variables (solved with `this`), and subclass fields shadowing superclass fields — but those come later. For now, focus on the mental model: the stack, the pointer, and the top-down lookup rule. That's what matters.
+::
+
 ::DefBox{id="Scope Rules"}
 1. **Inner sees outer**: code inside `{ }` can access all variables declared in enclosing scopes
 2. **Outer cannot see inner**: code outside `{ }` cannot access variables declared inside
@@ -467,20 +473,22 @@ The top-down lookup rule has a direct consequence: if an inner scope declares a 
 **Shadowing** occurs when an inner scope declares a variable with the same name as a variable in an outer scope. The inner variable hides the outer one — all references to that name inside the inner scope resolve to the inner variable.
 
 This falls directly out of the stack pointer model: the inner declaration sits above the outer one, so it's found first during top-down lookup. In the visual stack diagrams, the outer (hidden) binding is drawn in a lighter gray — it's still there, but the lookup will never reach it while the inner binding sits on top.
+
+(Recall: these examples are pseudocode for building intuition. Java rejects same-name redeclarations in overlapping scopes. Legitimate shadowing — method parameters vs. `this` fields — comes later.)
 ::
 
 In the example we just traced, steps (3)–(5) are exactly shadowing in action: `String x = "hello"` shadows `int x = 5` inside the `if` block. Look at Slice-3 again — notice the lighter gray `x : int = 5` sitting below the darker `x : String = "hello"`. The top-down scan hits the darker entry first, so `"hello"` is what `println` sees.
 
 ::ExampleBox
-Another simple case:
+Another simple case (pseudocode — same as above):
 
 ```java
 int a = 10;
 {
     int a = 20;                     // shadows the outer a
-    System.out.println(a);          // prints 20 — inner a is found first
+    System.out.println(a);          // would print 20 — inner a is found first
 }
-System.out.println(a);              // prints 10 — inner a was discarded at }
+System.out.println(a);              // would print 10 — inner a was discarded at }
 ```
 
 After the inner `}`, the shadow is removed. `a` resolves to `10` again — the outer variable was never touched.
