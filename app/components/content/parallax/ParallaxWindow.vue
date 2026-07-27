@@ -208,6 +208,8 @@ img {
 .image-like-content {
     display: block;
     width: 80%;
+    max-height: 80vh;
+    object-fit: contain;
     margin: 0 auto;
     border-radius: var(--border-radius-image);
 }
