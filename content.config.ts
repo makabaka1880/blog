@@ -7,7 +7,7 @@ export default defineContentConfig({
             type: 'page',
             source: {
                 include: '**/articles/*.md',
-                exclude: ['**/draft/**', '**/draft'],
+                exclude: ['**/draft/**', '**/draft','**/*.hidden.md'],
             },
             // Custom fields
             schema: z.object({
