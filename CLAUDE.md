@@ -240,11 +240,11 @@ Located in `app/utils/`:
 
 ## Important Notes
 
-- Node.js 20+ required
+- Node.js 22+ required
 - Python 3.11+ required for the embedding pipeline (optional; builds skip it if `.venv` is missing)
 - Color mode uses CSS custom properties with no class prefix/suffix
 - Custom icon collection for chess pieces at `app/assets/icons/chess` (prefix: `icons-chess`)
 - Twikoo comments configured to use Vercel deployment at `https://blog-twikoo-one-dun.vercel.app/`
 - The app is deployed as a static site to GitHub Pages via GitHub Actions
-- Meting music API endpoint at `https://api.music.abloom.site/` (configured in `blog.config.ts`)
+- Meting music API endpoint at `https://api.music.abloom.site/api` (configured in `blog.config.ts`)
 - There are no tests, linting, or formatting configured — this is intentional for this personal blog
