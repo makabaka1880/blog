@@ -11,7 +11,7 @@ Personal blog built with Nuxt 4 and Nuxt Content.
 - pnpm for package management
 
 ## Requirements
-- Node.js 20+
+- Node.js 24+
 - pnpm
 - Python 3.11+ (optional, for embedding/depth scripts)
 

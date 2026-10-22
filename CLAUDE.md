@@ -240,7 +240,7 @@ Located in `app/utils/`:
 
 ## Important Notes
 
-- Node.js 22+ required
+- Node.js 24+ required
 - Python 3.11+ required for the embedding pipeline (optional; builds skip it if `.venv` is missing)
 - Color mode uses CSS custom properties with no class prefix/suffix
 - Custom icon collection for chess pieces at `app/assets/icons/chess` (prefix: `icons-chess`)
