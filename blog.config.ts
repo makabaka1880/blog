@@ -43,7 +43,7 @@ const blogConfig = {
             endpoint: "https://blog-twikoo-one-dun.vercel.app/"
         },
         metingConfig: {
-            endpoint: 'https://api.music.abloom.site/'
+            endpoint: 'https://api.music.abloom.site/api'
         }
     }
 }
